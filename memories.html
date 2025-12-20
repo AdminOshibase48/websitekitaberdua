@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenangan - MyLovely</title>
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/memories.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="../assets/images/love-icon.png">
+</head>
+<body>
+    <!-- Musik Player -->
+    <div class="music-player">
+        <button id="music-toggle" class="music-btn">
+            <i class="fas fa-music"></i>
+            <span class="music-text">Putar Musik</span>
+        </button>
+        <audio id="background-music" loop>
+            <source src="../assets/music/background.mp3" type="audio/mpeg">
+            Browser Anda tidak mendukung elemen audio.
+        </audio>
+    </div>
+
+    <!-- Navigasi -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <a href="../index.html">
+                    <span class="heart">❤️</span>
+                    <h1>Nama Pasangan</h1>
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="story.html">Cerita Kami</a></li>
+                <li><a href="gallery.html">Galeri</a></li>
+                <li><a href="memories.html" class="active">Kenangan</a></li>
+                <li><a href="timeline.html">Timeline</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Memories Header -->
+    <section class="memories-header">
+        <div class="header-overlay"></div>
+        <div class="header-content">
+            <h1>Kenangan Spesial Kami</h1>
+            <p>Setiap momen terukir indah dalam hati kami</p>
+            <div class="memories-stats">
+                <div class="stat-item">
+                    <i class="fas fa-star"></i>
+                    <span id="special-moments">48</span>
+                    <p>Momen Spesial</p>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-gift"></i>
+                    <span id="gifts-exchanged">12</span>
+                    <p>Hadiah Bertukar</p>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="places-visited">8</span>
+                    <p>Tempat Dikunjungi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- First Times Section -->
+    <section class="first-times-section">
+        <div class="container">
+            <h2 class="section-title">Pertama Kali Bersama</h2>
+            <div class="first-times-grid">
+                <div class="first-time-card">
+                    <div class="first-time-icon">
+                        <i class="fas fa-hands"></i>
+                    </div>
+                    <h3>Pegangan Tangan</h3>
+                    <p class="memory-date">17 Desember 2025</p>
+                    <p>Saat menonton film di bioskop, jari-jari kami saling menyentuh tanpa sengaja. Lalu kamu menggenggam tanganku dengan erat.</p>
+                    <div class="memory-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>XXI Plaza, Jakarta</span>
+                    </div>
+                </div>
+                <div class="first-time-card">
+                    <div class="first-time-icon">
+                        <i class="fas fa-film"></i>
+                    </div>
+                    <h3>Film Pertama</h3>
+                    <p class="memory-date">20 Desember 2025</p>
+                    <p>Kita menonton film romantis pertama bersama. Kamu menangis di adegan sedih, dan aku memberimu tissue.</p>
+                    <div class="memory-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>CGV Grand Indonesia</span>
+                    </div>
+                </div>
+                <div class="first-time-card">
+                    <div class="first-time-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Makan Malam</h3>
+                    <p class="memory-date">24 Desember 2025</p>
+                    <p>Restoran Italia kecil itu menjadi saksi makan malam pertama kita. Kamu memesan spaghetti, aku pizza.</p>
+                    <div class="memory-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>La Bella Italia, Kemang</span>
+                    </div>
+                </div>
+                <div class="first-time-card">
+                    <div class="first-time-icon">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <h3>Perjalanan Bersama</h3>
+                    <p class="memory-date">15 Januari 2026</p>
+                    <p>Liburan pertama ke Bandung. Kamu yang selalu mabuk perjalanan, tapi tetap semangat menemani.</p>
+                    <div class="memory-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Bandung, Jawa Barat</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Special Gifts Section -->
+    <section class="gifts-section">
+        <div class="container">
+            <h2 class="section-title">Hadiah Spesial</h2>
+            <div class="gifts-container">
+                <div class="gift-card">
+                    <div class="gift-image">
+                        <img src="../assets/images/memories/gift1.jpg" alt="Hadiah Pertama">
+                    </div>
+                    <div class="gift-details">
+                        <h3>Buku Harian Cinta</h3>
+                        <p class="gift-date">17 Desember 2025</p>
+                        <p class="gift-from">Dari: Nama Pria</p>
+                        <p class="gift-description">Buku harian yang diisi dengan cerita-cerita tentang perasaan sejak pertama bertemu. Setiap halaman berisi kenangan kecil yang besar artinya.</p>
+                        <div class="gift-quote">
+                            <i class="fas fa-quote-left"></i>
+                            "Karena kata-kata yang tak terucapkan pantas untuk dituliskan"
+                        </div>
+                    </div>
+                </div>
+                <div class="gift-card reverse">
+                    <div class="gift-image">
+                        <img src="../assets/images/memories/gift2.jpg" alt="Hadiah Kedua">
+                    </div>
+                    <div class="gift-details">
+                        <h3>Kalung Heartbeat</h3>
+                        <p class="gift-date">14 Februari 2026</p>
+                        <p class="gift-from">Dari: Nama Wanita</p>
+                        <p class="gift-description">Kalung dengan liontin berbentuk denyut jantung. Katamu, "Denyut jantungku selalu berdetak untukmu."</p>
+                        <div class="gift-quote">
+                            <i class="fas fa-quote-left"></i>
+                            "Setiap detaknya adalah pengingat cintaku padamu"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Love Notes Section -->
+    <section class="notes-section">
+        <div class="container">
+            <h2 class="section-title">Catatan Cinta</h2>
+            <div class="notes-grid">
+                <div class="note-card">
+                    <div class="note-content">
+                        <p>"Hari ini kamu membuat kopi untukku tanpa aku minta. Hal kecil itu membuat hariku cerah."</p>
+                    </div>
+                    <div class="note-meta">
+                        <span class="note-author">Nama Pria</span>
+                        <span class="note-date">20 Jan 2026</span>
+                    </div>
+                </div>
+                <div class="note-card">
+                    <div class="note-content">
+                        <p>"Tertawamu adalah musik terindah yang pernah kudengar. Aku bisa mendengarnya sepanjang hari."</p>
+                    </div>
+                    <div class="note-meta">
+                        <span class="note-author">Nama Wanita</span>
+                        <span class="note-date">5 Feb 2026</span>
+                    </div>
+                </div>
+                <div class="note-card">
+                    <div class="note-content">
+                        <p>"Kamu datang menjemputku saat hujan deras meski tahu aku bisa naik taksi. Itu yang membuatku jatuh cinta."</p>
+                    </div>
+                    <div class="note-meta">
+                        <span class="note-author">Nama Pria</span>
+                        <span class="note-date">14 Mar 2026</span>
+                    </div>
+                </div>
+                <div class="note-card">
+                    <div class="note-content">
+                        <p>"Pelajaran terbesar darimu: cinta itu tentang memberi, bukan menerima. Terima kasih telah mengajariku."</p>
+                    </div>
+                    <div class="note-meta">
+                        <span class="note-author">Nama Wanita</span>
+                        <span class="note-date">30 Apr 2026</span>
+                    </div>
+                </div>
+            </div>
+            <div class="add-note">
+                <h3>Tambah Catatan Cintamu</h3>
+                <textarea id="new-note" placeholder="Tulis catatan cintamu di sini..."></textarea>
+                <div class="note-actions">
+                    <select id="note-author">
+                        <option value="him">Dari Nama Pria</option>
+                        <option value="her">Dari Nama Wanita</option>
+                    </select>
+                    <button id="save-note" class="save-btn">
+                        <i class="fas fa-heart"></i>
+                        Simpan Kenangan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memory Timeline -->
+    <section class="memory-timeline-section">
+        <div class="container">
+            <h2 class="section-title">Timeline Kenangan</h2>
+            <div class="timeline-container">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">Des 2025</div>
+                        <div class="timeline-content">
+                            <h3>Pertemuan Pertama</h3>
+                            <p>Bertemu di halte bus saat hujan deras</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Des 2025</div>
+                        <div class="timeline-content">
+                            <h3>Kencan Pertama</h3>
+                            <p>Makan malam di restoran Italia</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Jan 2026</div>
+                        <div class="timeline-content">
+                            <h3>Liburan Pertama</h3>
+                            <p>Weekend romantis di Bandung</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Feb 2026</div>
+                        <div class="timeline-content">
+                            <h3>Valentine Pertama</h3>
+                            <p>Bertukar hadiah dan makan malam spesial</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Mar 2026</div>
+                        <div class="timeline-content">
+                            <h3>Ulang Tahun</h3>
+                            <p>Merayakan ulang tahun bersama pertama kali</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">Jun 2026</div>
+                        <div class="timeline-content">
+                            <h3>Wisuda</h3>
+                            <p>Lulus bersama dan merayakan kesuksesan</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memory Jar -->
+    <section class="memory-jar-section">
+        <div class="container">
+            <h2 class="section-title">Toples Kenangan</h2>
+            <div class="memory-jar">
+                <div class="jar-container">
+                    <div class="jar-top"></div>
+                    <div class="jar-body" id="memory-jar">
+                        <!-- Memori akan ditambahkan di sini -->
+                    </div>
+                    <div class="jar-bottom"></div>
+                </div>
+                <div class="jar-controls">
+                    <h3>Tambahkan Kenangan Baru</h3>
+                    <input type="text" id="new-memory" placeholder="Tulis kenangan baru...">
+                    <button id="add-memory" class="add-btn">
+                        <i class="fas fa-plus"></i>
+                        Tambah ke Toples
+                    </button>
+                    <p class="jar-info">Klik pada kenangan untuk membacanya</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to Home -->
+    <section class="back-home-section">
+        <div class="container">
+            <a href="../index.html" class="back-home-btn">
+                <i class="fas fa-home"></i>
+                Kembali ke Halaman Utama
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span class="heart">❤️</span>
+                    <h3>Nama Pasangan</h3>
+                    <p>Terus mencintai, hari demi hari</p>
+                </div>
+                <div class="footer-links">
+                    <a href="../index.html">Home</a>
+                    <a href="story.html">Cerita</a>
+                    <a href="gallery.html">Galeri</a>
+                    <a href="memories.html">Kenangan</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Dibuat dengan <i class="fas fa-heart"></i> untuk kita berdua</p>
+                <p class="copyright">© 2023 Kisah Kami. Semua hak cipta dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/scripts/main.js"></script>
+    <script src="assets/scripts/music-player.js"></script>
+    <script src="assets/scripts/memories.js"></script>
+</body>
+</html>
