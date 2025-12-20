@@ -1,0 +1,159 @@
+/* Animasi CSS */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Kelas animasi */
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+.fadeInUp {
+    animation-name: fadeInUp;
+}
+
+.fadeInLeft {
+    animation-name: fadeInLeft;
+}
+
+.fadeInRight {
+    animation-name: fadeInRight;
+}
+
+.pulse {
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+}
+
+.float {
+    animation-name: float;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+/* Animasi untuk timeline */
+.timeline-item {
+    opacity: 0;
+}
+
+.timeline-item.animated {
+    opacity: 1;
+}
+
+.timeline-item.left.animated .timeline-content {
+    animation: fadeInLeft 0.8s ease-out;
+}
+
+.timeline-item.right.animated .timeline-content {
+    animation: fadeInRight 0.8s ease-out;
+}
+
+/* Animasi untuk gallery */
+.gallery-item {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.gallery-item.animated {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Animasi untuk memory cards */
+.memory-card {
+    opacity: 0;
+}
+
+.memory-card.animated {
+    opacity: 1;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+/* Animasi untuk countdown boxes */
+.countdown-box {
+    opacity: 0;
+}
+
+.countdown-box.animated {
+    opacity: 1;
+    animation: fadeInUp 0.8s ease-out;
+}
+
+/* Delay untuk animasi berurutan */
+.gallery-item:nth-child(1).animated { animation-delay: 0.1s; }
+.gallery-item:nth-child(2).animated { animation-delay: 0.3s; }
+.gallery-item:nth-child(3).animated { animation-delay: 0.5s; }
+
+.memory-card:nth-child(1).animated { animation-delay: 0.1s; }
+.memory-card:nth-child(2).animated { animation-delay: 0.3s; }
+.memory-card:nth-child(3).animated { animation-delay: 0.5s; }
+
+.countdown-box:nth-child(1).animated { animation-delay: 0.1s; }
+.countdown-box:nth-child(2).animated { animation-delay: 0.2s; }
+.countdown-box:nth-child(3).animated { animation-delay: 0.3s; }
+.countdown-box:nth-child(4).animated { animation-delay: 0.4s; }
+
+/* Animasi untuk heart di logo */
+.heart {
+    display: inline-block;
+    animation: pulse 2s infinite;
+}
+
+/* Animasi untuk tombol */
+.btn-gallery:hover, .music-btn:hover {
+    animation: pulse 0.5s;
+}
