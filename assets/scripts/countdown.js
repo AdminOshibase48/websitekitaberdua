@@ -1,277 +1,447 @@
-// Countdown untuk anniversary jadian (17 Desember)
-document.addEventListener('DOMContentLoaded', function() {
-    // Fungsi untuk mendapatkan tanggal anniversary berikutnya
-    function getNextAnniversaryDate() {
-        const today = new Date();
-        const currentYear = today.getFullYear();
+// REVISI COUNTDOWN.JS DENGAN TANGGAL JELAS
+class AnniversaryCountdown {
+    constructor() {
+        // Tanggal jadian: 17 Desember 2025
+        this.startDate = new Date('2025-12-17T00:00:00');
+        // Next anniversary: 17 Desember tahun depan
+        this.targetDate = this.getNextAnniversary();
         
-        // Buat tanggal anniversary tahun ini (17 Desember tahun ini)
-        const anniversaryThisYear = new Date(currentYear, 11, 17); // Desember = bulan 11 (0-indexed)
+        this.elements = {};
+        this.timerInterval = null;
+        this.init();
+    }
+
+    // Get next anniversary date
+    getNextAnniversary() {
+        const now = new Date();
+        const currentYear = now.getFullYear();
         
-        // Jika tanggal anniversary tahun ini sudah lewat, gunakan tahun depan
-        if (today > anniversaryThisYear) {
-            return new Date(currentYear + 1, 11, 17);
-        } else {
-            return anniversaryThisYear;
+        // Anniversary tahun ini (17 Desember tahun ini)
+        let anniversary = new Date(currentYear, 11, 17); // Desember = bulan 11 (0-indexed)
+        
+        // Jika anniversary tahun ini sudah lewat, gunakan tahun depan
+        if (now > anniversary) {
+            anniversary = new Date(currentYear + 1, 11, 17);
         }
+        
+        // Set waktu ke tengah malam
+        anniversary.setHours(0, 0, 0, 0);
+        return anniversary;
     }
-    
-    // Fungsi untuk menghitung berapa anniversary ke berapa
-    function calculateAnniversaryNumber(startDate, currentDate) {
-        const start = new Date(startDate);
-        const current = new Date(currentDate);
-        
-        // Hitung selisih tahun
-        const yearsDiff = current.getFullYear() - start.getFullYear();
-        
-        // Cek apakah anniversary tahun ini sudah lewat atau belum
-        const anniversaryThisYear = new Date(current.getFullYear(), 11, 17);
-        
-        if (current < anniversaryThisYear) {
-            return yearsDiff;
-        } else {
-            return yearsDiff + 1;
+
+    init() {
+        // Get all DOM elements
+        this.elements = {
+            // Countdown timer
+            days: document.getElementById('countdown-days'),
+            hours: document.getElementById('countdown-hours'),
+            minutes: document.getElementById('countdown-minutes'),
+            seconds: document.getElementById('countdown-seconds'),
+            
+            // Date display
+            anniversaryDate: document.getElementById('anniversary-date'),
+            anniversaryDay: document.getElementById('anniversary-day'),
+            anniversaryNumber: document.getElementById('anniversary-number'),
+            
+            // Status and info
+            status: document.getElementById('countdown-status'),
+            progressFill: document.getElementById('progress-fill'),
+            progressPercentage: document.getElementById('progress-percentage'),
+            timeTogether: document.getElementById('time-together'),
+            heartbeats: document.getElementById('heartbeats'),
+            laughterCount: document.getElementById('laughter-count')
+        };
+
+        // Validate elements
+        for (const [key, element] of Object.entries(this.elements)) {
+            if (!element && key !== 'laughterCount') { // laughterCount optional
+                console.warn(`Element not found: ${key}`);
+            }
         }
-    }
-    
-    // Tanggal mulai jadian
-    const startDate = new Date('2025-12-17'); // Format: Tahun-Bulan-Hari
-    const anniversaryNumber = calculateAnniversaryNumber(startDate, new Date());
-    
-    // Update teks anniversary
-    document.getElementById('anniversary-year').textContent = anniversaryNumber;
-    
-    // Tanggal anniversary berikutnya
-    const nextAnniversary = getNextAnniversaryDate();
-    
-    // Format tanggal untuk ditampilkan
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const formattedDate = nextAnniversary.toLocaleDateString('id-ID', options);
-    
-    // Update elemen dengan tanggal berikutnya
-    const nextDateElement = document.querySelector('.next-date');
-    if (nextDateElement) {
-        nextDateElement.textContent = formattedDate;
-    }
-    
-    // Update countdown setiap detik
-    function updateCountdown() {
-        const now = new Date().getTime();
-        const timeRemaining = nextAnniversary.getTime() - now;
+
+        // Initialize date display
+        this.updateDateDisplay();
         
-        // Perhitungan waktu
+        // Start countdown
+        this.startCountdown();
+        
+        // Update additional info
+        this.updateAdditionalInfo();
+    }
+
+    updateDateDisplay() {
+        if (!this.elements.anniversaryDate || !this.elements.anniversaryDay) return;
+        
+        // Format tanggal
+        const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        };
+        const formattedDate = this.targetDate.toLocaleDateString('id-ID', options);
+        
+        // Split date and day
+        const [day, ...dateParts] = formattedDate.split(', ');
+        const date = dateParts.join(', ');
+        
+        // Calculate anniversary number
+        const anniversaryNumber = this.targetDate.getFullYear() - this.startDate.getFullYear();
+        const numberText = this.getNumberText(anniversaryNumber);
+        
+        // Update DOM
+        this.elements.anniversaryDate.textContent = date;
+        this.elements.anniversaryDay.textContent = day;
+        this.elements.anniversaryNumber.textContent = numberText;
+    }
+
+    getNumberText(number) {
+        const numbers = [
+            'Pertama', 'Kedua', 'Ketiga', 'Keempat', 'Kelima',
+            'Keenam', 'Ketujuh', 'Kedelapan', 'Kesembilan', 'Kesepuluh'
+        ];
+        
+        if (number <= numbers.length) {
+            return numbers[number - 1];
+        }
+        return `Ke-${number}`;
+    }
+
+    startCountdown() {
+        // Initial update
+        this.updateCountdown();
+        
+        // Update every second
+        this.timerInterval = setInterval(() => {
+            this.updateCountdown();
+        }, 1000);
+    }
+
+    updateCountdown() {
+        const now = new Date();
+        const timeRemaining = this.targetDate - now;
+        
+        // If countdown finished
+        if (timeRemaining <= 0) {
+            this.handleCountdownFinished();
+            return;
+        }
+        
+        // Calculate time units
         const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
         const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
         
-        // Tampilkan hasil di elemen HTML
-        document.getElementById('days').textContent = days.toString().padStart(2, '0');
-        document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-        document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-        document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        // Update countdown display
+        this.updateTimerDisplay(days, hours, minutes, seconds);
         
-        // Jika countdown selesai, tampilkan pesan dan reset untuk tahun berikutnya
-        if (timeRemaining < 0) {
-            // Tampilkan pesan selamat
-            const countdownContainer = document.querySelector('.countdown-container');
-            if (countdownContainer) {
-                countdownContainer.innerHTML = `
-                    <div class="countdown-message">
-                        <h3>Selamat Anniversary!</h3>
-                        <p>Hari yang ditunggu-tunggu akhirnya tiba! 🎉</p>
-                        <p>Ini adalah anniversary ke-${anniversaryNumber} kalian!</p>
-                        <button id="next-anniversary-btn">Lihat Countdown Berikutnya</button>
-                    </div>
-                `;
-                
-                // Tambahkan event listener untuk tombol
-                document.getElementById('next-anniversary-btn').addEventListener('click', function() {
-                    location.reload(); // Reload halaman untuk reset countdown
-                });
-            }
-            
-            // Hentikan interval
-            clearInterval(countdownInterval);
-        }
+        // Update progress bar
+        this.updateProgressBar(timeRemaining);
+        
+        // Update status message
+        this.updateStatusMessage(days);
     }
-    
-    // Jalankan countdown pertama kali
-    updateCountdown();
-    
-    // Update countdown setiap detik
-    const countdownInterval = setInterval(updateCountdown, 1000);
-    
-    // Update waktu otomatis saat berpindah tab/window
-    let isPageVisible = true;
-    
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            isPageVisible = false;
-        } else {
-            isPageVisible = true;
-            // Update countdown saat kembali ke tab
-            updateCountdown();
-        }
-    });
-    
-    // Update juga saat window mendapatkan fokus kembali
-    window.addEventListener('focus', function() {
-        updateCountdown();
-    });
-    
-    // Tambahkan efek khusus untuk countdown
-    const countdownValues = document.querySelectorAll('.countdown-value');
-    
-    // Animasi saat countdown berubah
-    let lastValues = {
-        days: '00',
-        hours: '00',
-        minutes: '00',
-        seconds: '00'
-    };
-    
-    // Fungsi untuk animasi perubahan angka
-    function animateValueChange(element, newValue, oldValue) {
-        if (newValue !== oldValue) {
-            element.classList.add('changing');
-            setTimeout(() => {
-                element.classList.remove('changing');
-            }, 300);
-        }
-    }
-    
-    // Periksa perubahan nilai setiap detik
-    setInterval(function() {
-        const currentValues = {
-            days: document.getElementById('days').textContent,
-            hours: document.getElementById('hours').textContent,
-            minutes: document.getElementById('minutes').textContent,
-            seconds: document.getElementById('seconds').textContent
+
+    updateTimerDisplay(days, hours, minutes, seconds) {
+        const values = {
+            days: days.toString().padStart(2, '0'),
+            hours: hours.toString().padStart(2, '0'),
+            minutes: minutes.toString().padStart(2, '0'),
+            seconds: seconds.toString().padStart(2, '0')
         };
         
-        animateValueChange(document.getElementById('days'), currentValues.days, lastValues.days);
-        animateValueChange(document.getElementById('hours'), currentValues.hours, lastValues.hours);
-        animateValueChange(document.getElementById('minutes'), currentValues.minutes, lastValues.minutes);
-        animateValueChange(document.getElementById('seconds'), currentValues.seconds, lastValues.seconds);
-        
-        lastValues = { ...currentValues };
-    }, 1000);
-    
-    // Fungsi untuk update "Bersama sejak" di hero section
-    function updateAnniversaryInfo() {
-        const startDateFormatted = new Date('2025-12-17').toLocaleDateString('id-ID', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
-        
-        const anniversaryInfoElement = document.querySelector('.anniversary-date span');
-        if (anniversaryInfoElement) {
-            anniversaryInfoElement.textContent = `Bersama sejak: ${startDateFormatted}`;
+        // Update with animation
+        for (const [unit, value] of Object.entries(values)) {
+            const element = this.elements[unit];
+            if (!element) continue;
+            
+            if (element.textContent !== value) {
+                element.classList.add('changing');
+                element.textContent = value;
+                
+                setTimeout(() => {
+                    element.classList.remove('changing');
+                }, 300);
+            }
         }
     }
-    
-    // Panggil fungsi untuk update info anniversary
-    updateAnniversaryInfo();
-});
 
-// Tambahkan CSS untuk animasi perubahan angka
-const style = document.createElement('style');
-style.textContent = `
-    .countdown-value.changing {
-        animation: countdownPulse 0.3s ease;
-        color: #FF6B9D;
+    updateProgressBar(timeRemaining) {
+        if (!this.elements.progressFill || !this.elements.progressPercentage) return;
+        
+        const totalTime = this.targetDate - new Date(this.targetDate.getFullYear() - 1, 11, 17);
+        const timePassed = totalTime - timeRemaining;
+        const percentage = Math.min(100, Math.max(0, (timePassed / totalTime) * 100));
+        
+        // Update progress bar
+        this.elements.progressFill.style.width = `${percentage}%`;
+        this.elements.progressPercentage.textContent = `${Math.round(percentage)}%`;
     }
-    
-    @keyframes countdownPulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-        100% { transform: scale(1); }
-    }
-    
-    .countdown-message {
-        text-align: center;
-        padding: 2rem;
-        background: linear-gradient(135deg, #FFE4EF, #B8DB80);
-        border-radius: 10px;
-        color: #333;
-        animation: fadeIn 0.5s ease;
-    }
-    
-    .countdown-message h3 {
-        font-size: 2.5rem;
-        color: #FF6B9D;
-        margin-bottom: 1rem;
-        font-family: 'Dancing Script', cursive;
-    }
-    
-    .countdown-message p {
-        font-size: 1.2rem;
-        margin-bottom: 1rem;
-    }
-    
-    #next-anniversary-btn {
-        background-color: #FF6B9D;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 30px;
-        font-size: 1rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        margin-top: 1rem;
-    }
-    
-    #next-anniversary-btn:hover {
-        background-color: #333;
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-`;
-document.head.appendChild(style);
 
-// Fungsi untuk menampilkan status countdown yang lebih informatif
-function updateCountdownStatus(days) {
-    const statusElement = document.getElementById('countdown-status');
-    if (!statusElement) return;
-    
-    let statusMessage = '';
-    
-    if (days > 30) {
-        const months = Math.floor(days / 30);
-        statusMessage = `Masih ${months} bulan ${days % 30} hari lagi!`;
-    } else if (days > 7) {
-        const weeks = Math.floor(days / 7);
-        statusMessage = `Tinggal ${weeks} minggu ${days % 7} hari lagi!`;
-    } else if (days > 1) {
-        statusMessage = `Tinggal ${days} hari lagi!`;
-    } else if (days === 1) {
-        statusMessage = `Besok adalah hari anniversary! 🎉`;
-    } else if (days === 0) {
-        statusMessage = `Hari ini adalah hari anniversary! Selamat! 🥳`;
-    } else {
-        statusMessage = `Hitung mundur untuk anniversary berikutnya!`;
+    updateStatusMessage(daysRemaining) {
+        if (!this.elements.status) return;
+        
+        let message = '';
+        
+        if (daysRemaining > 365) {
+            const years = Math.floor(daysRemaining / 365);
+            const remainingDays = daysRemaining % 365;
+            message = `Masih ${years} tahun ${remainingDays} hari lagi!`;
+        } else if (daysRemaining > 60) {
+            const months = Math.floor(daysRemaining / 30);
+            message = `Tinggal ${months} bulan ${daysRemaining % 30} hari lagi!`;
+        } else if (daysRemaining > 30) {
+            message = `Tinggal ${daysRemaining} hari lagi!`;
+        } else if (daysRemaining > 14) {
+            message = `${daysRemaining} hari menuju anniversary! 💕`;
+        } else if (daysRemaining > 7) {
+            message = `Hanya ${daysRemaining} hari lagi! Sudah dekat!`;
+        } else if (daysRemaining > 3) {
+            message = `${daysRemaining} hari lagi! Siap-siap merayakan!`;
+        } else if (daysRemaining > 1) {
+            message = `HANYA ${daysRemaining} HARI LAGI! 🎉`;
+        } else if (daysRemaining === 1) {
+            message = `BESOK HARI ANNIVERSARY! GET READY! 🥳`;
+        } else if (daysRemaining === 0) {
+            message = `HARI INI HARI ANNIVERSARY! SELAMAT! 🎊`;
+        }
+        
+        this.elements.status.textContent = message;
     }
-    
-    statusElement.textContent = statusMessage;
+
+    updateAdditionalInfo() {
+        // Calculate days together
+        const now = new Date();
+        const daysTogether = Math.floor((now - this.startDate) / (1000 * 60 * 60 * 24));
+        
+        // Estimate heartbeats (average 72 bpm)
+        const heartbeats = daysTogether * 24 * 60 * 72;
+        
+        // Update DOM
+        if (this.elements.timeTogether) {
+            this.elements.timeTogether.textContent = `${daysTogether} hari`;
+        }
+        
+        if (this.elements.heartbeats) {
+            this.elements.heartbeats.textContent = this.formatNumber(heartbeats);
+        }
+        
+        // Random laughter count
+        if (this.elements.laughterCount) {
+            const laughterCount = Math.floor(Math.random() * 10000) + 1000;
+            this.elements.laughterCount.textContent = `${this.formatNumber(laughterCount)}+`;
+        }
+    }
+
+    formatNumber(num) {
+        if (num >= 1000000) {
+            return (num / 1000000).toFixed(1) + ' juta';
+        }
+        if (num >= 1000) {
+            return (num / 1000).toFixed(1) + ' ribu';
+        }
+        return num.toLocaleString('id-ID');
+    }
+
+    handleCountdownFinished() {
+        // Stop timer
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+        }
+        
+        // Show celebration
+        this.showCelebration();
+        
+        // Update for next anniversary
+        setTimeout(() => {
+            this.targetDate = new Date(this.targetDate.getFullYear() + 1, 11, 17);
+            this.updateDateDisplay();
+            this.startCountdown();
+        }, 10000); // Reset after 10 seconds
+    }
+
+    showCelebration() {
+        // Update all counters to 00
+        const counters = ['days', 'hours', 'minutes', 'seconds'];
+        counters.forEach(counter => {
+            if (this.elements[counter]) {
+                this.elements[counter].textContent = '00';
+            }
+        });
+        
+        // Update status
+        if (this.elements.status) {
+            this.elements.status.textContent = '🎉 SELAMAT ANNIVERSARY! 🎉';
+            this.elements.status.style.fontSize = '1.5rem';
+            this.elements.status.style.color = 'var(--color-accent-pink)';
+            this.elements.status.style.fontWeight = '700';
+        }
+        
+        // Update progress to 100%
+        if (this.elements.progressFill) {
+            this.elements.progressFill.style.width = '100%';
+        }
+        if (this.elements.progressPercentage) {
+            this.elements.progressPercentage.textContent = '100%';
+        }
+        
+        // Trigger confetti
+        this.startConfetti();
+        
+        // Play celebration sound
+        this.playCelebrationSound();
+    }
+
+    startConfetti() {
+        const colors = ['#FF6B9D', '#B8DB80', '#FFA8C8', '#FFFFFF', '#FFD1E0'];
+        
+        for (let i = 0; i < 150; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.cssText = `
+                position: fixed;
+                width: ${Math.random() * 10 + 5}px;
+                height: ${Math.random() * 10 + 5}px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                top: -10px;
+                left: ${Math.random() * 100}%;
+                opacity: ${Math.random() * 0.5 + 0.5};
+                border-radius: ${Math.random() > 0.5 ? '50%' : '0'};
+                animation: confettiFall ${Math.random() * 3 + 2}s linear forwards;
+                z-index: 9999;
+                pointer-events: none;
+            `;
+            
+            document.body.appendChild(confetti);
+            
+            // Remove after animation
+            setTimeout(() => {
+                confetti.remove();
+            }, 5000);
+        }
+        
+        // Add confetti animation style
+        if (!document.querySelector('#confetti-animation')) {
+            const style = document.createElement('style');
+            style.id = 'confetti-animation';
+            style.textContent = `
+                @keyframes confettiFall {
+                    0% {
+                        transform: translateY(0) rotate(0deg);
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: translateY(100vh) rotate(${Math.random() * 720}deg);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
+
+    playCelebrationSound() {
+        // Create audio element
+        const audio = document.createElement('audio');
+        
+        // Try to play celebration sound
+        try {
+            // You can add your own celebration sound file
+            // audio.src = 'assets/sounds/celebration.mp3';
+            // audio.volume = 0.3;
+            // audio.play();
+            
+            // Fallback: Play browser beep
+            const context = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = context.createOscillator();
+            const gainNode = context.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(context.destination);
+            
+            oscillator.frequency.value = 880;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, context.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, context.currentTime + 1);
+            
+            oscillator.start(context.currentTime);
+            oscillator.stop(context.currentTime + 1);
+            
+        } catch (error) {
+            console.log('Audio playback not supported:', error);
+        }
+    }
 }
 
-// Panggil fungsi ini di dalam updateCountdown(), setelah perhitungan hari:
-function updateCountdown() {
-    // ... kode sebelumnya ...
+// Initialize countdown when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Create countdown instance
+    const anniversaryCountdown = new AnniversaryCountdown();
     
-    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-    // ... perhitungan lainnya ...
+    // Add styles for countdown animations
+    const styles = document.createElement('style');
+    styles.textContent = `
+        .countdown-value.changing {
+            animation: countdownPulse 0.3s ease;
+            color: var(--color-accent-pink);
+        }
+        
+        @keyframes countdownPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .countdown-status {
+            font-size: 1.2rem;
+            color: var(--color-accent-pink);
+            text-align: center;
+            margin: 20px 0;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        @media (max-width: 768px) {
+            .countdown-container {
+                gap: 10px;
+            }
+            
+            .countdown-card {
+                min-width: 70px;
+                padding: 15px;
+            }
+            
+            .countdown-value {
+                font-size: 2rem;
+            }
+            
+            .date-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .date-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    `;
+    document.head.appendChild(styles);
     
-    // Update status
-    updateCountdownStatus(days);
+    // Handle page visibility changes
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            // Refresh countdown when page becomes visible
+            anniversaryCountdown.updateCountdown();
+        }
+    });
     
-    // ... kode selanjutnya ...
+    // Export for debugging
+    window.anniversaryCountdown = anniversaryCountdown;
+});
+
+// Fallback for older browsers
+if (!window.AudioContext && !window.webkitAudioContext) {
+    console.log('Web Audio API not supported');
 }
