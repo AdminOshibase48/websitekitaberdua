@@ -1,129 +1,305 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="no-js">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisah Kami - My Lovely</title>
-    <link rel="stylesheet" href="assets/styles/main.css">
-    <link rel="stylesheet" href="assets/styles/animations.css">
+    <title>Cinta Kami | Nursyam & Lulu</title>
+    
+    <!-- Meta Tags untuk SEO & Social Media -->
+    <meta name="description" content="Website kenangan cinta kami. Kisah, momen, dan perjalanan cinta kami bersama.">
+    <meta property="og:title" content="Cinta Kami | Nama Pasangan">
+    <meta property="og:description" content="Website kenangan cinta kami">
+    <meta property="og:image" content="assets/images/og-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="assets/images/love-icon.png">
+    
+    <!-- AOS Library untuk animasi scroll -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Preload Images -->
+    <link rel="preload" href="assets/images/hero-bg.jpg" as="image">
+    <link rel="preload" href="assets/images/couple-main.jpg" as="image">
 </head>
 <body>
-    <!-- Musik Player -->
-    <div class="music-player">
-        <button id="music-toggle" class="music-btn">
-            <i class="fas fa-music"></i>
-            <span class="music-text">Putar Musik</span>
-        </button>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-hearts">
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="loading-text">
+                <span>Memuat Kenangan Indah</span>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cursor Custom -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Floating Elements -->
+    <div class="floating-hearts">
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+    </div>
+
+    <!-- Music Player Fixed -->
+    <div class="music-player-fixed">
+        <div class="music-controls">
+            <button class="music-toggle-btn" id="music-toggle-fixed">
+                <i class="fas fa-music"></i>
+                <span class="music-status">Play</span>
+            </button>
+            <div class="volume-control">
+                <i class="fas fa-volume-down"></i>
+                <input type="range" min="0" max="100" value="50" class="volume-slider">
+                <i class="fas fa-volume-up"></i>
+            </div>
+        </div>
         <audio id="background-music" loop>
-            <source src="assets/music/Kotainitaksama.mp3" type="audio/mpeg">
-            Browser Anda tidak mendukung elemen audio.
+            <source src="assets/music/kotainitaksama.mp3" type="audio/mpeg">
+            <source src="assets/music/love-song.ogg" type="audio/ogg">
         </audio>
     </div>
 
-    <!-- Navigasi -->
-    <nav class="navbar">
+    <!-- Back to Top -->
+    <button class="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="navbar-glass">
         <div class="nav-container">
-            <div class="logo">
-                <span class="heart">❤️</span>
-                <h1>Nama Pasangan</h1>
+            <div class="nav-logo">
+                <a href="#home" class="logo-link">
+                    <div class="logo-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-name">Nursyam Lulu</span>
+                        <span class="logo-sub">Love Story</span>
+                    </div>
+                </a>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#story">Cerita Kami</a></li>
-                <li><a href="coming-soon">Memories</a></li>
-                <li><a href="#gallery">Galeri</a></li>
-                <li><a href="#memories">Kenangan</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active" data-text="Home">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#story" class="nav-link" data-text="Our Story">
+                    <i class="fas fa-book-open"></i>
+                    <span>Our Story</span>
+                </a>
+                <a href="#gallery" class="nav-link" data-text="Gallery">
+                    <i class="fas fa-images"></i>
+                    <span>Gallery</span>
+                </a>
+                <a href="#memories" class="nav-link" data-text="Memories">
+                    <i class="fas fa-star"></i>
+                    <span>Memories</span>
+                </a>
+                <a href="#countdown" class="nav-link" data-text="Countdown">
+                    <i class="fas fa-calendar-heart"></i>
+                    <span>Countdown</span>
+                </a>
+                <a href="#contact" class="nav-link" data-text="Love Notes">
+                    <i class="fas fa-envelope"></i>
+                    <span>Love Notes</span>
+                </a>
             </div>
+            
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h2 class="couple-names">Nursyam <span class="heart">&</span> Lulu</h2>
-            <p class="couple-quote">"Bersamamu adalah petualangan terindah dalam hidupku"</p>
-            <div class="anniversary-date">
-                <i class="fas fa-heart"></i>
-                <span>Bersama sejak: 17 desember 2025</span>
-            </div>
+    <section id="home" class="hero-section" data-aos="fade-in">
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+            <div class="particles" id="particles-js"></div>
         </div>
-        <div class="scroll-indicator">
-            <i class="fas fa-chevron-down"></i>
+        
+        <div class="hero-content">
+            <div class="couple-names" data-aos="fade-up" data-aos-delay="200">
+                <h1 class="name-his">Nursyam</h1>
+                <div class="heart-connector">
+                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-heart"></i>
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h1 class="name-hers">Lulu</h1>
+            </div>
+            
+            <p class="hero-quote" data-aos="fade-up" data-aos-delay="400">
+                "Dalam setiap detak jantungku, ada namamu"
+            </p>
+            
+            <div class="hero-stats" data-aos="fade-up" data-aos-delay="600">
+                <div class="stat-item">
+                    <div class="stat-number" id="days-together">3</div>
+                    <div class="stat-label">Days Together</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="memories-count">10+</div>
+                    <div class="stat-label">Memories</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Love</div>
+                </div>
+            </div>
+            
+            <a href="#story" class="hero-scroll-btn" data-aos="fade-up" data-aos-delay="800">
+                <span>Discover Our Story</span>
+                <i class="fas fa-chevron-down"></i>
+            </a>
+        </div>
+        
+        <div class="hero-wave">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+            </svg>
         </div>
     </section>
 
     <!-- Countdown Section -->
-<section id="countdown" class="countdown-section">
-    <div class="container">
-        <h2 class="section-title">Menuju Anniversary Jadian Berikutnya</h2>
-        <div class="countdown-container">
-            <div class="countdown-box">
-                <div class="countdown-value" id="days">00</div>
-                <div class="countdown-label">Hari</div>
+    <section id="countdown" class="countdown-section" data-aos="fade-up">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Countdown to</span>
+                <h2 class="section-title">Our Next Anniversary</h2>
+                <div class="section-divider">
+                    <i class="fas fa-heart"></i>
+                </div>
             </div>
-            <div class="countdown-box">
-                <div class="countdown-value" id="hours">00</div>
-                <div class="countdown-label">Jam</div>
+            
+            <div class="countdown-container">
+                <div class="countdown-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="countdown-value" id="countdown-days">00</div>
+                    <div class="countdown-label">Days</div>
+                </div>
+                <div class="countdown-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="countdown-value" id="countdown-hours">00</div>
+                    <div class="countdown-label">Hours</div>
+                </div>
+                <div class="countdown-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="countdown-value" id="countdown-minutes">00</div>
+                    <div class="countdown-label">Minutes</div>
+                </div>
+                <div class="countdown-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="countdown-value" id="countdown-seconds">00</div>
+                    <div class="countdown-label">Seconds</div>
+                </div>
             </div>
-            <div class="countdown-box">
-                <div class="countdown-value" id="minutes">00</div>
-                <div class="countdown-label">Menit</div>
-            </div>
-            <div class="countdown-box">
-                <div class="countdown-value" id="seconds">00</div>
-                <div class="countdown-label">Detik</div>
+            
+            <div class="countdown-info" data-aos="fade-up" data-aos-delay="500">
+                <p class="anniversary-text">
+                    Celebrating <span class="highlight">1 year</span> of love on
+                    <span class="date-highlight">December 17, 2026</span>
+                </p>
+                <p class="love-quote">
+                    "Setiap hari bersamamu adalah halaman baru dalam buku cinta kita"
+                </p>
             </div>
         </div>
-        <div class="anniversary-text">
-            <p>Ulang tahun jadian kami yang ke-<span id="anniversary-year">1</span> pada:</p>
-            <p class="next-date">17 Desember 2026</p>
-            <p class="countdown-status" id="countdown-status">Menghitung waktu...</p>
-        </div>
-    </div>
-</section>
+    </section>
 
     <!-- Story Section -->
     <section id="story" class="story-section">
         <div class="container">
-            <h2 class="section-title">Cerita Kami</h2>
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-subtitle">Our Journey</span>
+                <h2 class="section-title">Love Story</h2>
+                <div class="section-divider">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+            
             <div class="story-timeline">
-                <div class="timeline-item left">
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-date">December 17, 2025</div>
                     <div class="timeline-content">
-                        <h3>Pertemuan Pertama</h3>
-                        <p class="timeline-date">6 desember 2025</p>
-                        <p>Kami pertama kali berchattan pada saat menanyakan tentang kamera yang saat itu ternyata kamera aku(nursyam)</p>
-                    </div>
-                    <div class="timeline-icon">
-                        <i class="fas fa-heart"></i>
+                        <div class="timeline-icon">
+                            <i class="fas fa-heart-circle-plus"></i>
+                        </div>
+                        <h3 class="timeline-title">Pertemuan Pertama</h3>
+                        <p class="timeline-description">
+                            Mata kita bertemu untuk pertama kalinya di sebuah kafe kecil. 
+                            Hujan yang deras mempertemukan dua jiwa yang mencari tempat berteduh.
+                        </p>
                     </div>
                 </div>
-                <div class="timeline-item right">
+                
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-date">December 24, 2025</div>
                     <div class="timeline-content">
-                        <h3>Jadian</h3>
-                        <p class="timeline-date">14 Maret 2020</p>
-                        <p>Setelah sebulan saling mengenal, ....</p>
-                    </div>
-                    <div class="timeline-icon">
-                        <i class="fas fa-ring"></i>
+                        <div class="timeline-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3 class="timeline-title">Kencan Pertama</h3>
+                        <p class="timeline-description">
+                            Makan malam pertama yang penuh dengan tawa dan cerita. 
+                            Restoran itu menjadi saksi awal cerita indah kita.
+                        </p>
                     </div>
                 </div>
-                <div class="timeline-item left">
+                
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-date">December 31, 2025</div>
                     <div class="timeline-content">
-                        <h3>Pernikahan</h3>
-                        <p class="timeline-date">14 Februari 2021</p>
-                        <p>Setelah setahun bersama,....</p>
+                        <div class="timeline-icon">
+                            <i class="fas fa-fireworks"></i>
+                        </div>
+                        <h3 class="timeline-title">Pengakuan Cinta</h3>
+                        <p class="timeline-description">
+                            Di bawah kembang api pergantian tahun, 
+                            kita saling mengungkapkan perasaan. 
+                            Tahun baru dimulai dengan cinta.
+                        </p>
                     </div>
-                    <div class="timeline-icon">
-                        <i class="fas fa-church"></i>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-date">January 15, 2026</div>
+                    <div class="timeline-content">
+                        <div class="timeline-icon">
+                            <i class="fas fa-plane"></i>
+                        </div>
+                        <h3 class="timeline-title">Perjalanan Pertama</h3>
+                        <p class="timeline-description">
+                            Liburan pertama ke pantai. 
+                            Matahari terbenam, deburan ombak, dan pelukan hangat.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -131,59 +307,211 @@
     </section>
 
     <!-- Gallery Section -->
-    <section id="gallery" class="gallery-section">
+    <section id="gallery" class="gallery-section" data-aos="fade-up">
         <div class="container">
-            <h2 class="section-title">Galeri Kenangan</h2>
-            <div class="gallery-container">
-                <div class="gallery-item">
-                    <img src="assets/images/couple/photo1.jpg" alt="Kenangan 1">
-                    <div class="gallery-overlay">
-                        <p>Liburan pertama kami</p>
+            <div class="section-header">
+                <span class="section-subtitle">Our Moments</span>
+                <h2 class="section-title">Photo Gallery</h2>
+                <div class="section-divider">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+            
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="travel">Travel</button>
+                <button class="filter-btn" data-filter="celebration">Celebration</button>
+                <button class="filter-btn" data-filter="everyday">Everyday</button>
+                <button class="filter-btn" data-filter="special">Special Moments</button>
+            </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="special" data-aos="zoom-in">
+                    <div class="gallery-img">
+                        <img src="assets/images/gallery/1.jpg" alt="First Meeting" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="overlay-content">
+                                <h3>First Meeting</h3>
+                                <p>December 17, 2025</p>
+                                <button class="view-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="assets/images/couple/photo2.jpg" alt="Kenangan 2">
-                    <div class="gallery-overlay">
-                        <p>Hari Pacaran First</p>
+                
+                <div class="gallery-item" data-category="celebration" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="gallery-img">
+                        <img src="assets/images/gallery/2.jpg" alt="First Date" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="overlay-content">
+                                <h3>First Date</h3>
+                                <p>December 24, 2025</p>
+                                <button class="view-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="gallery-item">
-                    <img src="assets/images/couple/photo3.jpg" alt="Kenangan 3">
-                    <div class="gallery-overlay">
-                        <p>Anniversary pertama</p>
+                
+                <div class="gallery-item" data-category="travel" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="gallery-img">
+                        <img src="assets/images/gallery/3.jpg" alt="First Trip" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="overlay-content">
+                                <h3>Beach Vacation</h3>
+                                <p>January 15, 2026</p>
+                                <button class="view-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="everyday" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="gallery-img">
+                        <img src="assets/images/gallery/4.jpg" alt="Coffee Time" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="overlay-content">
+                                <h3>Coffee Moments</h3>
+                                <p>February 14, 2026</p>
+                                <button class="view-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <button class="btn-gallery">Lihat Galeri Lengkap</button>
         </div>
     </section>
 
     <!-- Memories Section -->
     <section id="memories" class="memories-section">
         <div class="container">
-            <h2 class="section-title">Kenangan Spesial</h2>
-            <div class="memories-container">
-                <div class="memory-card">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-subtitle">Precious Moments</span>
+                <h2 class="section-title">Special Memories</h2>
+                <div class="section-divider">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+            
+            <div class="memories-grid">
+                <div class="memory-card" data-aos="flip-left">
                     <div class="memory-icon">
                         <i class="fas fa-gift"></i>
                     </div>
-                    <h3>Hadiah Pertama</h3>
-                    <p>Buku harian yang diisi dengan cerita-cerita tentang kami</p>
+                    <h3 class="memory-title">First Gift</h3>
+                    <p class="memory-date">December 25, 2025</p>
+                    <p class="memory-description">
+                        Buku harian berisi semua cerita tentang kita sejak pertama bertemu.
+                    </p>
                 </div>
-                <div class="memory-card">
+                
+                <div class="memory-card" data-aos="flip-left" data-aos-delay="100">
                     <div class="memory-icon">
                         <i class="fas fa-utensils"></i>
                     </div>
-                    <h3>Makan Malam Spesial</h3>
-                    <p>Makan malam pertama di restoran favorit kami</p>
+                    <h3 class="memory-title">First Dinner</h3>
+                    <p class="memory-date">December 24, 2025</p>
+                    <p class="memory-description">
+                        Spaghetti carbonara yang tak terlupakan di restoran Italia kecil.
+                    </p>
                 </div>
-                <div class="memory-card">
+                
+                <div class="memory-card" data-aos="flip-left" data-aos-delay="200">
                     <div class="memory-icon">
-                        <i class="fas fa-plane"></i>
+                        <i class="fas fa-film"></i>
                     </div>
-                    <h3>Perjalanan Pertama</h3>
-                    <p>Liburan ke pantai bersama untuk pertama kalinya</p>
+                    <h3 class="memory-title">First Movie</h3>
+                    <p class="memory-date">December 28, 2025</p>
+                    <p class="memory-description">
+                        Film romantis pertama yang kita tonton bersama, dan kamu menangis.
+                    </p>
                 </div>
+                
+                <div class="memory-card" data-aos="flip-left" data-aos-delay="300">
+                    <div class="memory-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3 class="memory-title">Our Song</h3>
+                    <p class="memory-date">Always</p>
+                    <p class="memory-description">
+                        Lagu yang selalu mengingatkan kita pada momen-momen indah.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Love Notes Section -->
+    <section id="contact" class="contact-section" data-aos="fade-up">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">For Us</span>
+                <h2 class="section-title">Love Notes</h2>
+                <div class="section-divider">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+            
+            <div class="notes-container">
+                <div class="note-card" data-aos="fade-right">
+                    <div class="note-header">
+                        <div class="note-avatar">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="note-info">
+                            <h3 class="note-author">Untuk Cintaku</h3>
+                            <span class="note-date">Today</span>
+                        </div>
+                    </div>
+                    <div class="note-content">
+                        <p>
+                            Setiap hari bersamamu adalah berkah. Terima kasih telah menjadi 
+                            bagian terindah dalam hidupku. Cintaku padamu tumbuh lebih kuat 
+                            dengan setiap detik yang berlalu.
+                        </p>
+                    </div>
+                    <div class="note-footer">
+                        <span class="note-sign">With all my love, Nama Pria</span>
+                    </div>
+                </div>
+                
+                <div class="note-card" data-aos="fade-left">
+                    <div class="note-header">
+                        <div class="note-avatar">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="note-info">
+                            <h3 class="note-author">Untuk Cintaku</h3>
+                            <span class="note-date">Today</span>
+                        </div>
+                    </div>
+                    <div class="note-content">
+                        <p>
+                            Kamu adalah rumah bagi hatiku. Dalam pelukanmu, aku menemukan 
+                            kedamaian. Dalam matamu, aku melihat masa depan yang indah. 
+                            Terima kasih telah mencintaiku apa adanya.
+                        </p>
+                    </div>
+                    <div class="note-footer">
+                        <span class="note-sign">Forever yours, Nama Wanita</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="add-note" data-aos="fade-up">
+                <h3>Add Your Love Note</h3>
+                <textarea placeholder="Write your love note here..." class="note-textarea"></textarea>
+                <button class="add-note-btn">
+                    <i class="fas fa-heart"></i>
+                    Add Note
+                </button>
             </div>
         </div>
     </section>
@@ -192,33 +520,94 @@
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-logo">
-                    <span class="heart">❤️</span>
-                    <h3>My LOvely</h3>
-                    <p>Terus mencintai, hari demi hari</p>
+                <div class="footer-about" data-aos="fade-up">
+                    <div class="footer-logo">
+                        <i class="fas fa-heart"></i>
+                        <span>Nama Pasangan</span>
+                    </div>
+                    <p class="footer-description">
+                        Website ini adalah kenangan abadi cinta kita. 
+                        Setiap momen, setiap cerita, setiap cinta.
+                    </p>
                 </div>
-                <div class="footer-links">
+                
+                <div class="footer-links" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="footer-title">Quick Links</h3>
                     <a href="#home">Home</a>
-                    <a href="#story">Cerita</a>
-                    <a href="coming-soon">Galeri</a>
-                    <a href="coming-soon">Kenangan</a>
+                    <a href="#story">Our Story</a>
+                    <a href="#gallery">Gallery</a>
+                    <a href="#memories">Memories</a>
+                    <a href="#countdown">Countdown</a>
                 </div>
-                <div class="footer-social">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
+                
+                <div class="footer-social" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="footer-title">Follow Our Love</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>Dibuat dengan <i class="fas fa-heart"></i> untuk kita berdua</p>
-                <p class="copyright">© 2025 Kisah Kami. Semua hak cipta dilindungi.</p>
+            
+            <div class="footer-bottom" data-aos="fade-up">
+                <p class="copyright">
+                    Made with <i class="fas fa-heart"></i> by Nursyam Lulu &copy; <span id="current-year">2025</span>
+                </p>
+                <p class="love-quote">
+                    "Cinta sejati tidak pernah berakhir"
+                </p>
             </div>
         </div>
     </footer>
 
-    <script src="assets/scripts/main.js"></script>
-    <script src="assets/scripts/countdown.js"></script>
-    <script src="assets/scripts/music-player.js"></script>
-    <script src="assets/scripts/gallery.js"></script>
+    <!-- Lightbox Modal -->
+    <div class="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="lightbox-prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="lightbox-next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="lightbox-image-container">
+                <img src="" alt="" class="lightbox-image">
+                <div class="lightbox-caption">
+                    <h3 class="lightbox-title"></h3>
+                    <p class="lightbox-date"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/animations.js"></script>
+    <script src="assets/js/countdown.js"></script>
+    <script src="assets/js/gallery.js"></script>
+    
+    <!-- Initialize AOS -->
+    <script>
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true,
+            easing: 'ease-out-cubic'
+        });
+    </script>
 </body>
 </html>
