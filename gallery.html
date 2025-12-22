@@ -1,113 +1,462 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="no-js">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Galeri - MyLovely</title>
-    <link rel="stylesheet" href="assets/styles/main.css">
-    <link rel="stylesheet" href="assets/styles/gallery.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Galeri Kenangan | our story together</title>
+    
+    <!-- Meta Tags -->
+    <meta name="description" content="Koleksi foto dan momen spesial kami. Setiap gambar menyimpan cerita cinta.">
+    <meta property="og:title" content="Galeri Kenangan | Nama Pasangan">
+    <meta property="og:description" content="Koleksi foto kenangan cinta kami">
+    <meta property="og:image" content="assets/images/gallery-og.jpg">
+    
+    <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="assets/images/love-icon.png">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/animations.css">
+    <link rel="stylesheet" href="assets/styles/gallery.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
 <body>
-    <!-- Musik Player -->
-    <div class="music-player">
-        <button id="music-toggle" class="music-btn">
-            <i class="fas fa-music"></i>
-            <span class="music-text">Putar Musik</span>
-        </button>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-hearts">
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="loading-text">
+                <span>Memuat Galeri Kenangan</span>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cursor Custom -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Floating Elements -->
+    <div class="floating-hearts">
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+    </div>
+
+    <!-- Music Player -->
+    <div class="music-player-fixed">
+        <div class="music-controls">
+            <button class="music-toggle-btn" id="music-toggle-fixed">
+                <i class="fas fa-music"></i>
+                <span class="music-status">Play</span>
+            </button>
+            <div class="volume-control">
+                <i class="fas fa-volume-down"></i>
+                <input type="range" min="0" max="100" value="50" class="volume-slider">
+                <i class="fas fa-volume-up"></i>
+            </div>
+        </div>
         <audio id="background-music" loop>
-            <source src="../assets/music/background.mp3" type="audio/mpeg">
-            Browser Anda tidak mendukung elemen audio.
+            <source src="assets/music/thousandyears.mp3" type="audio/mpeg">
         </audio>
     </div>
 
-    <!-- Navigasi -->
-    <nav class="navbar">
+    <!-- Back to Top -->
+    <button class="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="navbar-glass">
         <div class="nav-container">
-            <div class="logo">
-                <a href="../index.html">
-                    <span class="heart">❤️</span>
-                    <h1>Nama Pasangan</h1>
+            <div class="nav-logo">
+                <a href="index.html" class="logo-link">
+                    <div class="logo-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-name">our story together</span>
+                        <span class="logo-sub">Love Story</span>
+                    </div>
                 </a>
             </div>
-            <ul class="nav-menu">
-                <li><a href="../index.html">Home</a></li>
-                <li><a href="story.html">Cerita Kami</a></li>
-                <li><a href="gallery.html" class="active">Galeri</a></li>
-                <li><a href="memories.html">Kenangan</a></li>
-                <li><a href="timeline.html">Timeline</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="story.html" class="nav-link">
+                    <i class="fas fa-book-open"></i>
+                    <span>Our Story</span>
+                </a>
+                <a href="gallery.html" class="nav-link active">
+                    <i class="fas fa-images"></i>
+                    <span>Gallery</span>
+                </a>
+                <a href="memories.html" class="nav-link">
+                    <i class="fas fa-star"></i>
+                    <span>Memories</span>
+                </a>
+                <a href="index.html#countdown" class="nav-link">
+                    <i class="fas fa-calendar-heart"></i>
+                    <span>Countdown</span>
+                </a>
             </div>
+            
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
         </div>
     </nav>
 
-    <!-- Galeri Header -->
-    <section class="gallery-header">
-        <div class="header-overlay"></div>
-        <div class="header-content">
-            <h1>Galeri Kenangan Kami</h1>
-            <p>Setiap foto menyimpan cerita cinta yang tak terlupakan</p>
-            <div class="gallery-stats">
+    <!-- Gallery Hero -->
+    <section class="gallery-hero" data-aos="fade-in">
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+            <div class="particles" id="gallery-particles"></div>
+        </div>
+        
+        <div class="gallery-hero-content">
+            <div class="hero-text" data-aos="fade-up" data-aos-delay="200">
+                <h1 class="hero-title">Galeri Kenangan</h1>
+                <p class="hero-subtitle">Setiap foto adalah halaman dalam buku cinta kita</p>
+            </div>
+            
+            <div class="gallery-stats" data-aos="fade-up" data-aos-delay="400">
                 <div class="stat-item">
-                    <i class="fas fa-images"></i>
-                    <span id="total-photos">24</span>
-                    <p>Foto Kenangan</p>
+                    <div class="stat-number" id="total-photos">127</div>
+                    <div class="stat-label">Foto</div>
                 </div>
                 <div class="stat-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span id="years-covered">1</span>
-                    <p>Tahun Dokumentasi</p>
+                    <div class="stat-number" id="total-albums">8</div>
+                    <div class="stat-label">Album</div>
                 </div>
                 <div class="stat-item">
-                    <i class="fas fa-heart"></i>
-                    <span>∞</span>
-                    <p>Kenangan Abadi</p>
+                    <div class="stat-number" id="years-covered">2</div>
+                    <div class="stat-label">Tahun</div>
                 </div>
+            </div>
+            
+            <div class="hero-wave">
+                <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                    <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+                </svg>
             </div>
         </div>
     </section>
 
-    <!-- Galeri Filter -->
-    <section class="gallery-filter">
+    <!-- Gallery Filter -->
+    <section class="gallery-filter-section" data-aos="fade-up">
         <div class="container">
-            <div class="filter-buttons">
-                <button class="filter-btn active" data-filter="all">Semua</button>
-                <button class="filter-btn" data-filter="first-year">Tahun Pertama</button>
-                <button class="filter-btn" data-filter="travel">Perjalanan</button>
-                <button class="filter-btn" data-filter="special">Momen Spesial</button>
-                <button class="filter-btn" data-filter="everyday">Harian</button>
-                <button class="filter-btn" data-filter="celebration">Perayaan</button>
-            </div>
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="gallery-search" placeholder="Cari foto berdasarkan kata kunci...">
+            <div class="filter-container">
+                <div class="filter-header">
+                    <h2 class="filter-title">Filter Galeri</h2>
+                    <p class="filter-subtitle">Temukan momen spesial berdasarkan kategori</p>
+                </div>
+                
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Semua</span>
+                    </button>
+                    <button class="filter-btn" data-filter="firsts">
+                        <i class="fas fa-star"></i>
+                        <span>Pertama Kali</span>
+                    </button>
+                    <button class="filter-btn" data-filter="travel">
+                        <i class="fas fa-plane"></i>
+                        <span>Perjalanan</span>
+                    </button>
+                    <button class="filter-btn" data-filter="celebration">
+                        <i class="fas fa-glass-cheers"></i>
+                        <span>Perayaan</span>
+                    </button>
+                    <button class="filter-btn" data-filter="everyday">
+                        <i class="fas fa-heart"></i>
+                        <span>Harian</span>
+                    </button>
+                    <button class="filter-btn" data-filter="special">
+                        <i class="fas fa-crown"></i>
+                        <span>Spesial</span>
+                    </button>
+                </div>
+                
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="gallery-search" placeholder="Cari foto berdasarkan kata kunci...">
+                    <button class="search-clear" id="clear-search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Galeri Grid -->
-    <section class="gallery-main">
+    <!-- Gallery Grid -->
+    <section class="gallery-grid-section">
         <div class="container">
             <div class="gallery-grid" id="gallery-grid">
-                <!-- Foto akan diisi oleh JavaScript -->
+                <!-- Photos will be loaded here -->
             </div>
-            <div class="load-more">
-                <button id="load-more-btn">
+            
+            <div class="load-more-container" data-aos="fade-up">
+                <button class="load-more-btn" id="load-more">
                     <i class="fas fa-plus"></i>
-                    Muat Lebih Banyak Foto
+                    <span>Muat Lebih Banyak</span>
                 </button>
+                <div class="loading-indicator" id="loading-indicator">
+                    <div class="spinner"></div>
+                    <span>Memuat foto...</span>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- Featured Albums -->
+    <section class="featured-albums" data-aos="fade-up">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Koleksi Spesial</span>
+                <h2 class="section-title">Album Pilihan</h2>
+                <div class="section-divider">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+            
+            <div class="albums-grid">
+                <div class="album-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="album-cover">
+                        <img src="assets/images/albums/first-year.jpg" alt="Tahun Pertama">
+                        <div class="album-overlay">
+                            <div class="album-info">
+                                <h3>Tahun Pertama</h3>
+                                <p>45 Foto</p>
+                                <button class="view-album-btn" data-album="first-year">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="album-details">
+                        <h3>Tahun Pertama</h3>
+                        <p>Momen-momen indah di tahun pertama cinta kami</p>
+                    </div>
+                </div>
+                
+                <div class="album-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="album-cover">
+                        <img src="assets/images/albums/travel.jpg" alt="Perjalanan">
+                        <div class="album-overlay">
+                            <div class="album-info">
+                                <h3>Perjalanan</h3>
+                                <p>32 Foto</p>
+                                <button class="view-album-btn" data-album="travel">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="album-details">
+                        <h3>Perjalanan</h3>
+                        <p>Petualangan kami menjelajahi dunia bersama</p>
+                    </div>
+                </div>
+                
+                <div class="album-card" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="album-cover">
+                        <img src="assets/images/albums/celebration.jpg" alt="Perayaan">
+                        <div class="album-overlay">
+                            <div class="album-info">
+                                <h3>Perayaan</h3>
+                                <p>28 Foto</p>
+                                <button class="view-album-btn" data-album="celebration">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="album-details">
+                        <h3>Perayaan</h3>
+                        <p>Ulang tahun, anniversary, dan momen spesial</p>
+                    </div>
+                </div>
+                
+                <div class="album-card" data-aos="zoom-in" data-aos-delay="400">
+                    <div class="album-cover">
+                        <img src="assets/images/albums/everyday.jpg" alt="Harian">
+                        <div class="album-overlay">
+                            <div class="album-info">
+                                <h3>Harian</h3>
+                                <p>62 Foto</p>
+                                <button class="view-album-btn" data-album="everyday">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="album-details">
+                        <h3>Harian</h3>
+                        <p>Kehidupan sehari-hari yang penuh kebahagiaan</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memories Timeline -->
+    <section class="memories-timeline" data-aos="fade-up">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Perjalanan Waktu</span>
+                <h2 class="section-title">Timeline Kenangan</h2>
+                <div class="section-divider">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-date">Des 2025</div>
+                    <div class="timeline-content">
+                        <h3>Pertemuan Pertama</h3>
+                        <p>Mata kita bertemu untuk pertama kalinya</p>
+                        <div class="timeline-photos">
+                            <img src="assets/images/timeline/first-meeting.jpg" alt="Pertemuan Pertama">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-date">Jan 2026</div>
+                    <div class="timeline-content">
+                        <h3>Liburan Pertama</h3>
+                        <p>Perjalanan romatis ke pantai bersama</p>
+                        <div class="timeline-photos">
+                            <img src="assets/images/timeline/first-trip.jpg" alt="Liburan Pertama">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-date">Mar 2026</div>
+                    <div class="timeline-content">
+                        <h3>Ulang Tahun Pertama</h3>
+                        <p>Merayakan ulang tahun bersama</p>
+                        <div class="timeline-photos">
+                            <img src="assets/images/timeline/birthday.jpg" alt="Ulang Tahun">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-date">Jun 2026</div>
+                    <div class="timeline-content">
+                        <h3>Wisuda Bersama</h3>
+                        <p>Merayakan kelulusan bersama-sama</p>
+                        <div class="timeline-photos">
+                            <img src="assets/images/timeline/graduation.jpg" alt="Wisuda">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Upload (Optional) -->
+    <section class="photo-upload" data-aos="fade-up">
+        <div class="container">
+            <div class="upload-container">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-content">
+                    <h3>Tambahkan Foto Kenangan</h3>
+                    <p>Bagikan momen spesial Anda dengan kami</p>
+                    <div class="upload-actions">
+                        <button class="upload-btn" id="upload-photo">
+                            <i class="fas fa-plus"></i>
+                            Upload Foto
+                        </button>
+                        <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about" data-aos="fade-up">
+                    <div class="footer-logo">
+                        <i class="fas fa-heart"></i>
+                        <span>our story together</span>
+                    </div>
+                    <p class="footer-description">
+                        Galeri kenangan abadi cinta kita. Setiap momen, setiap cerita, setiap senyuman.
+                    </p>
+                </div>
+                
+                <div class="footer-links" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="footer-title">Navigasi</h3>
+                    <a href="index">Home</a>
+                    <a href="story">Our Story</a>
+                    <a href="gallery">Gallery</a>
+                    <a href="memories">Memories</a>
+                    <a href="index.html#countdown">Countdown</a>
+                </div>
+                
+                <div class="footer-social" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="footer-title">Ikuti Kami</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom" data-aos="fade-up">
+                <p class="copyright">
+                    Made with <i class="fas fa-heart"></i> by our story together &copy; <span id="current-year">2023</span>
+                </p>
+                <p class="love-quote">
+                    "Cinta sejati tidak pernah berakhir"
+                </p>
+            </div>
+        </div>
+    </footer>
+
     <!-- Lightbox Modal -->
-    <div class="lightbox-modal" id="lightbox-modal">
+    <div class="lightbox-modal" id="lightbox">
         <div class="lightbox-content">
             <button class="lightbox-close" id="lightbox-close">
                 <i class="fas fa-times"></i>
@@ -118,162 +467,45 @@
             <button class="lightbox-nav next" id="lightbox-next">
                 <i class="fas fa-chevron-right"></i>
             </button>
-            <div class="lightbox-image-container">
+            
+            <div class="lightbox-main">
                 <img id="lightbox-image" src="" alt="">
-                <div class="image-info">
+                <div class="lightbox-info">
                     <h3 id="lightbox-title"></h3>
                     <p id="lightbox-date"></p>
                     <p id="lightbox-description"></p>
-                    <div class="image-tags" id="lightbox-tags"></div>
+                    <div class="lightbox-actions">
+                        <button class="action-btn" id="download-btn">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                        <button class="action-btn" id="share-btn">
+                            <i class="fas fa-share"></i>
+                            Share
+                        </button>
+                    </div>
                 </div>
+            </div>
+            
+            <div class="lightbox-thumbnails" id="lightbox-thumbnails">
+                <!-- Thumbnails will be added here -->
             </div>
         </div>
     </div>
 
-    <!-- Slideshow Section -->
-    <section class="slideshow-section">
-        <div class="container">
-            <h2 class="section-title">Foto Favorit Kami</h2>
-            <div class="slideshow-container">
-                <div class="slideshow">
-                    <div class="slide active">
-                        <img src="../assets/images/couple/slide1.jpg" alt="Foto Favorit 1">
-                        <div class="slide-caption">
-                            <h3>Matahari Terbenam Pertama</h3>
-                            <p>Pantai Bali, 20 Februari 2026</p>
-                        </div>
-                    </div>
-                    <div class="slide">
-                        <img src="../assets/images/couple/slide2.jpg" alt="Foto Favorit 2">
-                        <div class="slide-caption">
-                            <h3>Anniversary Pertama</h3>
-                            <p>Restoran Romantis, 17 Desember 2026</p>
-                        </div>
-                    </div>
-                    <div class="slide">
-                        <img src="../assets/images/couple/slide3.jpg" alt="Foto Favorit 3">
-                        <div class="slide-caption">
-                            <h3>Pendakian Bersama</h3>
-                            <p>Gunung Bromo, 15 Januari 2026</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="slideshow-controls">
-                    <button class="slideshow-prev"><i class="fas fa-chevron-left"></i></button>
-                    <div class="slideshow-dots">
-                        <span class="dot active"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
-                    <button class="slideshow-next"><i class="fas fa-chevron-right"></i></button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Album Section -->
-    <section class="album-section">
-        <div class="container">
-            <h2 class="section-title">Album Khusus</h2>
-            <div class="album-grid">
-                <div class="album-card">
-                    <div class="album-cover" style="background-image: url('assets/images/couple/album1.jpg');">
-                        <div class="album-overlay">
-                            <h3>Perjalanan Cinta</h3>
-                            <p>12 Foto</p>
-                        </div>
-                    </div>
-                    <div class="album-info">
-                        <h3>Perjalanan Cinta</h3>
-                        <p>Foto-foto dari setiap perjalanan kami bersama</p>
-                        <a href="#" class="view-album">Lihat Album</a>
-                    </div>
-                </div>
-                <div class="album-card">
-                    <div class="album-cover" style="background-image: url('assets/images/couple/album2.jpg');">
-                        <div class="album-overlay">
-                            <h3>Momen Harian</h3>
-                            <p>8 Foto</p>
-                        </div>
-                    </div>
-                    <div class="album-info">
-                        <h3>Momen Harian</h3>
-                        <p>Kehidupan sehari-hari yang penuh kebahagiaan</p>
-                        <a href="#" class="view-album">Lihat Album</a>
-                    </div>
-                </div>
-                <div class="album-card">
-                    <div class="album-cover" style="background-image: url('assets/images/couple/album3.jpg');">
-                        <div class="album-overlay">
-                            <h3>Perayaan Spesial</h3>
-                            <p>15 Foto</p>
-                        </div>
-                    </div>
-                    <div class="album-info">
-                        <h3>Perayaan Spesial</h3>
-                        <p>Ulang tahun, anniversary, dan momen spesial lainnya</p>
-                        <a href="#" class="view-album">Lihat Album</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Download Section -->
-    <section class="download-section">
-        <div class="container">
-            <div class="download-content">
-                <h2>Ingin Mendownload Foto?</h2>
-                <p>Kami dengan senang hati berbagi kenangan indah kami dengan Anda. Silakan download foto favorit Anda!</p>
-                <button id="download-btn" class="download-btn">
-                    <i class="fas fa-download"></i>
-                    Download Album Lengkap
-                </button>
-                <p class="download-note">* Album akan didownload dalam format ZIP berisi semua foto</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Back to Home -->
-    <section class="back-home-section">
-        <div class="container">
-            <a href="../index.html" class="back-home-btn">
-                <i class="fas fa-home"></i>
-                Kembali ke Halaman Utama
-            </a>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <span class="heart">❤️</span>
-                    <h3>Nama Pasangan</h3>
-                    <p>Terus mencintai, hari demi hari</p>
-                </div>
-                <div class="footer-links">
-                    <a href="index">Home</a>
-                    <a href="story">Cerita</a>
-                    <a href="gallery">Galeri</a>
-                    <a href="memories">Kenangan</a>
-                </div>
-                <div class="footer-social">
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>Dibuat dengan <i class="fas fa-heart"></i> untuk kita berdua</p>
-                <p class="copyright">© 2025 Kisah Kami. Semua hak cipta dilindungi.</p>
-            </div>
-        </div>
-    </footer>
-
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/scripts/main.js"></script>
-    <script src="assets/scripts/music-player.js"></script>
     <script src="assets/scripts/gallery.js"></script>
+    
+    <!-- Initialize AOS -->
+    <script>
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true,
+            easing: 'ease-out-cubic'
+        });
+    </script>
 </body>
 </html>
