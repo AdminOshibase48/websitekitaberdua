@@ -1,4 +1,4 @@
-// Gallery JavaScript
+// Gallery JavaScript - FIXED LOADING
 class PhotoGallery {
     constructor() {
         this.photos = [];
@@ -9,10 +9,16 @@ class PhotoGallery {
         this.currentLightboxIndex = 0;
         this.searchTerm = '';
         
+        // TAMBAHKAN FLAG UNTUK LOADING
+        this.isInitialized = false;
+        
         this.init();
     }
 
     init() {
+        // Hapus loading screen dulu sebelum mulai
+        this.removeLoadingScreen();
+        
         // Load sample photos
         this.loadSamplePhotos();
         
@@ -22,16 +28,32 @@ class PhotoGallery {
         // Render gallery
         this.renderGallery();
         
-        // Initialize particles if needed
-        this.initParticles();
+        this.isInitialized = true;
+    }
+
+    // FUNGSI BARU UNTUK HAPUS LOADING SCREEN
+    removeLoadingScreen() {
+        const loadingScreen = document.querySelector('.loading-screen');
+        if (loadingScreen) {
+            // Langsung hide tanpa animasi jika butuh
+            loadingScreen.style.display = 'none';
+            document.body.style.overflow = '';
+            
+            // Atau dengan animasi jika mau
+            // loadingScreen.classList.add('loaded');
+            // setTimeout(() => {
+            //     loadingScreen.style.display = 'none';
+            //     document.body.style.overflow = '';
+            // }, 500);
+        }
     }
 
     loadSamplePhotos() {
-        // Sample photo data - replace with your actual photos
+        // Gunakan placeholder images untuk testing
         this.photos = [
             {
                 id: 1,
-                src: 'assets/images/gallery/photo1.jpg',
+                src: 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?w=500&h=500&fit=crop',
                 title: 'Pertemuan Pertama',
                 date: '17 Desember 2025',
                 description: 'Mata kita bertemu untuk pertama kalinya di kafe itu.',
@@ -40,7 +62,7 @@ class PhotoGallery {
             },
             {
                 id: 2,
-                src: 'assets/images/gallery/photo2.jpg',
+                src: 'https://images.unsplash.com/photo-1511988617509-a57c8a288659?w=500&h=500&fit=crop',
                 title: 'Kencan Pertama',
                 date: '24 Desember 2025',
                 description: 'Makan malam romantis di restoran Italia.',
@@ -49,7 +71,7 @@ class PhotoGallery {
             },
             {
                 id: 3,
-                src: 'assets/images/gallery/photo3.jpg',
+                src: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=500&h=500&fit=crop',
                 title: 'Pantai Bersama',
                 date: '15 Januari 2026',
                 description: 'Liburan pertama kami ke pantai.',
@@ -58,7 +80,16 @@ class PhotoGallery {
             },
             {
                 id: 4,
-                src: 'assets/images/gallery/photo4.jpg',
+                src: 'https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=500&h=500&fit=crop',
+                title: 'Sunset Moment',
+                date: '20 Januari 2026',
+                description: 'Menikmati matahari terbenam bersama.',
+                category: 'travel',
+                tags: ['sunset', 'romantic', 'special']
+            },
+            {
+                id: 5,
+                src: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?w=500&h=500&fit=crop',
                 title: 'Ulang Tahun',
                 date: '14 Maret 2026',
                 description: 'Merayakan ulang tahun bersama.',
@@ -66,24 +97,14 @@ class PhotoGallery {
                 tags: ['birthday', 'celebration', 'party']
             },
             {
-                id: 5,
-                src: 'assets/images/gallery/photo5.jpg',
-                title: 'Kopi Pagi',
-                date: '20 Februari 2026',
+                id: 6,
+                src: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&h=500&fit=crop',
+                title: 'Coffee Date',
+                date: '5 Februari 2026',
                 description: 'Sarapan pagi bersama di kafe favorit.',
                 category: 'everyday',
                 tags: ['coffee', 'breakfast', 'daily']
-            },
-            {
-                id: 6,
-                src: 'assets/images/gallery/photo6.jpg',
-                title: 'Sunset Moment',
-                date: '5 April 2026',
-                description: 'Menikmati matahari terbenam bersama.',
-                category: 'special',
-                tags: ['sunset', 'romantic', 'special']
-            },
-            // Add more photos as needed
+            }
         ];
         
         // Update total photos count
@@ -91,14 +112,17 @@ class PhotoGallery {
     }
 
     initEventListeners() {
-        // Filter buttons
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                this.handleFilterClick(e.target);
+        // Filter buttons - FIXED
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        if (filterButtons.length > 0) {
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    this.handleFilterClick(e.target.closest('.filter-btn'));
+                });
             });
-        });
+        }
 
-        // Search input
+        // Search input - OPTIONAL, bisa di-comment jika belum ada
         const searchInput = document.getElementById('gallery-search');
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
@@ -109,11 +133,11 @@ class PhotoGallery {
             });
         }
 
-        // Clear search
+        // Clear search - OPTIONAL
         const clearSearch = document.getElementById('clear-search');
         if (clearSearch) {
             clearSearch.addEventListener('click', () => {
-                searchInput.value = '';
+                if (searchInput) searchInput.value = '';
                 this.searchTerm = '';
                 this.currentPage = 1;
                 this.filterPhotos();
@@ -121,7 +145,7 @@ class PhotoGallery {
             });
         }
 
-        // Load more button
+        // Load more button - SIMPLIFIED
         const loadMoreBtn = document.getElementById('load-more');
         if (loadMoreBtn) {
             loadMoreBtn.addEventListener('click', () => {
@@ -129,11 +153,12 @@ class PhotoGallery {
             });
         }
 
-        // Photo upload
+        // Photo upload - OPTIONAL, bisa di-comment
         const uploadBtn = document.getElementById('upload-photo');
         if (uploadBtn) {
             uploadBtn.addEventListener('click', () => {
-                document.getElementById('file-input').click();
+                const fileInput = document.getElementById('file-input');
+                if (fileInput) fileInput.click();
             });
         }
 
@@ -144,16 +169,21 @@ class PhotoGallery {
             });
         }
 
-        // View album buttons
-        document.querySelectorAll('.view-album-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const album = e.target.getAttribute('data-album');
-                this.filterByAlbum(album);
+        // View album buttons - OPTIONAL
+        const albumButtons = document.querySelectorAll('.view-album-btn');
+        if (albumButtons.length > 0) {
+            albumButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const album = e.target.closest('.view-album-btn').getAttribute('data-album');
+                    this.filterByAlbum(album);
+                });
             });
-        });
+        }
     }
 
     handleFilterClick(button) {
+        if (!button) return;
+        
         // Remove active class from all buttons
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.classList.remove('active');
@@ -184,7 +214,7 @@ class PhotoGallery {
                 const searchableText = `
                     ${photo.title} 
                     ${photo.description} 
-                    ${photo.tags.join(' ')}
+                    ${photo.tags?.join(' ') || ''}
                 `.toLowerCase();
 
                 if (!searchableText.includes(this.searchTerm)) {
@@ -198,7 +228,10 @@ class PhotoGallery {
 
     renderGallery() {
         const galleryGrid = document.getElementById('gallery-grid');
-        if (!galleryGrid) return;
+        if (!galleryGrid) {
+            console.error('Gallery grid element not found');
+            return;
+        }
 
         // Clear gallery
         galleryGrid.innerHTML = '';
@@ -210,8 +243,12 @@ class PhotoGallery {
 
         // Create photo elements
         photosToShow.forEach((photo, index) => {
-            const photoElement = this.createPhotoElement(photo, startIndex + index);
-            galleryGrid.appendChild(photoElement);
+            try {
+                const photoElement = this.createPhotoElement(photo, startIndex + index);
+                galleryGrid.appendChild(photoElement);
+            } catch (error) {
+                console.error('Error creating photo element:', error);
+            }
         });
 
         // Update load more button visibility
@@ -224,9 +261,7 @@ class PhotoGallery {
     createPhotoElement(photo, index) {
         const div = document.createElement('div');
         div.className = 'gallery-item';
-        div.setAttribute('data-aos', 'zoom-in');
         div.setAttribute('data-category', photo.category);
-        div.setAttribute('data-index', index);
 
         div.innerHTML = `
             <div class="gallery-img">
@@ -245,10 +280,12 @@ class PhotoGallery {
 
         // Add click event for lightbox
         const viewBtn = div.querySelector('.view-btn');
-        viewBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.openLightbox(index);
-        });
+        if (viewBtn) {
+            viewBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.openLightbox(index);
+            });
+        }
 
         return div;
     }
@@ -259,35 +296,7 @@ class PhotoGallery {
 
         if (loadedPhotos < totalPhotos) {
             this.currentPage++;
-            
-            // Show loading indicator
-            const loadingIndicator = document.getElementById('loading-indicator');
-            if (loadingIndicator) {
-                loadingIndicator.classList.add('active');
-            }
-
-            // Simulate loading delay
-            setTimeout(() => {
-                this.renderGallery();
-                
-                // Hide loading indicator
-                if (loadingIndicator) {
-                    loadingIndicator.classList.remove('active');
-                }
-
-                // Scroll to newly loaded photos
-                this.scrollToNewPhotos();
-            }, 500);
-        }
-    }
-
-    scrollToNewPhotos() {
-        const galleryGrid = document.getElementById('gallery-grid');
-        if (!galleryGrid) return;
-
-        const lastPhoto = galleryGrid.lastElementChild;
-        if (lastPhoto) {
-            lastPhoto.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            this.renderGallery();
         }
     }
 
@@ -299,7 +308,7 @@ class PhotoGallery {
         const loadedPhotos = this.currentPage * this.photosPerPage;
 
         if (loadedPhotos < totalPhotos) {
-            loadMoreBtn.style.display = 'flex';
+            loadMoreBtn.style.display = 'inline-flex';
         } else {
             loadMoreBtn.style.display = 'none';
         }
@@ -314,14 +323,25 @@ class PhotoGallery {
 
         // Calculate years covered
         if (this.photos.length > 0) {
-            const dates = this.photos.map(p => new Date(p.date));
-            const minDate = new Date(Math.min(...dates));
-            const maxDate = new Date(Math.max(...dates));
-            const yearsCovered = maxDate.getFullYear() - minDate.getFullYear() + 1;
+            const dates = this.photos.map(p => {
+                try {
+                    return new Date(p.date);
+                } catch {
+                    return new Date(); // Fallback ke tanggal sekarang
+                }
+            });
             
-            const yearsElement = document.getElementById('years-covered');
-            if (yearsElement) {
-                yearsElement.textContent = yearsCovered;
+            const validDates = dates.filter(d => !isNaN(d.getTime()));
+            
+            if (validDates.length > 0) {
+                const minDate = new Date(Math.min(...validDates));
+                const maxDate = new Date(Math.max(...validDates));
+                const yearsCovered = maxDate.getFullYear() - minDate.getFullYear() + 1;
+                
+                const yearsElement = document.getElementById('years-covered');
+                if (yearsElement) {
+                    yearsElement.textContent = yearsCovered;
+                }
             }
         }
     }
@@ -330,32 +350,28 @@ class PhotoGallery {
         const viewButtons = document.querySelectorAll('.view-btn');
         viewButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const index = parseInt(btn.getAttribute('data-index'));
+                const index = parseInt(btn.getAttribute('data-index') || '0');
                 this.openLightbox(index);
             });
         });
 
         // Lightbox navigation
         const closeBtn = document.getElementById('lightbox-close');
-        const prevBtn = document.getElementById('lightbox-prev');
-        const nextBtn = document.getElementById('lightbox-next');
-
         if (closeBtn) {
             closeBtn.addEventListener('click', () => this.closeLightbox());
         }
 
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => this.showPrevPhoto());
-        }
-
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => this.showNextPhoto());
-        }
+        // OPTIONAL: Navigation buttons
+        const prevBtn = document.getElementById('lightbox-prev');
+        const nextBtn = document.getElementById('lightbox-next');
+        
+        if (prevBtn) prevBtn.addEventListener('click', () => this.showPrevPhoto());
+        if (nextBtn) nextBtn.addEventListener('click', () => this.showNextPhoto());
 
         // Keyboard navigation
         document.addEventListener('keydown', (e) => {
             const lightbox = document.getElementById('lightbox');
-            if (!lightbox.classList.contains('active')) return;
+            if (!lightbox || !lightbox.classList.contains('active')) return;
 
             switch(e.key) {
                 case 'Escape':
@@ -385,6 +401,8 @@ class PhotoGallery {
         this.currentLightboxIndex = index;
         const photo = this.filteredPhotos[index];
 
+        if (!photo) return;
+
         // Update lightbox content
         const lightboxImage = document.getElementById('lightbox-image');
         const lightboxTitle = document.getElementById('lightbox-title');
@@ -392,9 +410,9 @@ class PhotoGallery {
         const lightboxDescription = document.getElementById('lightbox-description');
 
         if (lightboxImage) lightboxImage.src = photo.src;
-        if (lightboxTitle) lightboxTitle.textContent = photo.title;
-        if (lightboxDate) lightboxDate.textContent = photo.date;
-        if (lightboxDescription) lightboxDescription.textContent = photo.description;
+        if (lightboxTitle) lightboxTitle.textContent = photo.title || '';
+        if (lightboxDate) lightboxDate.textContent = photo.date || '';
+        if (lightboxDescription) lightboxDescription.textContent = photo.description || '';
 
         // Show lightbox
         const lightbox = document.getElementById('lightbox');
@@ -403,7 +421,7 @@ class PhotoGallery {
             document.body.style.overflow = 'hidden';
         }
 
-        // Load thumbnails
+        // Load thumbnails jika ada
         this.loadThumbnails();
     }
 
@@ -439,7 +457,7 @@ class PhotoGallery {
             const thumbnail = document.createElement('img');
             thumbnail.className = 'thumbnail';
             thumbnail.src = photo.src;
-            thumbnail.alt = photo.title;
+            thumbnail.alt = photo.title || '';
             
             if (index === this.currentLightboxIndex) {
                 thumbnail.classList.add('active');
@@ -454,7 +472,7 @@ class PhotoGallery {
     }
 
     handleFileUpload(files) {
-        if (!files.length) return;
+        if (!files || !files.length) return;
 
         Array.from(files).forEach(file => {
             if (file.type.startsWith('image/')) {
@@ -519,13 +537,22 @@ class PhotoGallery {
             this.renderGallery();
 
             // Scroll to gallery section
-            document.querySelector('.gallery-grid-section').scrollIntoView({
-                behavior: 'smooth'
-            });
+            const gallerySection = document.querySelector('.gallery-grid-section');
+            if (gallerySection) {
+                gallerySection.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
         }
     }
 
     showNotification(message, type = 'info') {
+        // Hapus dulu notifikasi yang sudah ada
+        const existingNotification = document.querySelector('.notification');
+        if (existingNotification) {
+            existingNotification.remove();
+        }
+
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         notification.innerHTML = `
@@ -533,48 +560,31 @@ class PhotoGallery {
             <span>${message}</span>
         `;
 
-        // Add styles if not exists
-        if (!document.querySelector('#notification-styles')) {
+        // Add inline styles untuk simple
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            border-left: 4px solid ${type === 'success' ? '#B8DB80' : '#FF6B9D'};
+            animation: slideInRight 0.3s ease-out;
+        `;
+
+        // Add keyframe animation
+        if (!document.querySelector('#notification-animation')) {
             const style = document.createElement('style');
-            style.id = 'notification-styles';
+            style.id = 'notification-animation';
             style.textContent = `
-                .notification {
-                    position: fixed;
-                    top: 100px;
-                    right: 20px;
-                    background: white;
-                    padding: 15px 25px;
-                    border-radius: var(--radius-md);
-                    box-shadow: var(--shadow-lg);
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                    z-index: 9999;
-                    transform: translateX(400px);
-                    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-                    max-width: 300px;
-                    border-left: 4px solid var(--color-accent-pink);
-                }
-                
-                .notification.success {
-                    border-left-color: var(--color-mint);
-                }
-                
-                .notification.show {
-                    transform: translateX(0);
-                }
-                
-                .notification i {
-                    font-size: 1.2rem;
-                }
-                
-                .notification.success i {
-                    color: var(--color-mint);
-                }
-                
-                .notification span {
-                    color: var(--color-dark);
-                    font-weight: 500;
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
                 }
             `;
             document.head.appendChild(style);
@@ -582,46 +592,32 @@ class PhotoGallery {
 
         document.body.appendChild(notification);
 
-        // Show notification
-        setTimeout(() => {
-            notification.classList.add('show');
-        }, 10);
-
         // Auto remove after 3 seconds
         setTimeout(() => {
-            notification.classList.remove('show');
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-            }, 400);
-        }, 3000);
-    }
-
-    initParticles() {
-        // Initialize particles for hero section
-        if (typeof particlesJS !== 'undefined') {
-            particlesJS('gallery-particles', {
-                particles: {
-                    number: { value: 60 },
-                    color: { value: ['#FF6B9D', '#B8DB80'] },
-                    shape: { type: 'circle' },
-                    opacity: { value: 0.5, random: true },
-                    size: { value: 3, random: true },
-                    move: { 
-                        enable: true,
-                        speed: 1,
-                        direction: 'none',
-                        random: true
+            if (notification.parentNode) {
+                notification.style.animation = 'slideInRight 0.3s ease-out reverse';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
                     }
-                }
-            });
-        }
+                }, 300);
+            }
+        }, 3000);
     }
 }
 
-// Initialize gallery when DOM is loaded
+// Initialize gallery when DOM is loaded - FIXED VERSION
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, initializing gallery...');
+    
+    // Pastikan loading screen dihapus dulu
+    const loadingScreen = document.querySelector('.loading-screen');
+    if (loadingScreen) {
+        loadingScreen.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+    
+    // Initialize gallery
     const gallery = new PhotoGallery();
     
     // Add current year to footer
@@ -629,4 +625,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (currentYear) {
         currentYear.textContent = new Date().getFullYear();
     }
+    
+    console.log('Gallery initialized successfully');
 });
+
+// Fallback: Force remove loading after 3 seconds
+setTimeout(function() {
+    const loadingScreen = document.querySelector('.loading-screen');
+    if (loadingScreen && loadingScreen.style.display !== 'none') {
+        console.log('Fallback: Removing loading screen...');
+        loadingScreen.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}, 3000);
