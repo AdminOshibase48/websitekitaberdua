@@ -460,55 +460,26 @@
             </div>
             
             <div class="notes-container">
-                <div class="note-card" data-aos="fade-right">
-                    <div class="note-header">
-                        <div class="note-avatar">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <div class="note-info">
-                            <h3 class="note-author">Untuk Cintaku</h3>
-                            <span class="note-date">Today</span>
-                        </div>
-                    </div>
-                    <div class="note-content">
-                        <p>
-                            Setiap hari bersamamu adalah berkah. Terima kasih telah menjadi 
-                            bagian terindah dalam hidupku. Cintaku padamu tumbuh lebih kuat 
-                            dengan setiap detik yang berlalu.
-                        </p>
-                    </div>
-                    <div class="note-footer">
-                        <span class="note-sign">With all my love, Nama Pria</span>
-                    </div>
-                </div>
-                
-                <div class="note-card" data-aos="fade-left">
-                    <div class="note-header">
-                        <div class="note-avatar">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <div class="note-info">
-                            <h3 class="note-author">Untuk Cintaku</h3>
-                            <span class="note-date">Today</span>
-                        </div>
-                    </div>
-                    <div class="note-content">
-                        <p>
-                            Kamu adalah rumah bagi hatiku. Dalam pelukanmu, aku menemukan 
-                            kedamaian. Dalam matamu, aku melihat masa depan yang indah. 
-                            Terima kasih telah mencintaiku apa adanya.
-                        </p>
-                    </div>
-                    <div class="note-footer">
-                        <span class="note-sign">Forever yours, Nama Wanita</span>
-                    </div>
-                </div>
+                <!-- Notes akan dimuat otomatis dari database -->
             </div>
             
             <div class="add-note" data-aos="fade-up">
                 <h3>Add Your Love Note</h3>
-                <textarea placeholder="Write your love note here..." class="note-textarea"></textarea>
-                <button class="add-note-btn">
+                <select id="note-author" style="
+                    width: 100%;
+                    padding: 12px;
+                    margin-bottom: 15px;
+                    border: 2px solid #ff6b8b;
+                    border-radius: 10px;
+                    background: white;
+                    font-size: 16px;
+                    font-family: 'Poppins', sans-serif;
+                ">
+                    <option value="Nursyam">Nursyam</option>
+                    <option value="Lulu">Lulu</option>
+                </select>
+                <textarea placeholder="Write your love note here..." class="note-textarea" id="note-content"></textarea>
+                <button class="add-note-btn" onclick="saveLoveNote()">
                     <i class="fas fa-heart"></i>
                     Add Note
                 </button>
@@ -595,6 +566,7 @@
     <!-- Scripts -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="assets/scripts/main.js"></script>
     <script src="assets/scripts/animations.js"></script>
     <script src="assets/scripts/countdown.js"></script>
@@ -607,6 +579,191 @@
             offset: 100,
             once: true,
             easing: 'ease-out-cubic'
+        });
+        
+        // ================= SUPA BASE CONFIG =================
+        // 🔥 GANTI INI DENGAN DATA LU SENDIRI!
+        const SUPABASE_URL = 'https://dbwjmrdtdhzphkmjdole.supabase.co';  // GANTI DENGAN URL LU
+        const SUPABASE_KEY = 'sb_publishable_4xT76YyGNuodxKnTLqRKQA_xMWijGh4';  // GANTI DENGAN PUBLISHABLE KEY LU
+        const COUPLE_ID = 'nursyam-lulu';  // GANTI DENGAN ID UNIK KALIAN
+        
+        // ================= FUNGSI LOVE NOTES =================
+        async function saveLoveNote() {
+            const content = document.getElementById('note-content').value;
+            const author = document.getElementById('note-author').value;
+            
+            if (!content.trim()) {
+                alert('Isi dulu sayang! ❤️');
+                return;
+            }
+            
+            try {
+                // Kirim ke Supabase
+                const response = await fetch(`${SUPABASE_URL}/rest/v1/love_notes`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    },
+                    body: JSON.stringify({
+                        couple_id: COUPLE_ID,
+                        author: author,
+                        content: content
+                    })
+                });
+                
+                if (response.ok) {
+                    alert('💌 Note terkirim!');
+                    document.getElementById('note-content').value = '';
+                    loadLoveNotes();
+                } else {
+                    throw new Error('Gagal mengirim');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Note disimpan lokal, akan sync nanti 📝');
+                
+                // Simpan ke localStorage
+                const notes = JSON.parse(localStorage.getItem('love_notes') || '[]');
+                notes.push({
+                    couple_id: COUPLE_ID,
+                    author: author,
+                    content: content,
+                    created_at: new Date().toISOString(),
+                    local: true
+                });
+                localStorage.setItem('love_notes', JSON.stringify(notes));
+                loadLoveNotes();
+            }
+        }
+        
+        async function loadLoveNotes() {
+            try {
+                // Ambil dari Supabase
+                const response = await fetch(
+                    `${SUPABASE_URL}/rest/v1/love_notes?couple_id=eq.${COUPLE_ID}&order=created_at.desc`,
+                    {
+                        headers: {
+                            'apikey': SUPABASE_KEY,
+                            'Authorization': `Bearer ${SUPABASE_KEY}`
+                        }
+                    }
+                );
+                
+                const notes = await response.json();
+                
+                // Ambil dari localStorage
+                const localNotes = JSON.parse(localStorage.getItem('love_notes') || '[]');
+                
+                // Gabungkan (tampilkan max 4 notes)
+                const allNotes = [...notes, ...localNotes.filter(n => n.local)];
+                const recentNotes = allNotes.slice(0, 4);
+                
+                displayLoveNotes(recentNotes);
+                
+            } catch (error) {
+                console.error('Error load:', error);
+                // Fallback ke localStorage
+                const localNotes = JSON.parse(localStorage.getItem('love_notes') || '[]');
+                displayLoveNotes(localNotes.slice(0, 4));
+            }
+        }
+        
+        function displayLoveNotes(notes) {
+            const container = document.querySelector('.notes-container');
+            if (!container) return;
+            
+            if (notes.length === 0) {
+                container.innerHTML = `
+                    <div class="note-card" data-aos="fade-right">
+                        <div class="note-header">
+                            <div class="note-avatar">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="note-info">
+                                <h3 class="note-author">Untuk Cintaku</h3>
+                                <span class="note-date">Today</span>
+                            </div>
+                        </div>
+                        <div class="note-content">
+                            <p>
+                                Setiap hari bersamamu adalah berkah. Terima kasih telah menjadi 
+                                bagian terindah dalam hidupku. Cintaku padamu tumbuh lebih kuat 
+                                dengan setiap detik yang berlalu.
+                            </p>
+                        </div>
+                        <div class="note-footer">
+                            <span class="note-sign">With all my love, Nursyam</span>
+                        </div>
+                    </div>
+                    
+                    <div class="note-card" data-aos="fade-left">
+                        <div class="note-header">
+                            <div class="note-avatar">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="note-info">
+                                <h3 class="note-author">Untuk Cintaku</h3>
+                                <span class="note-date">Today</span>
+                            </div>
+                        </div>
+                        <div class="note-content">
+                            <p>
+                                Kamu adalah rumah bagi hatiku. Dalam pelukanmu, aku menemukan 
+                                kedamaian. Dalam matamu, aku melihat masa depan yang indah. 
+                                Terima kasih telah mencintaiku apa adanya.
+                            </p>
+                        </div>
+                        <div class="note-footer">
+                            <span class="note-sign">Forever yours, Lulu</span>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = notes.map((note, index) => `
+                <div class="note-card" data-aos="${index % 2 === 0 ? 'fade-right' : 'fade-left'}">
+                    <div class="note-header">
+                        <div class="note-avatar" style="background: ${note.author === 'Nursyam' ? '#ff6b8b' : '#4dabf7'}">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="note-info">
+                            <h3 class="note-author">${note.author || 'Untuk Cintaku'}</h3>
+                            <span class="note-date">
+                                ${note.created_at ? new Date(note.created_at).toLocaleDateString('id-ID') : 'Today'}
+                                ${note.local ? ' (Offline)' : ''}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="note-content">
+                        <p>${note.content.replace(/\n/g, '<br>')}</p>
+                    </div>
+                    <div class="note-footer">
+                        <span class="note-sign">
+                            ${note.author === 'Nursyam' ? 'With all my love, Nursyam' : 'Forever yours, Lulu'}
+                        </span>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Refresh AOS
+            if (window.AOS) {
+                AOS.refresh();
+            }
+        }
+        
+        // ================= INITIALIZE =================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load notes saat halaman terbuka
+            setTimeout(loadLoveNotes, 1000);
+            
+            // Auto refresh setiap 10 detik
+            setInterval(loadLoveNotes, 10000);
+            
+            // Update tahun di footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
         });
     </script>
 </body>
