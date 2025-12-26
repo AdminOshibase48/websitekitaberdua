@@ -29,6 +29,9 @@
     
     <!-- AOS Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Include Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
     <!-- Loading Screen -->
@@ -75,7 +78,7 @@
             </div>
         </div>
         <audio id="background-music" loop>
-            <source src="assets/music/lovememories.mp3" type="audio/mpeg">
+            <source src="assets/music/thousandyears.mp3" type="audio/mpeg">
         </audio>
     </div>
 
@@ -88,7 +91,7 @@
     <nav class="navbar-glass">
         <div class="nav-container">
             <div class="nav-logo">
-                <a href="index.html" class="logo-link">
+                <a href="#home" class="logo-link">
                     <div class="logo-icon">
                         <i class="fas fa-heart"></i>
                     </div>
@@ -98,38 +101,18 @@
                     </div>
                 </a>
             </div>
-            
             <div class="nav-menu">
-                <a href="index" class="nav-link">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
-                <a href="story" class="nav-link">
-                    <i class="fas fa-book-open"></i>
-                    <span>Our Story</span>
-                </a>
-                <a href="gallery" class="nav-link">
-                    <i class="fas fa-images"></i>
-                    <span>Gallery</span>
-                </a>
-                <a href="memories" class="nav-link active">
-                    <i class="fas fa-star"></i>
-                    <span>Memories</span>
-                </a>
-                <a href="index.html#countdown" class="nav-link">
-                    <i class="fas fa-calendar-heart"></i>
-                    <span>Countdown</span>
-                </a>
+                <a href="#home" class="nav-link active"><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="#countdown" class="nav-link"><i class="fas fa-calendar-heart"></i><span>Countdown</span></a>
+                <a href="#story" class="nav-link"><i class="fas fa-book-open"></i><span>Our Story</span></a>
+                <a href="#gallery" class="nav-link"><i class="fas fa-images"></i><span>Gallery</span></a>
+                <a href="#memories" class="nav-link"><i class="fas fa-star"></i><span>Memories</span></a>
+                <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i><span>Love Notes</span></a>
             </div>
-            
-            <button class="nav-toggle" aria-label="Toggle navigation">
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-                <span class="hamburger-line"></span>
-            </button>
+            <button class="nav-toggle"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
         </div>
     </nav>
-
+    
     <!-- Memories Hero -->
     <section class="memories-hero" data-aos="fade-in">
         <div class="hero-background">
@@ -209,125 +192,7 @@
     <section class="memories-grid-section">
         <div class="container">
             <div class="memories-grid" id="memories-grid">
-                <!-- Memory Card 1 -->
-                <div class="memory-card" data-category="firsts" data-aos="zoom-in">
-                    <div class="memory-date">
-                        <span class="date-day">15</span>
-                        <span class="date-month">Des</span>
-                        <span class="date-year">2025</span>
-                    </div>
-                    <div class="memory-icon">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <h3 class="memory-title">Pertemuan Pertama</h3>
-                    <p class="memory-description">
-                        Saat pertama kali mata kita bertemu di kafe itu, dunia seakan berhenti berputar.
-                    </p>
-                    <div class="memory-tags">
-                        <span class="tag">First Meet</span>
-                        <span class="tag">Romantic</span>
-                    </div>
-                </div>
-
-                <!-- Memory Card 2 -->
-                <div class="memory-card" data-category="dates" data-aos="zoom-in" data-aos-delay="100">
-                    <div class="memory-date">
-                        <span class="date-day">14</span>
-                        <span class="date-month">Feb</span>
-                        <span class="date-year">2026</span>
-                    </div>
-                    <div class="memory-icon">
-                        <i class="fas fa-glass-cheers"></i>
-                    </div>
-                    <h3 class="memory-title">Valentine Pertama</h3>
-                    <p class="memory-description">
-                        Makan malam romantis dengan lilin dan bunga mawar yang kau berikan.
-                    </p>
-                    <div class="memory-tags">
-                        <span class="tag">Valentine</span>
-                        <span class="tag">Dinner</span>
-                    </div>
-                </div>
-
-                <!-- Memory Card 3 -->
-                <div class="memory-card" data-category="travel" data-aos="zoom-in" data-aos-delay="200">
-                    <div class="memory-date">
-                        <span class="date-day">20</span>
-                        <span class="date-month">Mar</span>
-                        <span class="date-year">2026</span>
-                    </div>
-                    <div class="memory-icon">
-                        <i class="fas fa-umbrella-beach"></i>
-                    </div>
-                    <h3 class="memory-title">Liburan ke Pantai</h3>
-                    <p class="memory-description">
-                        Matahari terbenam yang indah sambil berjalan berpegangan tangan di pasir.
-                    </p>
-                    <div class="memory-tags">
-                        <span class="tag">Beach</span>
-                        <span class="tag">Sunset</span>
-                    </div>
-                </div>
-
-                <!-- Memory Card 4 -->
-                <div class="memory-card" data-category="achievements" data-aos="zoom-in" data-aos-delay="300">
-                    <div class="memory-date">
-                        <span class="date-day">10</span>
-                        <span class="date-month">Apr</span>
-                        <span class="date-year">2026</span>
-                    </div>
-                    <div class="memory-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h3 class="memory-title">Wisuda Bersama</h3>
-                    <p class="memory-description">
-                        Merayakan kelulusan bersama, mengawali perjalanan hidup baru.
-                    </p>
-                    <div class="memory-tags">
-                        <span class="tag">Graduation</span>
-                        <span class="tag">Achievement</span>
-                    </div>
-                </div>
-
-                <!-- Memory Card 5 -->
-                <div class="memory-card" data-category="surprises" data-aos="zoom-in" data-aos-delay="400">
-                    <div class="memory-date">
-                        <span class="date-day">25</span>
-                        <span class="date-month">Mei</span>
-                        <span class="date-year">2026</span>
-                    </div>
-                    <div class="memory-icon">
-                        <i class="fas fa-birthday-cake"></i>
-                    </div>
-                    <h3 class="memory-title">Ulang Tahun Kejutan</h3>
-                    <p class="memory-description">
-                        Party kejutan yang kau buat dengan semua teman-teman terdekat.
-                    </p>
-                    <div class="memory-tags">
-                        <span class="tag">Birthday</span>
-                        <span class="tag">Surprise</span>
-                    </div>
-                </div>
-
-                <!-- Memory Card 6 -->
-                <div class="memory-card" data-category="firsts" data-aos="zoom-in" data-aos-delay="500">
-                    <div class="memory-date">
-                        <span class="date-day">01</span>
-                        <span class="date-month">Jun</span>
-                        <span class="date-year">2026</span>
-                    </div>
-                    <div class="memory-icon">
-                        <i class="fas fa-hands-holding-heart"></i>
-                    </div>
-                    <h3 class="memory-title">Pertama Kali Pegangan Tangan</h3>
-                    <p class="memory-description">
-                        Genggaman tanganmu yang hangat membuatku merasa aman dan dicintai.
-                    </p>
-                    <div class="memory-tags">
-                        <span class="tag">First Time</span>
-                        <span class="tag">Romantic</span>
-                    </div>
-                </div>
+                <!-- Memory cards will be loaded from JavaScript -->
             </div>
         </div>
     </section>
@@ -337,117 +202,137 @@
         <div class="container">
             <div class="section-header">
                 <span class="section-subtitle">Ungkapan Cinta</span>
-                <h2 class="section-title">Catatan Cinta</h2>
+                <h2 class="section-title">Catatan Kenangan</h2>
                 <div class="section-divider">
                     <i class="fas fa-heart"></i>
                 </div>
+                <p class="section-description">
+                    Bagikan cerita dan kenangan indahmu di sini. Setiap catatan akan tersimpan untuk selamanya.
+                </p>
             </div>
             
-            <div class="love-notes-container">
-                <!-- Love Note 1 -->
-                <div class="love-note-card" data-aos="fade-right">
-                    <div class="note-header">
-                        <div class="note-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="note-info">
-                            <h3 class="note-author">Aku</h3>
-                            <span class="note-date">15 Desember 2025</span>
-                        </div>
-                    </div>
-                    <div class="note-content">
-                        <p>
-                            "Dari semua momen indah dalam hidupku, momen bersamamu adalah yang paling berharga.
-                            Terima kasih sudah menjadi bagian dari cerita cintaku."
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Love Note 2 -->
-                <div class="love-note-card" data-aos="fade-left">
-                    <div class="note-header">
-                        <div class="note-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="note-info">
-                            <h3 class="note-author">Kamu</h3>
-                            <span class="note-date">14 Februari 2026</span>
-                        </div>
-                    </div>
-                    <div class="note-content">
-                        <p>
-                            "Setiap hari bersamamu adalah hadiah terindah. Aku bersyukur memiliki seseorang
-                            sepertimu yang selalu membuatku tersenyum."
-                        </p>
-                    </div>
-                </div>
+            <div class="love-notes-container" id="love-notes-container">
+                <!-- Love notes will be loaded from Supabase -->
             </div>
 
             <!-- Add New Love Note -->
             <div class="add-note-form" data-aos="fade-up">
-                <h3 class="form-title">Tambah Catatan Cinta</h3>
-                <textarea class="note-textarea" placeholder="Tuliskan kenangan indahmu di sini..."></textarea>
-                <button class="add-note-btn">
-                    <i class="fas fa-plus"></i>
-                    Tambah Catatan
-                </button>
+                <h3 class="form-title">Tambah Catatan Kenangan</h3>
+                <div class="form-group">
+                    <input type="text" id="note-author" class="form-input" placeholder="Nama kamu" required>
+                    <select id="note-category" class="form-select">
+                        <option value="">Pilih Kategori</option>
+                        <option value="love">Ungkapan Cinta</option>
+                        <option value="memory">Kenangan</option>
+                        <option value="message">Pesan</option>
+                        <option value="wish">Harapan</option>
+                    </select>
+                </div>
+                <textarea id="note-content" class="note-textarea" placeholder="Tuliskan kenangan indahmu di sini..." rows="5" required></textarea>
+                <div class="form-actions">
+                    <button class="add-note-btn" id="submit-note">
+                        <i class="fas fa-paper-plane"></i>
+                        Simpan Kenangan
+                    </button>
+                    <div class="character-count">
+                        <span id="char-count">0</span>/500 karakter
+                    </div>
+                </div>
+                <p class="form-note">
+                    <i class="fas fa-info-circle"></i> Catatan akan ditampilkan setelah disetujui
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- Milestones Section -->
-    <section class="milestones-section" data-aos="fade-up">
+    <!-- Featured Memories -->
+    <section class="featured-memories" data-aos="fade-up">
         <div class="container">
             <div class="section-header">
-                <span class="section-subtitle">Pencapaian Bersama</span>
-                <h2 class="section-title">Milestone Cinta</h2>
+                <span class="section-subtitle">Pilihan Terbaik</span>
+                <h2 class="section-title">Kenangan Unggulan</h2>
                 <div class="section-divider">
                     <i class="fas fa-heart"></i>
                 </div>
             </div>
             
-            <div class="milestones-timeline">
-                <div class="milestone-item" data-aos="fade-right">
-                    <div class="milestone-date">Des 2025</div>
-                    <div class="milestone-content">
-                        <div class="milestone-icon">
-                            <i class="fas fa-heart"></i>
+            <div class="featured-grid">
+                <div class="featured-card" data-aos="zoom-in">
+                    <div class="featured-image">
+                        <img src="assets/images/featured/memory1.jpg" alt="Pertemuan Pertama">
+                        <div class="featured-overlay">
+                            <div class="featured-date">15 Des 2025</div>
+                            <h3 class="featured-title">Pertemuan Pertama</h3>
                         </div>
-                        <h3>Pertemuan Pertama</h3>
-                        <p>Mata kita pertama kali bertemu</p>
                     </div>
                 </div>
                 
-                <div class="milestone-item" data-aos="fade-left">
-                    <div class="milestone-date">Jan 2026</div>
-                    <div class="milestone-content">
-                        <div class="milestone-icon">
-                            <i class="fas fa-star"></i>
+                <div class="featured-card" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="featured-image">
+                        <img src="assets/images/featured/memory2.jpg" alt="Kencan Romantis">
+                        <div class="featured-overlay">
+                            <div class="featured-date">14 Feb 2026</div>
+                            <h3 class="featured-title">Kencan Romantis</h3>
                         </div>
-                        <h3>Kencan Pertama</h3>
-                        <p>Makan malam romantis pertama kali</p>
                     </div>
                 </div>
                 
-                <div class="milestone-item" data-aos="fade-right">
-                    <div class="milestone-date">Feb 2026</div>
-                    <div class="milestone-content">
-                        <div class="milestone-icon">
-                            <i class="fas fa-calendar-heart"></i>
+                <div class="featured-card" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="featured-image">
+                        <img src="assets/images/featured/memory3.jpg" alt="Liburan Bersama">
+                        <div class="featured-overlay">
+                            <div class="featured-date">20 Mar 2026</div>
+                            <h3 class="featured-title">Liburan Bersama</h3>
                         </div>
-                        <h3>Valentine Pertama</h3>
-                        <p>Merayakan cinta di hari kasih sayang</p>
                     </div>
                 </div>
-                
-                <div class="milestone-item" data-aos="fade-left">
-                    <div class="milestone-date">Apr 2026</div>
-                    <div class="milestone-content">
-                        <div class="milestone-icon">
-                            <i class="fas fa-graduation-cap"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memory Timeline -->
+    <section class="memory-timeline" data-aos="fade-up">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Perjalanan Waktu</span>
+                <h2 class="section-title">Linimasa Kenangan</h2>
+                <div class="section-divider">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+            
+            <div class="timeline-container">
+                <div class="timeline">
+                    <div class="timeline-item" data-aos="fade-right">
+                        <div class="timeline-date">Des 2025</div>
+                        <div class="timeline-content">
+                            <h3>Pertemuan Pertama</h3>
+                            <p>Mata kita bertemu untuk pertama kalinya di kafe sore itu</p>
                         </div>
-                        <h3>Wisuda Bersama</h3>
-                        <p>Memulai babak baru kehidupan</p>
+                    </div>
+                    
+                    <div class="timeline-item" data-aos="fade-left">
+                        <div class="timeline-date">Jan 2026</div>
+                        <div class="timeline-content">
+                            <h3>Kencan Pertama</h3>
+                            <p>Makan malam romantis dengan bunga dan coklat</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item" data-aos="fade-right">
+                        <div class="timeline-date">Feb 2026</div>
+                        <div class="timeline-content">
+                            <h3>Valentine Pertama</h3>
+                            <p>Merayakan hari kasih sayang dengan kejutan spesial</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item" data-aos="fade-left">
+                        <div class="timeline-date">Mar 2026</div>
+                        <div class="timeline-content">
+                            <h3>Liburan Pertama</h3>
+                            <p>Perjalanan romantis ke pantai bersama-sama</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -511,8 +396,10 @@
                 <i class="fas fa-times"></i>
             </button>
             <div class="modal-body">
-                <div class="modal-date" id="modal-date"></div>
-                <h2 class="modal-title" id="modal-title"></h2>
+                <div class="modal-header">
+                    <div class="modal-date" id="modal-date"></div>
+                    <h2 class="modal-title" id="modal-title"></h2>
+                </div>
                 <div class="modal-description" id="modal-description"></div>
                 <div class="modal-photos" id="modal-photos"></div>
             </div>
@@ -523,6 +410,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="assets/scripts/main.js"></script>
     <script src="assets/scripts/memories.js"></script>
+    <script src="assets/scripts/music-player.js"></script>
     
     <!-- Initialize AOS -->
     <script>
