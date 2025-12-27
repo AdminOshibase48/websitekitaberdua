@@ -189,6 +189,6 @@ if (selectButton) {
 
 // add more safe nav
 addSafeNavigation(selectButton, 'photobooth/menu');
-addSafeNavigation(cameraBtn, 'photobooth/camera');
-addSafeNavigation(uploadBtn, 'photobooth/upload');
+addSafeNavigation(cameraBtn, 'camera');
+addSafeNavigation(uploadBtn, 'upload');
 addSafeNavigation(logoEl, 'index', 'logo');
