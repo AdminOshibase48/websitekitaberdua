@@ -71,7 +71,7 @@ const finalizePhotoStrip = () => {
   frame.onload = () => {
     ctx.drawImage(frame, 0, 0, WIDTH, HEIGHT);
     localStorage.setItem('photoStrip', canvas.toDataURL('image/png'));
-    setTimeout(() => window.location.href = 'final.html', 50);
+    setTimeout(() => window.location.href = 'photobooth/final', 50);
   };
   frame.complete && frame.onload();
 };
