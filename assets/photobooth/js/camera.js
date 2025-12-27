@@ -67,7 +67,7 @@ const finalizePhotoStrip = () => {
   const { video, ctx, canvas } = elements;
   video.style.display = 'none';
   const frame = new Image();
-  frame.src = 'Assets/photobooth/camerapage/frame.png';
+  frame.src = 'assets/photobooth/camerapage/frame.png';
   frame.onload = () => {
     ctx.drawImage(frame, 0, 0, WIDTH, HEIGHT);
     localStorage.setItem('photoStrip', canvas.toDataURL('image/png'));
