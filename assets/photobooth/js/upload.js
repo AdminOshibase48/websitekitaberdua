@@ -42,7 +42,7 @@ const finalizePhotoStrip = () => {
     readyBtn.disabled = false;
     downloadBtn.style.display = 'inline-block';
   };
-  frame.src = 'Assets/fish-photobooth/camerapage/frame.png';
+  frame.src = 'Assets/photobooth/camerapage/frame.png';
 };
 
 // ready button
