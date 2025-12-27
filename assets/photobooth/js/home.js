@@ -1,12 +1,12 @@
 // constants
 const BUBBLE_FRAMES = [
-  'Assets/photobooth/homepage/animated-bubbles-home/bubble-1.png',
-  'Assets/photobooth/homepage/animated-bubbles-home/bubble-2.png',
-  'Assets/photobooth/homepage/animated-bubbles-home/bubble-3.png',
+  'assets/photobooth/homepage/animated-bubbles-home/bubble-1.png',
+  'assets/photobooth/homepage/animated-bubbles-home/bubble-2.png',
+  'assets/photobooth/homepage/animated-bubbles-home/bubble-3.png',
 ];
 
 const PHOTOBOOTH_FRAMES = Array.from({ length: 16 }, (_, i) =>
-  `Assets/photobooth/homepage/animated-photobooth-mock/${i + 1}.jpg`
+  `assets/photobooth/homepage/animated-photobooth-mock/${i + 1}.jpg`
 );
 
 const PHOTOBOOTH_FRAME_INTERVAL = 200;
