@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="id" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinta Kami | our story together</title>
+    <meta name="description" content="Website kenangan cinta kami. Kisah, momen, dan perjalanan cinta kami bersama.">
+    <meta property="og:title" content="Cinta Kami | our story together">
+    <meta property="og:description" content="Website kenangan cinta kami">
+    <meta property="og:image" content="assets/images/og-image.jpg">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+    <link rel="stylesheet" href="assets/styles/main.css">
+    <link rel="stylesheet" href="assets/styles/animations.css">
+    <link rel="stylesheet" href="assets/styles/responsive.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=Dancing+Script:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-hearts">
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="loading-text">
+                <span>Memuat Kenangan Indah</span>
+                <div class="loading-bar">
+                    <div class="loading-progress"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cursor Custom -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <!-- Floating Elements -->
+    <div class="floating-hearts">
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+        <i class="fas fa-heart"></i>
+    </div>
+
+    <!-- Music Player Fixed -->
+    <div class="music-player-fixed">
+        <div class="music-controls">
+            <button class="music-toggle-btn" id="music-toggle-fixed">
+                <i class="fas fa-music"></i>
+                <span class="music-status">Play</span>
+            </button>
+            <div class="volume-control">
+                <i class="fas fa-volume-down"></i>
+                <input type="range" min="0" max="100" value="50" class="volume-slider">
+                <i class="fas fa-volume-up"></i>
+            </div>
+        </div>
+        <audio id="background-music" loop>
+            <source src="assets/music/thousandyears.mp3" type="audio/mpeg">
+            <source src="assets/music/love-song.ogg" type="audio/ogg">
+        </audio>
+    </div>
+
+    <!-- Back to Top -->
+    <button class="back-to-top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Navigation -->
+    <nav class="navbar-glass">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home" class="logo-link">
+                    <div class="logo-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-name">our story together</span>
+                        <span class="logo-sub">Love Story</span>
+                    </div>
+                </a>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link active"><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="#countdown" class="nav-link"><i class="fas fa-calendar-heart"></i><span>Countdown</span></a>
+                <a href="#story" class="nav-link"><i class="fas fa-book-open"></i><span>Our Story</span></a>
+                <a href="#gallery" class="nav-link"><i class="fas fa-images"></i><span>Gallery</span></a>
+                <a href="#memories" class="nav-link"><i class="fas fa-star"></i><span>Memories</span></a>
+                <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i><span>Love Notes</span></a>
+            </div>
+            <button class="nav-toggle"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section" data-aos="fade-in">
+        <div class="hero-background">
+            <div class="hero-overlay"></div>
+            <div class="particles" id="particles-js"></div>
+        </div>
+        <div class="hero-content">
+            <div class="couple-names" data-aos="fade-up" data-aos-delay="200">
+                <h1 class="name-his">Nursyam</h1>
+                <div class="heart-connector"><i class="fas fa-heart"></i><i class="fas fa-heart"></i><i class="fas fa-heart"></i></div>
+                <h1 class="name-hers">Lulu</h1>
+            </div>
+            <p class="hero-quote" data-aos="fade-up" data-aos-delay="400">"Dalam setiap detak jantungku, ada namamu"</p>
+            <div class="hero-stats" data-aos="fade-up" data-aos-delay="600">
+                <div class="stat-item"><div class="stat-number" id="days-together">8</div><div class="stat-label">Days Together</div></div>
+                <div class="stat-item"><div class="stat-number" id="memories-count">10+</div><div class="stat-label">Memories</div></div>
+                <div class="stat-item"><div class="stat-number">∞</div><div class="stat-label">Love</div></div>
+            </div>
+            <a href="#story" class="hero-scroll-btn" data-aos="fade-up" data-aos-delay="800"><span>Discover Our Story</span><i class="fas fa-chevron-down"></i></a>
+        </div>
+        <div class="hero-wave">
+            <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+                <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section id="countdown" class="countdown-section" data-aos="fade-up">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Countdown to</span>
+                <h2 class="section-title">Our Next Anniversary</h2>
+                <div class="section-divider"><i class="fas fa-heart"></i></div>
+            </div>
+            <div class="countdown-container">
+                <div class="countdown-card" data-aos="zoom-in" data-aos-delay="100"><div class="countdown-value" id="countdown-days">00</div><div class="countdown-label">Days</div></div>
+                <div class="countdown-card" data-aos="zoom-in" data-aos-delay="200"><div class="countdown-value" id="countdown-hours">00</div><div class="countdown-label">Hours</div></div>
+                <div class="countdown-card" data-aos="zoom-in" data-aos-delay="300"><div class="countdown-value" id="countdown-minutes">00</div><div class="countdown-label">Minutes</div></div>
+                <div class="countdown-card" data-aos="zoom-in" data-aos-delay="400"><div class="countdown-value" id="countdown-seconds">00</div><div class="countdown-label">Seconds</div></div>
+            </div>
+            <div class="countdown-info" data-aos="fade-up" data-aos-delay="500">
+                <p class="anniversary-text">Celebrating <span class="highlight">1 year</span> of love on <span class="date-highlight">December 17, 2026</span></p>
+                <p class="love-quote">"Setiap hari bersamamu adalah halaman baru dalam buku cinta kita"</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="story" class="story-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-subtitle">Our Journey</span>
+                <h2 class="section-title">Love Story</h2>
+                <div class="section-divider"><i class="fas fa-heart"></i></div>
+            </div>
+            <div class="story-timeline">
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-date">December 17, 2025</div>
+                    <div class="timeline-content">
+                        <div class="timeline-icon"><i class="fas fa-heart-circle-plus"></i></div>
+                        <h3 class="timeline-title">Pertemuan Pertama</h3>
+                        <p class="timeline-description">Mata kita bertemu untuk pertama kalinya di sebuah kafe kecil. Hujan yang deras mempertemukan dua jiwa yang mencari tempat berteduh.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-date">December 24, 2025</div>
+                    <div class="timeline-content">
+                        <div class="timeline-icon"><i class="fas fa-star"></i></div>
+                        <h3 class="timeline-title">Kencan Pertama</h3>
+                        <p class="timeline-description">Makan malam pertama yang penuh dengan tawa dan cerita. Restoran itu menjadi saksi awal cerita indah kita.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-date">December 31, 2025</div>
+                    <div class="timeline-content">
+                        <div class="timeline-icon"><i class="fas fa-fireworks"></i></div>
+                        <h3 class="timeline-title">Pengakuan Cinta</h3>
+                        <p class="timeline-description">Di bawah kembang api pergantian tahun, kita saling mengungkapkan perasaan. Tahun baru dimulai dengan cinta.</p>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-date">January 15, 2026</div>
+                    <div class="timeline-content">
+                        <div class="timeline-icon"><i class="fas fa-plane"></i></div>
+                        <h3 class="timeline-title">Perjalanan Pertama</h3>
+                        <p class="timeline-description">Liburan pertama ke pantai. Matahari terbenam, deburan ombak, dan pelukan hangat.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section" data-aos="fade-up">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Our Moments</span>
+                <h2 class="section-title">Photo Gallery</h2>
+                <div class="section-divider">
+                    <i class="fas fa-heart"></i>
+                </div>
+            </div>
+            
+            <div class="gallery-filter">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="travel">Travel</button>
+                <button class="filter-btn" data-filter="celebration">Celebration</button>
+                <button class="filter-btn" data-filter="everyday">Everyday</button>
+                <button class="filter-btn" data-filter="special">Special Moments</button>
+            </div>
+            
+            <div class="gallery-grid">
+                <div class="gallery-item" data-category="special" data-aos="zoom-in">
+                    <div class="gallery-img">
+                        <img src="assets/images/gallery/1.jpg" alt="First Meeting" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="overlay-content">
+                                <h3>First Meeting</h3>
+                                <p>December 17, 2025</p>
+                                <button class="view-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="celebration" data-aos="zoom-in" data-aos-delay="100">
+                    <div class="gallery-img">
+                        <img src="https://files.catbox.moe/08b4t6.jpg" alt="First joging" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="overlay-content">
+                                <h3>First joging</h3>
+                                <p>December 14, 2025</p>
+                                <button class="view-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="travel" data-aos="zoom-in" data-aos-delay="200">
+                    <div class="gallery-img">
+                        <img src="https://files.catbox.moe/jtzcqr.jpg" alt="First couple" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="overlay-content">
+                                <h3>first couple</h3>
+                                <p>January 17, 2025</p>
+                                <button class="view-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="gallery-item" data-category="everyday" data-aos="zoom-in" data-aos-delay="300">
+                    <div class="gallery-img">
+                        <img src="assets/images/gallery/4.jpg" alt="Coffee Time" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="overlay-content">
+                                <h3>Coffee Moments</h3>
+                                <p>February 14, 2026</p>
+                                <button class="view-btn">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memories Section -->
+    <section id="memories" class="memories-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-subtitle">Precious Moments</span>
+                <h2 class="section-title">Special Memories</h2>
+                <div class="section-divider"><i class="fas fa-heart"></i></div>
+            </div>
+            <div class="memories-grid">
+                <div class="memory-card" data-aos="flip-left">
+                    <div class="memory-icon"><i class="fas fa-gift"></i></div>
+                    <h3 class="memory-title">First Gift</h3>
+                    <p class="memory-date">December 25, 2025</p>
+                    <p class="memory-description">Buku harian berisi semua cerita tentang kita sejak pertama bertemu.</p>
+                </div>
+                <div class="memory-card" data-aos="flip-left" data-aos-delay="100">
+                    <div class="memory-icon"><i class="fas fa-utensils"></i></div>
+                    <h3 class="memory-title">First Dinner</h3>
+                    <p class="memory-date">December 24, 2025</p>
+                    <p class="memory-description">Spaghetti carbonara yang tak terlupakan di restoran Italia kecil.</p>
+                </div>
+                <div class="memory-card" data-aos="flip-left" data-aos-delay="200">
+                    <div class="memory-icon"><i class="fas fa-film"></i></div>
+                    <h3 class="memory-title">First Movie</h3>
+                    <p class="memory-date">December 28, 2025</p>
+                    <p class="memory-description">Film romantis pertama yang kita tonton bersama, dan kamu menangis.</p>
+                </div>
+                <div class="memory-card" data-aos="flip-left" data-aos-delay="300">
+                    <div class="memory-icon"><i class="fas fa-music"></i></div>
+                    <h3 class="memory-title">Our Song</h3>
+                    <p class="memory-date">Always</p>
+                    <p class="memory-description">Lagu yang selalu mengingatkan kita pada momen-momen indah.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Love Notes Section -->
+    <section id="contact" class="contact-section" data-aos="fade-up">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">For Us</span>
+                <h2 class="section-title">Love Notes</h2>
+                <div class="section-divider"><i class="fas fa-heart"></i></div>
+            </div>
+            
+            <div class="notes-container">
+                <!-- Notes akan muncul di sini -->
+            </div>
+            
+            <div class="add-note" data-aos="fade-up">
+                <h3>Add Your Love Note</h3>
+                <select id="note-author" style="width:100%; padding:12px; margin-bottom:15px; border:2px solid #ff6b8b; border-radius:10px; background:white; font-size:16px; font-family:'Poppins',sans-serif;">
+                    <option value="Nursyam">Nursyam</option>
+                    <option value="Lulu">Lulu</option>
+                </select>
+                <textarea placeholder="Write your love note here..." class="note-textarea" id="note-content" style="width:100%; min-height:120px; padding:12px; border:2px solid #ff6b8b; border-radius:10px; font-size:16px; font-family:'Poppins',sans-serif;"></textarea>
+                <button class="add-note-btn" onclick="saveLoveNote()" style="background:#ff6b8b; color:white; border:none; padding:12px 24px; border-radius:8px; font-size:16px; cursor:pointer; margin-top:15px;">
+                    <i class="fas fa-heart"></i> Add Note
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-about" data-aos="fade-up">
+                    <div class="footer-logo"><i class="fas fa-heart"></i><span>our story together</span></div>
+                    <p class="footer-description">Website ini adalah kenangan abadi cinta kita. Setiap momen, setiap cerita, setiap cinta.</p>
+                </div>
+                <div class="footer-links" data-aos="fade-up" data-aos-delay="100">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <a href="#home">Home</a><a href="#story">Our Story</a><a href="#gallery">Gallery</a><a href="#memories">Memories</a><a href="#countdown">Countdown</a>
+                </div>
+                <div class="footer-social" data-aos="fade-up" data-aos-delay="200">
+                    <h3 class="footer-title">Follow Our Love</h3>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom" data-aos="fade-up">
+                <p class="copyright">Made with <i class="fas fa-heart"></i> by our story together &copy; <span id="current-year">2025</span></p>
+                <p class="love-quote">"Cinta sejati tidak pernah berakhir"</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Password Modal -->
+    <div id="passwordModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:9999; align-items:center; justify-content:center;">
+        <div style="background:white; padding:30px; border-radius:15px; text-align:center; max-width:400px; width:90%;">
+            <h2 style="color:#FF6B9D; margin-bottom:10px;">🔒 Password Required</h2>
+            <p style="color:#666; margin-bottom:20px;">Masukkan password untuk mengirim love note</p>
+            <input type="password" id="passwordInput" placeholder="Password" style="width:100%; padding:12px; margin:15px 0; border:2px solid #FFA8C8; border-radius:8px; font-size:16px; text-align:center;">
+            <div style="display:flex; gap:10px; margin-top:20px;">
+                <button onclick="hidePasswordModal()" style="flex:1; padding:12px; background:#ddd; border:none; border-radius:8px; cursor:pointer;">Batal</button>
+                <button onclick="submitNote()" style="flex:1; padding:12px; background:#FF6B9D; color:white; border:none; border-radius:8px; cursor:pointer;">Kirim</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="assets/scripts/main.js"></script>
+    <script src="assets/scripts/animations.js"></script>
+    <script src="assets/scripts/countdown.js"></script>
+    <script src="assets/scripts/gallery.js"></script>
+
+    <!-- Lightbox Modal -->
+    <div class="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <button class="lightbox-prev">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="lightbox-next">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="lightbox-image-container">
+                <img src="" alt="" class="lightbox-image">
+                <div class="lightbox-caption">
+                    <h3 class="lightbox-title"></h3>
+                    <p class="lightbox-date"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- LOVE NOTES SCRIPT -->
+    <script>
+    // CONFIG
+    const SUPABASE_URL = 'https://dbwjmrdtdhzphkmjdole.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_4xT76YyGNuodxKnTLqRKQA_xMWijGh4';
+    const COUPLE_ID = 'nursyam-lulu';
+    const PASSWORD = 'sm121809';
+    
+    // VARIABLES
+    let currentNote = { content: '', author: '' };
+    
+    // SHOW PASSWORD MODAL
+    function showPasswordModal(content, author) {
+        currentNote = { content, author };
+        document.getElementById('passwordModal').style.display = 'flex';
+        document.getElementById('passwordInput').value = '';
+        document.getElementById('passwordInput').focus();
+    }
+    
+    // HIDE MODAL
+    function hidePasswordModal() {
+        document.getElementById('passwordModal').style.display = 'none';
+    }
+    
+    // SUBMIT NOTE WITH PASSWORD
+    async function submitNote() {
+        const password = document.getElementById('passwordInput').value;
+        
+        if (password !== PASSWORD) {
+            alert('❌ Password salah!');
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('passwordInput').focus();
+            return;
+        }
+        
+        hidePasswordModal();
+        
+        try {
+            const btn = document.querySelector('.add-note-btn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+            btn.disabled = true;
+            
+            // SEND TO SUPABASE
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/love_notes`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`
+                },
+                body: JSON.stringify({
+                    couple_id: COUPLE_ID,
+                    author: currentNote.author,
+                    content: currentNote.content
+                })
+            });
+            
+            if (response.ok) {
+                alert('✅ Note terkirim!');
+                document.getElementById('note-content').value = '';
+                loadNotes();
+            } else {
+                throw new Error('Gagal mengirim');
+            }
+            
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+            
+        } catch (error) {
+            console.error('Error:', error);
+            alert('❌ Gagal mengirim. Coba lagi nanti.');
+            document.querySelector('.add-note-btn').innerHTML = '<i class="fas fa-heart"></i> Add Note';
+            document.querySelector('.add-note-btn').disabled = false;
+        }
+    }
+    
+    // SAVE LOVE NOTE
+    async function saveLoveNote() {
+        const content = document.getElementById('note-content').value.trim();
+        const author = document.getElementById('note-author').value;
+        
+        if (!content) {
+            alert('Isi dulu sayang! ❤️');
+            return;
+        }
+        
+        showPasswordModal(content, author);
+    }
+    
+    // LOAD NOTES
+    async function loadNotes() {
+        try {
+            const response = await fetch(
+                `${SUPABASE_URL}/rest/v1/love_notes?couple_id=eq.${COUPLE_ID}&order=created_at.desc`,
+                {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                }
+            );
+            
+            const notes = await response.json();
+            displayNotes(notes);
+            
+        } catch (error) {
+            console.error('Error loading notes:', error);
+        }
+    }
+    
+    // DISPLAY NOTES
+    function displayNotes(notes) {
+        const container = document.querySelector('.notes-container');
+        if (!container) return;
+        
+        if (!notes || notes.length === 0) {
+            container.innerHTML = `
+                <div class="note-card" style="background:#fff0f6; border:1px solid #ffccd5; border-radius:10px; padding:20px; margin-bottom:20px;">
+                    <div style="display:flex; align-items:center; margin-bottom:15px;">
+                        <div style="background:#ff6b8b; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-right:15px;">
+                            <i class="fas fa-heart" style="color:white;"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin:0; color:#333;">Untuk Cintaku</h3>
+                            <span style="color:#666; font-size:14px;">Today</span>
+                        </div>
+                    </div>
+                    <p style="margin:0; color:#333; line-height:1.6;">Setiap hari bersamamu adalah berkah. Terima kasih telah menjadi bagian terindah dalam hidupku.</p>
+                    <div style="margin-top:15px; color:#666; font-size:14px; text-align:right;">With all my love, Nursyam</div>
+                </div>
+                <div class="note-card" style="background:#f0f8ff; border:1px solid #c2e7ff; border-radius:10px; padding:20px; margin-bottom:20px;">
+                    <div style="display:flex; align-items:center; margin-bottom:15px;">
+                        <div style="background:#4dabf7; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-right:15px;">
+                            <i class="fas fa-heart" style="color:white;"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin:0; color:#333;">Untuk Cintaku</h3>
+                            <span style="color:#666; font-size:14px;">Today</span>
+                        </div>
+                    </div>
+                    <p style="margin:0; color:#333; line-height:1.6;">Kamu adalah rumah bagi hatiku. Dalam pelukanmu, aku menemukan kedamaian.</p>
+                    <div style="margin-top:15px; color:#666; font-size:14px; text-align:right;">Forever yours, Lulu</div>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = notes.map(note => `
+            <div class="note-card" style="background:${note.author === 'Nursyam' ? '#fff0f6' : '#f0f8ff'}; border:1px solid ${note.author === 'Nursyam' ? '#ffccd5' : '#c2e7ff'}; border-radius:10px; padding:20px; margin-bottom:20px;">
+                <div style="display:flex; align-items:center; margin-bottom:15px;">
+                    <div style="background:${note.author === 'Nursyam' ? '#ff6b8b' : '#4dabf7'}; width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin-right:15px;">
+                        <i class="fas fa-heart" style="color:white;"></i>
+                    </div>
+                    <div>
+                        <h3 style="margin:0; color:#333;">${note.author}</h3>
+                        <span style="color:#666; font-size:14px;">${new Date(note.created_at).toLocaleDateString('id-ID')}</span>
+                    </div>
+                </div>
+                <p style="margin:0; color:#333; line-height:1.6; white-space:pre-wrap;">${note.content}</p>
+                <div style="margin-top:15px; color:#666; font-size:14px; text-align:right;">
+                    ${note.author === 'Nursyam' ? 'With all my love, Nursyam' : 'Forever yours, Lulu'}
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // INITIALIZE
+    document.addEventListener('DOMContentLoaded', function() {
+        AOS.init({
+            duration: 800,
+            offset: 100,
+            once: true,
+            easing: 'ease-out-cubic'
+        });
+        
+        // ENTER KEY FOR PASSWORD
+        document.getElementById('passwordInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') submitNote();
+        });
+        
+        // CLICK OUTSIDE TO CLOSE MODAL
+        document.getElementById('passwordModal').addEventListener('click', function(e) {
+            if (e.target === this) hidePasswordModal();
+        });
+        
+        // LOAD NOTES ON START
+        setTimeout(loadNotes, 1000);
+        
+        // UPDATE YEAR
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    });
+    </script>
+</body>
+</html>
