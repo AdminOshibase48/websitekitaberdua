@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>our story togther | Pesan Rahasia untuk Kamu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    :root{ --bg:#fdf7ff; --primary:#7b1fa2; --overlay:rgba(0,0,0,.5) }
+    body{
+      margin:0; min-height:100vh; display:grid; place-content:center;
+      background: radial-gradient(circle at 50% 50%, #fff, var(--bg) 70%);
+      color:#4a155f; font-family:'Inter',system-ui; text-align:center; padding:24px;
+    }
+    h1{ margin:0 0 6px }
+    p{ margin:0 0 16px }
+    .btn{
+      border:0; background:var(--primary); color:#fff; padding:10px 18px; border-radius:12px; cursor:pointer;
+      box-shadow:0 12px 24px rgba(123,31,162,.2);
+    }
+    .overlay{
+      position:fixed; inset:0; background:var(--overlay); display:none; align-items:center; justify-content:center; padding:16px;
+    }
+    .modal{
+      width:min(520px, 92vw); background:#fff; border-radius:16px; padding:20px; text-align:left;
+      box-shadow:0 20px 40px rgba(0,0,0,.25); animation:pop .25s ease-out;
+    }
+    @keyframes pop{ from{ transform:scale(.92); opacity:0 } to{ transform:scale(1); opacity:1 } }
+    .modal h2{ margin:0 0 8px; color:var(--primary) }
+    .modal p{ color:#5b2c6f }
+    .modal .actions{ display:flex; gap:8px; margin-top:14px; justify-content:flex-end }
+    .ghost{ background:transparent; color:var(--primary); border:1px solid #e0c8f1 }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Pesan Rahasia 💌</h1>
+    <p>Ada sesuatu yang ingin kusampaikan, dari hati paling dalam.</p>
+    <button class="btn" id="open">Buka Rahasia</button>
+  </main>
+
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h2>Untuk Kamu</h2>
+      <p>Aku jatuh cinta pada cara kamu melihat dunia—dan caramu melihat aku di dalamnya. 💜</p>
+      <div class="actions">
+        <button class="ghost" id="later">Nanti aja</button>
+        <button class="btn" id="ok">Peluk Aku</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const overlay = document.getElementById('overlay');
+    document.getElementById('open').onclick = ()=> overlay.style.display='flex';
+    document.getElementById('later').onclick = ()=> overlay.style.display='none';
+    document.getElementById('ok').onclick = ()=>{
+      alert('Peluk hangat terkirim… 🤍'); overlay.style.display='none';
+    };
+    // Tutup dengan ESC
+    document.addEventListener('keydown', e=>{ if(e.key==='Escape') overlay.style.display='none' });
+  </script>
+</body>
+</html>
