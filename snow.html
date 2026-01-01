@@ -2,827 +2,213 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>❄️ our story together | Snow - Virtual Pet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❄️ Snow - Virtual Pet dengan Koin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="assets/images/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
-    <link rel="shortcut icon" href="assets/images/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* ====== RESET & BASE ====== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        :root {
-            --primary-blue: #4da6ff;
-            --light-blue: #66ccff;
-            --dark-blue: #3399ff;
-            --background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
-            --white: #ffffff;
-            --gray-light: #f0f9ff;
-            --gray: #666;
-            --danger: #ff6666;
-            --success: #66cc66;
-            --warning: #ff9966;
-        }
-
-        body {
-            font-family: 'Nunito', sans-serif;
-            background: var(--background);
-            min-height: 100vh;
-            min-height: -webkit-fill-available;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 15px;
-            color: #333;
-            overflow-x: hidden;
-        }
-
-        html {
-            height: -webkit-fill-available;
-            height: fill-available;
-        }
-
-        /* ====== CONTAINER ====== */
-        .container {
-            max-width: 100%;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.98);
-            border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
-            padding: 25px;
-            text-align: center;
-            border: 8px solid #b3e0ff;
-            position: relative;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        @media (min-width: 768px) {
-            .container {
-                max-width: 900px;
-                padding: 35px;
-                border-width: 10px;
-            }
-        }
-
-        .container::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 12px;
-            background: repeating-linear-gradient(90deg, 
-                var(--light-blue), var(--light-blue) 20px, 
-                #b3e0ff 20px, #b3e0ff 40px);
-        }
-
-        /* ====== HEADER ====== */
-        h1 {
-            font-family: 'Comic Neue', cursive;
-            color: var(--primary-blue);
-            font-size: clamp(1.8rem, 5vw, 2.8rem);
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 0 #c2e9fb;
-            letter-spacing: 0.5px;
-            line-height: 1.2;
-        }
-
-        .subtitle {
-            font-size: clamp(0.95rem, 3vw, 1.2rem);
-            color: var(--gray);
-            margin-bottom: 25px;
-            line-height: 1.5;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* ====== PET AREA ====== */
-        .pet-area {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 25px;
-            margin-bottom: 30px;
-            align-items: stretch;
-        }
-
-        @media (max-width: 767px) {
-            .pet-area {
-                flex-direction: column;
-            }
-        }
-
-        /* Pet Container */
-        .pet-container {
-            flex: 1;
-            min-width: 280px;
-            background: linear-gradient(180deg, var(--gray-light) 0%, #e6f7ff 100%);
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.05);
-            border: 5px dashed #b3e0ff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Pet Face */
-        .pet-face {
-            width: 180px;
-            height: 180px;
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        @media (max-width: 480px) {
-            .pet-face {
-                width: 150px;
-                height: 150px;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .pet-face {
-                width: 200px;
-                height: 200px;
-            }
-        }
-
-        .pet-body {
-            width: 140px;
-            height: 140px;
-            background-color: var(--white);
-            border-radius: 50% 50% 45% 45%;
-            position: absolute;
-            top: 40px;
-            left: 20px;
-            z-index: 1;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border: 3px solid #e6f7ff;
-        }
-
-        .pet-body::after {
-            content: "";
-            position: absolute;
-            width: 35px;
-            height: 35px;
-            background-color: #e6f7ff;
-            border-radius: 50%;
-            top: -8px;
-            left: 25px;
-            box-shadow: 55px 0 #e6f7ff;
-        }
-
-        @media (max-width: 480px) {
-            .pet-body {
-                width: 110px;
-                height: 110px;
-                top: 35px;
-                left: 20px;
-            }
-            
-            .pet-body::after {
-                width: 25px;
-                height: 25px;
-                left: 20px;
-                box-shadow: 45px 0 #e6f7ff;
-            }
-        }
-
-        /* Eyes */
-        .pet-face .eye {
-            width: 22px;
-            height: 30px;
-            background-color: var(--white);
-            border-radius: 50%;
-            position: absolute;
-            top: 70px;
-            left: 40px;
-            z-index: 2;
-            box-shadow: 0 0 0 4px var(--dark-blue), inset 0 0 0 4px white;
-        }
-
-        .pet-face .eye.right {
-            left: 100px;
-        }
-
-        @media (max-width: 480px) {
-            .pet-face .eye {
-                width: 18px;
-                height: 26px;
-                top: 60px;
-                left: 35px;
-            }
-            
-            .pet-face .eye.right {
-                left: 85px;
-            }
-        }
-
-        .pupil {
-            width: 10px;
-            height: 10px;
-            background-color: var(--dark-blue);
-            border-radius: 50%;
-            position: absolute;
-            top: 10px;
-            left: 6px;
-            transition: all 0.3s ease;
-        }
-
-        /* Mouth */
-        .mouth {
-            width: 45px;
-            height: 22px;
-            border-bottom: 7px solid var(--primary-blue);
-            border-radius: 0 0 45px 45px;
-            position: absolute;
-            top: 125px;
-            left: 70px;
-            z-index: 2;
-            transition: all 0.3s ease;
-        }
-
-        @media (max-width: 480px) {
-            .mouth {
-                width: 40px;
-                height: 20px;
-                top: 105px;
-                left: 60px;
-            }
-        }
-
-        .blush {
-            width: 28px;
-            height: 14px;
-            background-color: rgba(77, 166, 255, 0.2);
-            border-radius: 50%;
-            position: absolute;
-            top: 105px;
-            left: 30px;
-            z-index: 1;
-            box-shadow: 65px 0 rgba(77, 166, 255, 0.2);
-        }
-
-        /* Status Container */
-        .status-container {
-            flex: 1;
-            min-width: 280px;
-            background-color: #f8f9ff;
-            border-radius: 20px;
-            padding: 25px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
-            border: 3px solid #c2e9fb;
-        }
-
-        .status-title {
-            font-size: 1.5rem;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        /* Status Bars */
-        .status-bars {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
-            margin-bottom: 25px;
-        }
-
-        .status-item {
-            text-align: left;
-        }
-
-        .status-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .status-name {
-            color: #555;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.95rem;
-        }
-
-        .status-value {
-            color: var(--primary-blue);
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
-
-        .status-bar {
-            height: 22px;
-            background-color: #e9ecef;
-            border-radius: 11px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .status-fill {
-            height: 100%;
-            border-radius: 11px;
-            transition: width 0.5s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .status-fill::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, 
-                transparent, 
-                rgba(255, 255, 255, 0.3), 
-                transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .hunger-fill {
-            background: linear-gradient(90deg, var(--light-blue), #99ddff);
-        }
-
-        .happiness-fill {
-            background: linear-gradient(90deg, #a1c4fd, #c2e9fb);
-        }
-
-        .energy-fill {
-            background: linear-gradient(90deg, #b3e0ff, #99ddff);
-        }
-
-        .health-fill {
-            background: linear-gradient(90deg, #84fab0, #8fd3f4);
-        }
-
-        .health-critical {
-            background: linear-gradient(90deg, var(--danger), #ff9999) !important;
-        }
-
-        /* ====== ACTION BUTTONS ====== */
-        .action-buttons {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 25px;
-        }
-
-        @media (max-width: 480px) {
-            .action-buttons {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-            
-            .action-button.medicine {
-                grid-column: span 2;
-            }
-        }
-
-        .action-button {
-            background: linear-gradient(45deg, var(--light-blue), #99ddff);
-            color: white;
-            border: none;
-            padding: 18px 15px;
-            font-size: 1.1rem;
-            font-weight: 700;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            font-family: 'Nunito', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .action-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .action-button:active {
-            transform: translateY(0);
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Mobile touch feedback */
-        @media (hover: none) and (pointer: coarse) {
-            .action-button:hover {
-                transform: none;
-            }
-            
-            .action-button:active {
-                transform: scale(0.96);
-                opacity: 0.9;
-            }
-        }
-
-        .action-button.feed {
-            background: linear-gradient(45deg, var(--light-blue), #99ddff);
-        }
-
-        .action-button.pet {
-            background: linear-gradient(45deg, #a1c4fd, #c2e9fb);
-        }
-
-        .action-button.play {
-            background: linear-gradient(45deg, #b3e0ff, #99ddff);
-        }
-
-        .action-button.sleep {
-            background: linear-gradient(45deg, #84fab0, #8fd3f4);
-        }
-
-        .action-button.medicine {
-            background: linear-gradient(45deg, var(--warning), #ffcc99);
-        }
-
-        .action-button i {
-            font-size: 1.4rem;
-        }
-
-        /* ====== PET INFO ====== */
-        .pet-message {
-            background-color: var(--gray-light);
-            border-radius: 15px;
-            padding: 20px;
-            margin-top: 25px;
-            border-left: 5px solid var(--primary-blue);
-            font-size: 1.2rem;
-            color: #555;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            line-height: 1.4;
-            text-align: center;
-        }
-
-        @media (max-width: 480px) {
-            .pet-message {
-                font-size: 1.1rem;
-                padding: 15px;
-                min-height: 70px;
-            }
-        }
-
-        .pet-name {
-            font-size: 2.2rem;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
-            font-family: 'Comic Neue', cursive;
-            text-shadow: 1px 1px 0 #c2e9fb;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 8px 20px;
-            border-radius: 12px;
-            display: inline-block;
-            position: relative;
-        }
-
-        .pet-name:hover {
-            background-color: rgba(77, 166, 255, 0.1);
-        }
-
-        .pet-name:active {
-            transform: scale(0.98);
-        }
-
-        .name-hint {
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 0.8rem;
-            color: var(--gray);
-            background: rgba(255, 255, 255, 0.9);
-            padding: 4px 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            opacity: 0;
-            transition: opacity 0.3s;
-            white-space: nowrap;
-            pointer-events: none;
-        }
-
-        .pet-name:hover .name-hint {
-            opacity: 1;
-        }
-
-        /* Level Info */
-        .level-info {
-            display: flex;
-            justify-content: space-between;
-            background-color: #f0f7ff;
-            padding: 15px;
-            border-radius: 15px;
-            margin-top: 20px;
-            font-weight: 600;
-        }
-
-        .level-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-        }
-
-        .level-label {
-            color: var(--gray);
-            font-size: 0.85rem;
-            margin-bottom: 5px;
-        }
-
-        .level-value {
-            color: var(--primary-blue);
-            font-size: 1.6rem;
-            font-weight: 800;
-        }
-
-        /* Messages */
-        .warning {
-            color: var(--danger);
-            font-weight: 700;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            animation: pulse 1.5s infinite;
-            text-align: center;
-            padding: 8px;
-            background-color: rgba(255, 102, 102, 0.1);
-            border-radius: 8px;
-        }
-
-        .save-info {
-            color: var(--success);
-            font-weight: 700;
-            margin-top: 15px;
-            font-size: 0.9rem;
-            animation: fadeInOut 2s forwards;
-            text-align: center;
-            padding: 8px;
-            background-color: rgba(102, 204, 102, 0.1);
-            border-radius: 8px;
-        }
-
-        @keyframes fadeInOut {
-            0%, 100% { opacity: 0; }
-            50% { opacity: 1; }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
-        }
-
-        /* ====== ANIMATIONS ====== */
-        .hunger-animation {
-            position: absolute;
-            font-size: 1.8rem;
-            color: var(--light-blue);
-            opacity: 0;
-            z-index: 10;
-            pointer-events: none;
-            user-select: none;
-        }
-
-        .hearts-animation {
-            position: absolute;
-            font-size: 1.3rem;
-            color: var(--primary-blue);
-            opacity: 0;
-            z-index: 10;
-            pointer-events: none;
-            user-select: none;
-        }
-
-        .snow-animation {
-            position: absolute;
-            font-size: 1.3rem;
-            color: var(--white);
-            opacity: 0;
-            z-index: 10;
-            text-shadow: 0 0 5px var(--light-blue);
-            pointer-events: none;
-            user-select: none;
-        }
-
-        @keyframes float-up {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-50px); opacity: 0; }
-        }
-
-        @keyframes float-down {
-            0% { transform: translateY(-50px) rotate(0deg); opacity: 0; }
-            10% { opacity: 1; }
-            100% { transform: translateY(100px) rotate(360deg); opacity: 0; }
-        }
-
-        /* ====== CONTROL PANEL ====== */
-        .control-panel {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 25px;
-            flex-wrap: wrap;
-        }
-
-        .control-button {
-            background: linear-gradient(45deg, #6bcdff, #a3ff9e);
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            font-size: 1rem;
-            font-weight: 700;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            font-family: 'Nunito', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .control-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
-        }
-
-        .control-button.save {
-            background: linear-gradient(45deg, var(--success), #99ff99);
-        }
-
-        .control-button.load {
-            background: linear-gradient(45deg, var(--light-blue), #99ddff);
-        }
-
-        .control-button.reset {
-            background: linear-gradient(45deg, var(--warning), #ffcc99);
-        }
-
-        .control-button.help {
-            background: linear-gradient(45deg, #9966ff, #cc99ff);
-        }
-
-        /* ====== TOOLTIP ====== */
-        .tooltip {
-            position: fixed;
-            background: rgba(0, 0, 0, 0.85);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 0.9rem;
-            z-index: 1000;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.2s;
-            max-width: 250px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transform: translate(-50%, -100%);
-        }
-
-        .tooltip.show {
-            opacity: 1;
-        }
-
-        /* ====== LOADING ====== */
-        .loading {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.9);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .loading.show {
-            display: flex;
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid var(--primary-blue);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* ====== SCROLLBAR ====== */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--light-blue);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-blue);
-        }
-
-        /* ====== PRINT STYLES ====== */
-        @media print {
-            .action-buttons,
-            .control-panel,
-            .menu-button {
-                display: none !important;
-            }
-            
-            .container {
-                box-shadow: none;
-                border: 1px solid #ccc;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/games-snow/css/snow-style.css">
 </head>
 <body>
-    <!-- Loading Overlay -->
-    <div class="loading" id="loading">
-        <div class="spinner"></div>
-        <div id="loadingMessage">Memuat Snow...</div>
+    <!-- Popup Tutorial -->
+    <div class="popup-overlay" id="tutorialPopup">
+        <div class="popup">
+            <div class="popup-header">
+                <h2><i class="fas fa-graduation-cap"></i> Cara Main Snow</h2>
+                <button class="popup-close" onclick="closeTutorial()">&times;</button>
+            </div>
+            <div class="popup-content">
+                <div class="tutorial-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Rawati Kebutuhan Snow</h3>
+                        <p>Kasih makan, elus, ajak main, dan tidurkan untuk menjaga statusnya tetap sehat!</p>
+                    </div>
+                </div>
+                <div class="tutorial-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Dapatkan Koin</h3>
+                        <p>Setiap aksi memberi <span class="coin-icon">🪙</span> Koin! Main mini-game untuk koin extra!</p>
+                    </div>
+                </div>
+                <div class="tutorial-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Beli Aksesoris</h3>
+                        <p>Pakai koin untuk beli aksesoris lucu di toko! Snow akan semakin imut!</p>
+                    </div>
+                </div>
+                <div class="tutorial-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Naik Level</h3>
+                        <p>Semakin rajin merawat, semakin tinggi level Snow! Unlock aksesoris spesial!</p>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="closeTutorial()">Mulai Main!</button>
+            </div>
+        </div>
     </div>
 
-    <!-- Tooltip -->
-    <div class="tooltip" id="tooltip"></div>
+    <!-- Popup Toko -->
+    <div class="popup-overlay" id="shopPopup">
+        <div class="popup shop-popup">
+            <div class="popup-header">
+                <h2><i class="fas fa-store"></i> Toko Aksesoris</h2>
+                <button class="popup-close" onclick="closeShop()">&times;</button>
+            </div>
+            <div class="popup-content">
+                <div class="shop-balance">
+                    <div class="coin-display">
+                        <i class="fas fa-coins"></i>
+                        <span id="shopCoinAmount">0</span> Koin
+                    </div>
+                </div>
+                
+                <div class="shop-categories">
+                    <button class="category-btn active" data-category="all">Semua</button>
+                    <button class="category-btn" data-category="hats">Topi</button>
+                    <button class="category-btn" data-category="glasses">Kacamata</button>
+                    <button class="category-btn" data-category="accessories">Aksesoris</button>
+                </div>
+                
+                <div class="shop-items" id="shopItems">
+                    <!-- Items akan diisi oleh JavaScript -->
+                </div>
+                
+                <div class="shop-footer">
+                    <button class="btn-secondary" onclick="closeShop()">Tutup Toko</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Popup Mini Game -->
+    <div class="popup-overlay" id="gamePopup">
+        <div class="popup game-popup">
+            <div class="popup-header">
+                <h2><i class="fas fa-gamepad"></i> Mini Game: Tangkap Koin!</h2>
+                <button class="popup-close" onclick="closeGame()">&times;</button>
+            </div>
+            <div class="popup-content">
+                <div class="game-info">
+                    <p>Tangkap koin yang jatuh dengan Snow! Dapatkan 10 koin untuk menang!</p>
+                    <div class="game-stats">
+                        <div class="stat">
+                            <i class="fas fa-coins"></i>
+                            <span id="gameCoins">0</span>/10
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-clock"></i>
+                            <span id="gameTime">30</span>s
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="game-area">
+                    <div class="game-character" id="gameCharacter">
+                        <div class="snow-game"></div>
+                    </div>
+                    <div class="coin" id="fallingCoin">🪙</div>
+                </div>
+                
+                <div class="game-controls">
+                    <button class="btn-game-left" onclick="moveLeft()">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <button class="btn-game-start" onclick="startGame()" id="startGameBtn">
+                        <i class="fas fa-play"></i> Mulai Game
+                    </button>
+                    <button class="btn-game-right" onclick="moveRight()">
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+                
+                <div class="game-result" id="gameResult">
+                    <!-- Hasil game akan muncul di sini -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
     <div class="container">
-        <h1><i class="fas fa-snowflake"></i> Snow - Virtual Pet <i class="fas fa-snowflake"></i></h1>
-        <p class="subtitle">Rawat Snow, teman digitalmu! Progress otomatis tersimpan di browser.</p>
+        <!-- Header dengan Koin -->
+        <div class="header-bar">
+            <div class="coin-counter">
+                <i class="fas fa-coins"></i>
+                <span id="coinAmount">0</span> Koin
+            </div>
+            <h1><i class="fas fa-snowflake"></i> Snow - Virtual Pet</h1>
+            <div class="header-buttons">
+                <button class="icon-btn" onclick="openShop()" title="Toko">
+                    <i class="fas fa-store"></i>
+                </button>
+                <button class="icon-btn" onclick="openGame()" title="Mini Game">
+                    <i class="fas fa-gamepad"></i>
+                </button>
+                <button class="icon-btn" onclick="showHelp()" title="Bantuan">
+                    <i class="fas fa-question-circle"></i>
+                </button>
+            </div>
+        </div>
+        
+        <p class="subtitle">Rawat Snow, kumpulkan koin, dan beli aksesoris lucu!</p>
         
         <div class="pet-area">
+            <!-- Bagian Kiri: Snow dengan Aksesoris -->
             <div class="pet-container">
-                <div class="pet-name" id="petName">
-                    Snow
-                    <div class="name-hint">Klik untuk ganti nama</div>
+                <div class="pet-name-container">
+                    <div class="pet-name" id="petName">
+                        Snow
+                        <div class="name-hint">Klik untuk ganti nama</div>
+                    </div>
+                    <button class="btn-small" onclick="changePetName()">
+                        <i class="fas fa-edit"></i>
+                    </button>
                 </div>
-                <div class="pet-face" id="petFace">
-                    <div class="pet-body"></div>
-                    <div class="eye left"><div class="pupil" id="leftPupil"></div></div>
-                    <div class="eye right"><div class="pupil" id="rightPupil"></div></div>
-                    <div class="mouth" id="mouth"></div>
-                    <div class="blush"></div>
+                
+                <div class="pet-display">
+                    <div class="pet-face" id="petFace">
+                        <!-- Aksesoris akan ditempatkan di sini -->
+                        <div class="accessory hat" id="hatSlot"></div>
+                        <div class="accessory glasses" id="glassesSlot"></div>
+                        <div class="accessory neck" id="neckSlot"></div>
+                        
+                        <div class="pet-body"></div>
+                        <div class="eye left"><div class="pupil" id="leftPupil"></div></div>
+                        <div class="eye right"><div class="pupil" id="rightPupil"></div></div>
+                        <div class="mouth" id="mouth"></div>
+                        <div class="blush"></div>
+                    </div>
+                    
+                    <div class="current-accessories">
+                        <h4><i class="fas fa-tshirt"></i> Aksesoris Terpakai</h4>
+                        <div class="accessory-list" id="currentAccessories">
+                            <div class="no-accessory">Belum ada aksesoris</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="pet-message" id="petMessage">Halo! Aku Snow, senang bertemu denganmu! ❄️</div>
+                
+                <div class="pet-message" id="petMessage">
+                    Halo! Aku Snow, senang bertemu denganmu! ❄️
+                </div>
             </div>
             
+            <!-- Bagian Kanan: Status & Aksi -->
             <div class="status-container">
-                <div class="status-title"><i class="fas fa-chart-line"></i> Status Snow</div>
+                <div class="status-title">
+                    <i class="fas fa-chart-line"></i> Status Snow
+                </div>
+                
                 <div class="status-bars">
                     <div class="status-item">
                         <div class="status-label">
-                            <span class="status-name"><i class="fas fa-hamburger"></i> Lapar</span>
+                            <span class="status-name">
+                                <i class="fas fa-hamburger"></i> Lapar
+                            </span>
                             <span class="status-value" id="hungerValue">75%</span>
                         </div>
                         <div class="status-bar">
@@ -832,7 +218,9 @@
                     
                     <div class="status-item">
                         <div class="status-label">
-                            <span class="status-name"><i class="fas fa-laugh-beam"></i> Bahagia</span>
+                            <span class="status-name">
+                                <i class="fas fa-laugh-beam"></i> Bahagia
+                            </span>
                             <span class="status-value" id="happinessValue">80%</span>
                         </div>
                         <div class="status-bar">
@@ -842,7 +230,9 @@
                     
                     <div class="status-item">
                         <div class="status-label">
-                            <span class="status-name"><i class="fas fa-bolt"></i> Energi</span>
+                            <span class="status-name">
+                                <i class="fas fa-bolt"></i> Energi
+                            </span>
                             <span class="status-value" id="energyValue">70%</span>
                         </div>
                         <div class="status-bar">
@@ -852,7 +242,9 @@
                     
                     <div class="status-item">
                         <div class="status-label">
-                            <span class="status-name"><i class="fas fa-heartbeat"></i> Kesehatan</span>
+                            <span class="status-name">
+                                <i class="fas fa-heartbeat"></i> Kesehatan
+                            </span>
                             <span class="status-value" id="healthValue">90%</span>
                         </div>
                         <div class="status-bar">
@@ -876,884 +268,70 @@
                     </div>
                 </div>
                 
-                <p class="warning" id="warningMessage"></p>
-                <p class="save-info" id="saveMessage"></p>
+                <div class="warning" id="warningMessage"></div>
+                <div class="save-info" id="saveMessage"></div>
             </div>
         </div>
         
+        <!-- Action Buttons -->
         <div class="action-buttons">
-            <button class="action-button feed" id="feedButton" data-tooltip="Tambah 25% Lapar">
-                <i class="fas fa-utensils"></i> Kasih Makan
+            <button class="action-button feed" id="feedButton">
+                <i class="fas fa-utensils"></i>
+                <span class="button-text">Kasih Makan</span>
+                <span class="coin-reward">+2 🪙</span>
             </button>
-            <button class="action-button pet" id="petButton" data-tooltip="Tambah 20% Bahagia">
-                <i class="fas fa-hand-holding-heart"></i> Elus & Peluk
+            
+            <button class="action-button pet" id="petButton">
+                <i class="fas fa-hand-holding-heart"></i>
+                <span class="button-text">Elus & Peluk</span>
+                <span class="coin-reward">+3 🪙</span>
             </button>
-            <button class="action-button play" id="playButton" data-tooltip="Butuh 15+ Energi">
-                <i class="fas fa-gamepad"></i> Ajak Main
+            
+            <button class="action-button play" id="playButton">
+                <i class="fas fa-gamepad"></i>
+                <span class="button-text">Ajak Main</span>
+                <span class="coin-reward">+5 🪙</span>
             </button>
-            <button class="action-button sleep" id="sleepButton" data-tooltip="Energi < 40 untuk tidur">
-                <i class="fas fa-moon"></i> Tidurkan
+            
+            <button class="action-button sleep" id="sleepButton">
+                <i class="fas fa-moon"></i>
+                <span class="button-text">Tidurkan</span>
+                <span class="coin-reward">+4 🪙</span>
             </button>
-            <button class="action-button medicine" id="medicineButton" data-tooltip="Naikkan Kesehatan">
-                <i class="fas fa-heartbeat"></i> Beri Obat
+            
+            <button class="action-button medicine" id="medicineButton">
+                <i class="fas fa-heartbeat"></i>
+                <span class="button-text">Beri Obat</span>
+                <span class="coin-reward">+1 🪙</span>
             </button>
         </div>
         
+        <!-- Control Panel -->
         <div class="control-panel">
+            <button class="control-button daily" id="dailyButton">
+                <i class="fas fa-calendar-day"></i> Hadiah Harian
+            </button>
+            
+            <button class="control-button shop" onclick="openShop()">
+                <i class="fas fa-store"></i> Toko
+            </button>
+            
+            <button class="control-button game" onclick="openGame()">
+                <i class="fas fa-gamepad"></i> Mini Game
+            </button>
+            
             <button class="control-button save" id="saveButton">
                 <i class="fas fa-save"></i> Simpan
             </button>
+            
             <button class="control-button load" id="loadButton">
                 <i class="fas fa-folder-open"></i> Muat
-            </button>
-            <button class="control-button reset" id="resetButton">
-                <i class="fas fa-redo"></i> Reset
-            </button>
-            <button class="control-button help" id="helpButton">
-                <i class="fas fa-question-circle"></i> Bantuan
             </button>
         </div>
     </div>
 
-    <script>
-        // ==================== STATE MANAGEMENT ====================
-        const pet = {
-            name: "Snow",
-            hunger: 75,
-            happiness: 80,
-            energy: 70,
-            health: 90,
-            level: 1,
-            age: 1,
-            xp: 0,
-            isSleeping: false,
-            lastSave: null,
-            messages: [
-                "Halo! Aku Snow, senang bertemu denganmu! ❄️",
-                "Aku lapar nih, kasih makan dong!",
-                "Yey! Makasih makanannya, enak banget!",
-                "Aku senang banget dielus seperti ini!",
-                "Wah, asyik nih diajak main!",
-                "Hmm... aku ngantuk nih, bolehin tidur?",
-                "Aku sudah istirahat, sekarang segar lagi!",
-                "Kamu pemilik yang baik banget! Aku sayang kamu!",
-                "Aku sehat dan bahagia karena kamu merawatku!",
-                "Jangan lupa ajak aku main ya nanti!",
-                "Aku seperti salju yang lembut!",
-                "Dingin tapi hati hangat!",
-                "Aku suka musim dingin!",
-                "Main salju yuk!",
-                "Jaga aku agar tetap sehat ya!"
-            ]
-        };
-
-        // ==================== CACHE DOM ELEMENTS ====================
-        const elements = {
-            // Status bars
-            hungerBar: document.getElementById('hungerBar'),
-            happinessBar: document.getElementById('happinessBar'),
-            energyBar: document.getElementById('energyBar'),
-            healthBar: document.getElementById('healthBar'),
-            
-            // Status values
-            hungerValue: document.getElementById('hungerValue'),
-            happinessValue: document.getElementById('happinessValue'),
-            energyValue: document.getElementById('energyValue'),
-            healthValue: document.getElementById('healthValue'),
-            
-            // Level info
-            levelValue: document.getElementById('levelValue'),
-            ageValue: document.getElementById('ageValue'),
-            xpValue: document.getElementById('xpValue'),
-            
-            // Messages
-            petMessage: document.getElementById('petMessage'),
-            warningMessage: document.getElementById('warningMessage'),
-            saveMessage: document.getElementById('saveMessage'),
-            
-            // Pet elements
-            petName: document.getElementById('petName'),
-            mouth: document.getElementById('mouth'),
-            leftPupil: document.getElementById('leftPupil'),
-            rightPupil: document.getElementById('rightPupil'),
-            
-            // Buttons
-            feedButton: document.getElementById('feedButton'),
-            petButton: document.getElementById('petButton'),
-            playButton: document.getElementById('playButton'),
-            sleepButton: document.getElementById('sleepButton'),
-            medicineButton: document.getElementById('medicineButton'),
-            saveButton: document.getElementById('saveButton'),
-            loadButton: document.getElementById('loadButton'),
-            resetButton: document.getElementById('resetButton'),
-            helpButton: document.getElementById('helpButton'),
-            
-            // UI Elements
-            loading: document.getElementById('loading'),
-            loadingMessage: document.getElementById('loadingMessage'),
-            tooltip: document.getElementById('tooltip')
-        };
-
-        // ==================== UTILITY FUNCTIONS ====================
-        function showLoading(message = "Memuat...") {
-            elements.loadingMessage.textContent = message;
-            elements.loading.classList.add('show');
-        }
-
-        function hideLoading() {
-            setTimeout(() => {
-                elements.loading.classList.remove('show');
-            }, 300);
-        }
-
-        function showTooltip(text, x, y) {
-            elements.tooltip.textContent = text;
-            elements.tooltip.style.left = x + 'px';
-            elements.tooltip.style.top = y + 'px';
-            elements.tooltip.classList.add('show');
-            
-            setTimeout(() => {
-                elements.tooltip.classList.remove('show');
-            }, 2000);
-        }
-
-        function showSaveMessage(message, isError = false) {
-            elements.saveMessage.textContent = message;
-            elements.saveMessage.style.color = isError ? 'var(--danger)' : 'var(--success)';
-            
-            setTimeout(() => {
-                elements.saveMessage.textContent = '';
-            }, 3000);
-        }
-
-        function clamp(value, min, max) {
-            return Math.min(Math.max(value, min), max);
-        }
-
-        // ==================== SAVE/LOAD SYSTEM ====================
-        function saveGame() {
-            try {
-                const saveData = {
-                    name: pet.name,
-                    hunger: pet.hunger,
-                    happiness: pet.happiness,
-                    energy: pet.energy,
-                    health: pet.health,
-                    level: pet.level,
-                    age: pet.age,
-                    xp: pet.xp,
-                    isSleeping: pet.isSleeping,
-                    lastSave: new Date().toISOString(),
-                    version: "1.0"
-                };
-                
-                localStorage.setItem('snowPetSave', JSON.stringify(saveData));
-                pet.lastSave = new Date();
-                
-                showSaveMessage("✓ Progress tersimpan!");
-                createSnowAnimation();
-                
-                return true;
-            } catch (error) {
-                console.error("Save error:", error);
-                showSaveMessage("✗ Gagal menyimpan!", true);
-                return false;
-            }
-        }
-
-        function loadGame() {
-            showLoading("Memuat progress...");
-            
-            try {
-                const savedData = localStorage.getItem('snowPetSave');
-                
-                if (!savedData) {
-                    hideLoading();
-                    showSaveMessage("Tidak ada data tersimpan", true);
-                    return false;
-                }
-                
-                const loadedData = JSON.parse(savedData);
-                
-                // Validasi data
-                if (!loadedData.version) {
-                    throw new Error("Format save tidak valid");
-                }
-                
-                // Update pet state
-                Object.assign(pet, {
-                    name: loadedData.name || "Snow",
-                    hunger: clamp(loadedData.hunger || 75, 0, 100),
-                    happiness: clamp(loadedData.happiness || 80, 0, 100),
-                    energy: clamp(loadedData.energy || 70, 0, 100),
-                    health: clamp(loadedData.health || 90, 0, 100),
-                    level: Math.max(1, loadedData.level || 1),
-                    age: Math.max(1, loadedData.age || 1),
-                    xp: Math.max(0, loadedData.xp || 0),
-                    isSleeping: Boolean(loadedData.isSleeping),
-                    lastSave: loadedData.lastSave ? new Date(loadedData.lastSave) : null
-                });
-                
-                // Update UI
-                elements.petName.firstChild.textContent = pet.name;
-                updateStatusDisplay();
-                
-                // Calculate time since last play
-                if (pet.lastSave) {
-                    const now = new Date();
-                    const diffMs = now - pet.lastSave;
-                    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-                    
-                    if (diffHours > 0) {
-                        adjustStatsAfterAbsence(diffHours);
-                        elements.petMessage.textContent = `Selamat datang kembali! ${diffHours} jam lalu.`;
-                    }
-                }
-                
-                hideLoading();
-                showSaveMessage("✓ Progress dimuat!");
-                
-                return true;
-                
-            } catch (error) {
-                console.error("Load error:", error);
-                hideLoading();
-                showSaveMessage("✗ Gagal memuat save!", true);
-                
-                // Create backup of corrupted save
-                try {
-                    const corrupted = localStorage.getItem('snowPetSave');
-                    if (corrupted) {
-                        localStorage.setItem('snowPetSave_backup', corrupted);
-                    }
-                } catch (e) {}
-                
-                return false;
-            }
-        }
-
-        function adjustStatsAfterAbsence(hours) {
-            const maxHours = Math.min(hours, 48); // Max 2 hari
-            
-            // Degrade stats based on absence time
-            pet.hunger = clamp(pet.hunger - (maxHours * 8), 0, 100);
-            pet.happiness = clamp(pet.happiness - (maxHours * 4), 0, 100);
-            pet.energy = clamp(pet.energy - (maxHours * 12), 0, 100);
-            
-            // Health penalty if stats are low
-            if (pet.hunger < 30 || pet.happiness < 30 || pet.energy < 20) {
-                pet.health = clamp(pet.health - (maxHours * 3), 0, 100);
-            }
-            
-            updateStatusDisplay();
-        }
-
-        function resetGame() {
-            if (!confirm("Yakin reset Snow ke awal? Semua progress akan hilang!")) {
-                return;
-            }
-            
-            showLoading("Mereset game...");
-            
-            try {
-                // Backup current save
-                const currentSave = localStorage.getItem('snowPetSave');
-                if (currentSave) {
-                    localStorage.setItem('snowPetSave_backup_' + Date.now(), currentSave);
-                }
-                
-                // Remove main save
-                localStorage.removeItem('snowPetSave');
-                
-                // Reset pet state
-                Object.assign(pet, {
-                    name: "Snow",
-                    hunger: 75,
-                    happiness: 80,
-                    energy: 70,
-                    health: 90,
-                    level: 1,
-                    age: 1,
-                    xp: 0,
-                    isSleeping: false,
-                    lastSave: null
-                });
-                
-                // Update UI
-                elements.petName.firstChild.textContent = pet.name;
-                updateStatusDisplay();
-                elements.petMessage.textContent = "Aku direset! Mari mulai dari awal! 🌟";
-                
-                hideLoading();
-                showSaveMessage("✓ Game berhasil direset!");
-                
-            } catch (error) {
-                console.error("Reset error:", error);
-                hideLoading();
-                showSaveMessage("✗ Gagal reset!", true);
-            }
-        }
-
-        // ==================== PET STATUS SYSTEM ====================
-        function updateStatusDisplay() {
-            // Update progress bars
-            elements.hungerBar.style.width = pet.hunger + '%';
-            elements.happinessBar.style.width = pet.happiness + '%';
-            elements.energyBar.style.width = pet.energy + '%';
-            elements.healthBar.style.width = pet.health + '%';
-            
-            // Update values
-            elements.hungerValue.textContent = pet.hunger + '%';
-            elements.happinessValue.textContent = pet.happiness + '%';
-            elements.energyValue.textContent = pet.energy + '%';
-            elements.healthValue.textContent = pet.health + '%';
-            
-            // Update level info
-            elements.levelValue.textContent = pet.level;
-            elements.ageValue.textContent = pet.age;
-            elements.xpValue.textContent = pet.xp;
-            
-            // Update health bar color
-            if (pet.health <= 30) {
-                elements.healthBar.classList.add('health-critical');
-            } else {
-                elements.healthBar.classList.remove('health-critical');
-            }
-            
-            // Update facial expression
-            updatePetExpression();
-            
-            // Check warnings
-            checkPetStatus();
-        }
-
-        function updatePetExpression() {
-            // Mouth expression based on happiness
-            if (pet.happiness >= 70) {
-                elements.mouth.style.borderBottom = '7px solid var(--primary-blue)';
-                elements.mouth.style.borderRadius = '0 0 45px 45px';
-                elements.mouth.style.height = '22px';
-                elements.mouth.style.width = '45px';
-            } else if (pet.happiness >= 40) {
-                elements.mouth.style.borderBottom = '4px solid var(--primary-blue)';
-                elements.mouth.style.borderRadius = '0';
-                elements.mouth.style.height = '4px';
-                elements.mouth.style.width = '35px';
-            } else {
-                elements.mouth.style.borderBottom = '7px solid var(--primary-blue)';
-                elements.mouth.style.borderRadius = '45px 45px 0 0';
-                elements.mouth.style.height = '22px';
-                elements.mouth.style.width = '45px';
-            }
-            
-            // Eye position based on energy
-            if (pet.energy >= 60) {
-                elements.leftPupil.style.top = '10px';
-                elements.rightPupil.style.top = '10px';
-            } else if (pet.energy >= 30) {
-                elements.leftPupil.style.top = '15px';
-                elements.rightPupil.style.top = '15px';
-            } else {
-                elements.leftPupil.style.top = '18px';
-                elements.rightPupil.style.top = '18px';
-            }
-        }
-
-        function checkPetStatus() {
-            let warning = '';
-            
-            if (pet.health <= 20) {
-                warning = '🚨 CRITICAL! Snow sakit parah! Kasih obat!';
-            } else if (pet.hunger <= 20) {
-                warning = '⚠️ Snow sangat lapar! Kasih makan!';
-            } else if (pet.happiness <= 20) {
-                warning = '😢 Snow sedih! Elus atau ajak main!';
-            } else if (pet.energy <= 20) {
-                warning = '😴 Snow lelah! Tidurkan dulu!';
-            } else if (pet.health <= 50) {
-                warning = '🤒 Snow kurang sehat! Rawat baik-baik!';
-            }
-            
-            elements.warningMessage.textContent = warning;
-        }
-
-        // ==================== ANIMATIONS ====================
-        function createFoodAnimation() {
-            const petFace = document.getElementById('petFace');
-            const foodEmojis = ['🍎', '🍗', '🍕', '🍦', '🍇', '🥕', '🥞', '🍔', '❄️', '🧊'];
-            
-            for (let i = 0; i < 5; i++) {
-                const food = document.createElement('div');
-                food.className = 'hunger-animation';
-                food.textContent = foodEmojis[Math.floor(Math.random() * foodEmojis.length)];
-                food.style.left = Math.random() * 140 + 'px';
-                food.style.top = Math.random() * 140 + 'px';
-                
-                petFace.appendChild(food);
-                
-                setTimeout(() => {
-                    food.style.animation = 'float-up 1s forwards';
-                    setTimeout(() => food.remove(), 1100);
-                }, 10);
-            }
-        }
-
-        function createHeartsAnimation() {
-            const petFace = document.getElementById('petFace');
-            
-            for (let i = 0; i < 7; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'hearts-animation';
-                heart.innerHTML = '<i class="fas fa-heart"></i>';
-                heart.style.left = Math.random() * 140 + 'px';
-                heart.style.top = Math.random() * 140 + 'px';
-                
-                petFace.appendChild(heart);
-                
-                setTimeout(() => {
-                    heart.style.animation = 'float-up 1.5s forwards';
-                    setTimeout(() => heart.remove(), 1600);
-                }, i * 100);
-            }
-        }
-
-        function createSnowAnimation() {
-            const container = document.querySelector('.container');
-            
-            for (let i = 0; i < 15; i++) {
-                const snow = document.createElement('div');
-                snow.className = 'snow-animation';
-                snow.innerHTML = '<i class="fas fa-snowflake"></i>';
-                snow.style.left = Math.random() * 100 + '%';
-                snow.style.fontSize = (Math.random() * 0.8 + 0.7) + 'rem';
-                snow.style.animationDelay = Math.random() * 2 + 's';
-                
-                container.appendChild(snow);
-                
-                setTimeout(() => {
-                    snow.style.animation = 'float-down 3s forwards';
-                    setTimeout(() => snow.remove(), 3100);
-                }, 10);
-            }
-        }
-
-        // ==================== PET ACTIONS ====================
-        function feedPet() {
-            if (pet.isSleeping) {
-                elements.petMessage.textContent = "Zzz... Snow sedang tidur!";
-                return;
-            }
-            
-            // Increase hunger
-            pet.hunger = clamp(pet.hunger + 25, 0, 100);
-            // Slight energy cost
-            pet.energy = clamp(pet.energy - 3, 0, 100);
-            // Happiness boost
-            pet.happiness = clamp(pet.happiness + 5, 0, 100);
-            
-            // Health boost if not too full
-            if (pet.hunger < 80) {
-                pet.health = clamp(pet.health + 1, 0, 100);
-            }
-            
-            // XP gain
-            pet.xp += 10;
-            checkLevelUp();
-            
-            // Animation and message
-            createFoodAnimation();
-            elements.petMessage.textContent = "Yummy! Makasih makanannya! 🍦";
-            
-            updateStatusDisplay();
-            autoSave();
-        }
-
-        function petPet() {
-            if (pet.isSleeping) {
-                elements.petMessage.textContent = "Zzz... Snow sedang tidur!";
-                return;
-            }
-            
-            // Happiness boost
-            pet.happiness = clamp(pet.happiness + 20, 0, 100);
-            // Small energy cost
-            pet.energy = clamp(pet.energy - 2, 0, 100);
-            
-            // Health boost if very happy
-            if (pet.happiness > 70) {
-                pet.health = clamp(pet.health + 2, 0, 100);
-            }
-            
-            // XP gain
-            pet.xp += 8;
-            checkLevelUp();
-            
-            // Animation and message
-            createHeartsAnimation();
-            elements.petMessage.textContent = "Awww... Aku senang banget! 💙";
-            
-            updateStatusDisplay();
-            autoSave();
-        }
-
-        function playWithPet() {
-            if (pet.isSleeping) {
-                elements.petMessage.textContent = "Zzz... Snow masih mengantuk!";
-                return;
-            }
-            
-            if (pet.energy < 15) {
-                elements.petMessage.textContent = "Aku capek banget, nggak bisa main dulu!";
-                return;
-            }
-            
-            // Happiness boost
-            pet.happiness = clamp(pet.happiness + 15, 0, 100);
-            // Energy cost
-            pet.energy = clamp(pet.energy - 20, 0, 100);
-            // Hunger increase
-            pet.hunger = clamp(pet.hunger - 8, 0, 100);
-            
-            // Health boost if conditions are good
-            if (pet.happiness > 60 && pet.energy > 30) {
-                pet.health = clamp(pet.health + 1, 0, 100);
-            }
-            
-            // XP gain
-            pet.xp += 15;
-            checkLevelUp();
-            
-            // Message
-            elements.petMessage.textContent = "Wah asyik banget main! ❄️🤩";
-            
-            updateStatusDisplay();
-            autoSave();
-        }
-
-        function putPetToSleep() {
-            if (pet.isSleeping) {
-                // Wake up
-                pet.isSleeping = false;
-                elements.sleepButton.innerHTML = '<i class="fas fa-moon"></i> Tidurkan';
-                elements.petMessage.textContent = "Hai! Aku sudah bangun dan segar! ☀️";
-                
-                // Energy recovery
-                pet.energy = clamp(pet.energy + 50, 0, 100);
-                // Hunger decrease
-                pet.hunger = clamp(pet.hunger - 15, 0, 100);
-                // Health recovery
-                pet.health = clamp(pet.health + 5, 0, 100);
-                
-                // Age increase chance
-                if (Math.random() > 0.7) {
-                    pet.age++;
-                    elements.petMessage.textContent = "Aku bertambah tua! Tapi masih semangat! 🎂";
-                }
-            } else {
-                // Check if can sleep
-                if (pet.energy > 40) {
-                    elements.petMessage.textContent = "Aku belum ngantuk banget nih!";
-                    return;
-                }
-                
-                // Go to sleep
-                pet.isSleeping = true;
-                elements.sleepButton.innerHTML = '<i class="fas fa-sun"></i> Bangunkan';
-                elements.petMessage.textContent = "Zzz... Aku tidur dulu. Mimpi indah! 🌙";
-                
-                // Sleep face
-                elements.mouth.style.borderBottom = '3px solid var(--primary-blue)';
-                elements.mouth.style.borderRadius = '50%';
-                elements.mouth.style.height = '10px';
-                elements.mouth.style.width = '30px';
-                
-                elements.leftPupil.style.top = '18px';
-                elements.rightPupil.style.top = '18px';
-            }
-            
-            updateStatusDisplay();
-            autoSave();
-        }
-
-        function giveMedicine() {
-            if (pet.isSleeping) {
-                elements.petMessage.textContent = "Zzz... Snow sedang tidur!";
-                return;
-            }
-            
-            if (pet.health > 70) {
-                elements.petMessage.textContent = "Aku sehat-sehat saja, nggak butuh obat!";
-                return;
-            }
-            
-            // Calculate health boost (more effective when health is low)
-            const healthBoost = 30 - Math.floor(pet.health / 10);
-            pet.health = clamp(pet.health + healthBoost, 0, 100);
-            
-            // Medicine isn't fun
-            pet.happiness = clamp(pet.happiness - 5, 0, 100);
-            pet.energy = clamp(pet.energy - 10, 0, 100);
-            
-            // XP for taking care
-            pet.xp += 20;
-            checkLevelUp();
-            
-            // Message based on result
-            if (pet.health > 80) {
-                elements.petMessage.textContent = "Alhamdulillah, aku sudah merasa lebih baik! 💊";
-            } else {
-                elements.petMessage.textContent = "Makasih obatnya... semoga aku cepat sembuh!";
-            }
-            
-            createHeartsAnimation();
-            updateStatusDisplay();
-            autoSave();
-        }
-
-        function checkLevelUp() {
-            const xpNeeded = pet.level * 100;
-            
-            if (pet.xp >= xpNeeded) {
-                pet.level++;
-                pet.xp = pet.xp - xpNeeded;
-                elements.petMessage.textContent = `Yey! Aku naik level! Sekarang level ${pet.level}! 🎉`;
-                
-                // Health bonus on level up
-                pet.health = clamp(pet.health + 15, 0, 100);
-                
-                createSnowAnimation();
-                
-                updateStatusDisplay();
-                autoSave();
-            }
-        }
-
-        // ==================== STATS DEGRADATION ====================
-        function degradeStats() {
-            if (pet.isSleeping) {
-                // Recovery during sleep
-                pet.health = clamp(pet.health + 0.3, 0, 100);
-                return;
-            }
-            
-            // Gradual degradation
-            pet.hunger = clamp(pet.hunger - 0.8, 0, 100);
-            pet.happiness = clamp(pet.happiness - 0.5, 0, 100);
-            pet.energy = clamp(pet.energy - 0.7, 0, 100);
-            
-            // Health logic - FIXED
-            if (pet.hunger <= 15 || pet.happiness <= 15) {
-                // Critical condition - health drops fast
-                pet.health = clamp(pet.health - 1, 0, 100);
-            } else if (pet.hunger <= 30 || pet.happiness <= 30 || pet.energy <= 15) {
-                // Poor condition - health drops slowly
-                pet.health = clamp(pet.health - 0.3, 0, 100);
-            } else if (pet.hunger > 60 && pet.happiness > 60 && pet.energy > 40) {
-                // Good condition - health recovers
-                if (pet.health < 100) {
-                    pet.health = clamp(pet.health + 0.2, 0, 100);
-                }
-            } else if (pet.hunger > 80 && pet.happiness > 80 && pet.energy > 60) {
-                // Excellent condition - health recovers faster
-                if (pet.health < 100) {
-                    pet.health = clamp(pet.health + 0.4, 0, 100);
-                }
-            }
-            
-            updateStatusDisplay();
-        }
-
-        // ==================== AUTO-SAVE SYSTEM ====================
-        function autoSave() {
-            // Save every 10 actions (approx)
-            if (Math.random() < 0.1) {
-                saveGame();
-            }
-        }
-
-        // ==================== EVENT HANDLERS ====================
-        function setupEventListeners() {
-            // Action buttons
-            elements.feedButton.addEventListener('click', feedPet);
-            elements.petButton.addEventListener('click', petPet);
-            elements.playButton.addEventListener('click', playWithPet);
-            elements.sleepButton.addEventListener('click', putPetToSleep);
-            elements.medicineButton.addEventListener('click', giveMedicine);
-            
-            // Control buttons
-            elements.saveButton.addEventListener('click', saveGame);
-            elements.loadButton.addEventListener('click', loadGame);
-            elements.resetButton.addEventListener('click', resetGame);
-            elements.helpButton.addEventListener('click', showHelp);
-            
-            // Pet name click
-            elements.petName.addEventListener('click', changePetName);
-            
-            // Pet face interaction
-            document.getElementById('petFace').addEventListener('click', (e) => {
-                if (pet.isSleeping) {
-                    elements.petMessage.textContent = "Zzz... Jangan ganggu tidurku!";
-                } else {
-                    showRandomMessage();
-                }
-            });
-            
-            // Tooltips for buttons
-            document.querySelectorAll('[data-tooltip]').forEach(button => {
-                button.addEventListener('mouseenter', (e) => {
-                    if (window.innerWidth > 768) { // Only on desktop
-                        showTooltip(button.dataset.tooltip, e.clientX, e.clientY);
-                    }
-                });
-                
-                button.addEventListener('touchstart', (e) => {
-                    const touch = e.touches[0];
-                    showTooltip(button.dataset.tooltip, touch.clientX, touch.clientY);
-                }, { passive: true });
-            });
-            
-            // Prevent context menu on pet
-            document.getElementById('petFace').addEventListener('contextmenu', e => {
-                e.preventDefault();
-                petPet();
-                createHeartsAnimation();
-            });
-        }
-
-        // ==================== HELPER FUNCTIONS ====================
-        function showRandomMessage() {
-            const randomIndex = Math.floor(Math.random() * pet.messages.length);
-            elements.petMessage.textContent = pet.messages[randomIndex];
-            
-            // Color effect
-            const colors = ['#4da6ff', '#66ccff', '#3399ff', '#1a8cff'];
-            const randomColor = colors[Math.floor(Math.random() * colors.length)];
-            elements.petMessage.style.borderLeftColor = randomColor;
-            
-            setTimeout(() => {
-                elements.petMessage.style.borderLeftColor = '#4da6ff';
-            }, 2000);
-        }
-
-        function changePetName() {
-            const newName = prompt('Kasih nama baru untuk Snow:', pet.name);
-            if (newName && newName.trim() !== '') {
-                pet.name = newName.trim().substring(0, 20); // Limit length
-                elements.petName.firstChild.textContent = pet.name;
-                elements.petMessage.textContent = `Wah, namaku sekarang ${pet.name}! Keren!`;
-                saveGame();
-            }
-        }
-
-        function showHelp() {
-            const helpText = `
-🎮 **CARA MERAWAT SNOW** 🎮
-
-**1. KASIH MAKAN** (+25 Lapar, +5 Bahagia)
-   - Snow suka es krim dan makanan dingin!
-   - Jangan biarkan lapar di bawah 20%
-
-**2. ELUS & PELUK** (+20 Bahagia)
-   - Bikin Snow senang dan sehat
-   - Klik kanan wajah Snow untuk elus cepat
-
-**3. AJAK MAIN** (Butuh 15+ Energi)
-   - Kurangi energi tapi bikin bahagia
-   - Snow capek jika energi di bawah 20%
-
-**4. TIDURKAN** (Energi < 40 untuk tidur)
-   - Recovery energi dan kesehatan
-   - Klik lagi untuk bangunkan
-
-**5. BERI OBAT** (Kesehatan < 70)
-   - Naikkan kesehatan dengan cepat
-   - Efek lebih besar jika kesehatan rendah
-
-**💡 TIPS:**
-- Progress otomatis tersimpan
-- Klik wajah Snow untuk pesan random
-- Klik nama untuk ganti nama
-- Kesehatan turun jika kondisi buruk
-- Kesehatan naik jika kondisi baik
-
-**⚠️ PERINGATAN:**
-- Kesehatan CRITICAL jika ≤ 20%
-- Snow bisa "sakit" jika diabaikan
-- Rawat dengan baik ya! ❄️
-            `;
-            
-            alert(helpText.replace(/\n\s+/g, '\n').trim());
-        }
-
-        // Eye blinking effect
-        function blinkEyes() {
-            if (!pet.isSleeping) {
-                elements.leftPupil.style.height = '5px';
-                elements.rightPupil.style.height = '5px';
-                
-                setTimeout(() => {
-                    elements.leftPupil.style.height = '10px';
-                    elements.rightPupil.style.height = '10px';
-                }, 200);
-            }
-        }
-
-        // ==================== INITIALIZATION ====================
-        function init() {
-            showLoading("Menyiapkan Snow...");
-            
-            // Setup event listeners
-            setupEventListeners();
-            
-            // Try to load saved game
-            setTimeout(() => {
-                const loaded = loadGame();
-                if (!loaded) {
-                    updateStatusDisplay();
-                    elements.petMessage.textContent = "Halo! Aku Snow, mari berteman! ❄️";
-                }
-                
-                hideLoading();
-                
-                // Show first-time help
-                if (!localStorage.getItem('snowPetSave')) {
-                    setTimeout(showHelp, 1000);
-                }
-            }, 800);
-            
-            // Stats degradation every 10 seconds
-            setInterval(degradeStats, 10000);
-            
-            // Random messages every 20 seconds
-            setInterval(showRandomMessage, 20000);
-            
-            // Auto-save every 30 seconds
-            setInterval(saveGame, 30000);
-            
-            // Eye blinking every 5-8 seconds
-            setInterval(blinkEyes, Math.random() * 3000 + 5000);
-            
-            // Random snow animation
-            setInterval(() => {
-                if (Math.random() < 0.2) {
-                    createSnowAnimation();
-                }
-            }, 20000);
-            
-            // Save on page unload
-            window.addEventListener('beforeunload', saveGame);
-            
-            // Prevent accidental refresh
-            window.addEventListener('beforeunload', (e) => {
-                if (pet.health <= 30) {
-                    e.preventDefault();
-                    e.returnValue = 'Snow sedang sakit! Yakin mau keluar?';
-                }
-            });
-        }
-
-        // ==================== START THE GAME ====================
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+    <!-- JavaScript Files -->
+    <script src="assets/games-snow/js/snow-data.js"></script>
+    <script src="assets/games-snow/js/snow-game.js"></script>
 </body>
 </html>
