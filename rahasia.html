@@ -1,63 +1,405 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>our story togther | Pesan Rahasia untuk Kamu</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    :root{ --bg:#fdf7ff; --primary:#7b1fa2; --overlay:rgba(0,0,0,.5) }
-    body{
-      margin:0; min-height:100vh; display:grid; place-content:center;
-      background: radial-gradient(circle at 50% 50%, #fff, var(--bg) 70%);
-      color:#4a155f; font-family:'Inter',system-ui; text-align:center; padding:24px;
-    }
-    h1{ margin:0 0 6px }
-    p{ margin:0 0 16px }
-    .btn{
-      border:0; background:var(--primary); color:#fff; padding:10px 18px; border-radius:12px; cursor:pointer;
-      box-shadow:0 12px 24px rgba(123,31,162,.2);
-    }
-    .overlay{
-      position:fixed; inset:0; background:var(--overlay); display:none; align-items:center; justify-content:center; padding:16px;
-    }
-    .modal{
-      width:min(520px, 92vw); background:#fff; border-radius:16px; padding:20px; text-align:left;
-      box-shadow:0 20px 40px rgba(0,0,0,.25); animation:pop .25s ease-out;
-    }
-    @keyframes pop{ from{ transform:scale(.92); opacity:0 } to{ transform:scale(1); opacity:1 } }
-    .modal h2{ margin:0 0 8px; color:var(--primary) }
-    .modal p{ color:#5b2c6f }
-    .modal .actions{ display:flex; gap:8px; margin-top:14px; justify-content:flex-end }
-    .ghost{ background:transparent; color:var(--primary); border:1px solid #e0c8f1 }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>our story together | Virtual Hug Generator - Pelukan Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #5a3d5c;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, #ff6b8b, #ffcc70, #6bcdff, #a3ff9e);
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            color: #ff6b8b;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7a6a7f;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .hug-button {
+            background: linear-gradient(45deg, #ff6b8b, #ff8e9e);
+            color: white;
+            border: none;
+            padding: 25px 50px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            border-radius: 70px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(255, 107, 139, 0.3);
+            margin: 30px 0;
+            font-family: 'Nunito', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hug-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(255, 107, 139, 0.4);
+            background: linear-gradient(45deg, #ff5577, #ff7b8b);
+        }
+
+        .hug-button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(255, 107, 139, 0.3);
+        }
+
+        .hug-button::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .hug-button:focus:not(:active)::after {
+            animation: ripple 1s ease-out;
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(30, 30);
+                opacity: 0;
+            }
+        }
+
+        .compliment-box {
+            background-color: #fff9fb;
+            border: 3px dashed #ffccd5;
+            border-radius: 20px;
+            padding: 35px 25px;
+            margin: 40px 0;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.5s ease;
+        }
+
+        .compliment-text {
+            font-size: 1.8rem;
+            line-height: 1.5;
+            color: #5a3d5c;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .compliment-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .icon {
+            font-size: 3rem;
+            color: #ffcc70;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .counter {
+            font-size: 1.1rem;
+            color: #7a6a7f;
+            margin-top: 25px;
+            background-color: #f8f0f5;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: inline-block;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 1rem;
+            color: #9e8da1;
+            line-height: 1.6;
+        }
+
+        .heart {
+            color: #ff6b8b;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .hug-button {
+                padding: 20px 40px;
+                font-size: 1.5rem;
+            }
+            
+            .compliment-text {
+                font-size: 1.5rem;
+            }
+            
+            .icon {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hug-button {
+                padding: 18px 35px;
+                font-size: 1.3rem;
+            }
+            
+            .compliment-text {
+                font-size: 1.3rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <main>
-    <h1>Pesan Rahasia 💌</h1>
-    <p>Ada sesuatu yang ingin kusampaikan, dari hati paling dalam.</p>
-    <button class="btn" id="open">Buka Rahasia</button>
-  </main>
-
-  <div class="overlay" id="overlay" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true">
-      <h2>Untuk Kamu</h2>
-      <p>Aku jatuh cinta pada cara kamu melihat dunia—dan caramu melihat aku di dalamnya. 💜</p>
-      <div class="actions">
-        <button class="ghost" id="later">Nanti aja</button>
-        <button class="btn" id="ok">Peluk Aku</button>
-      </div>
+    <div class="container">
+        <div class="icon">
+            <i class="fas fa-hands-heart"></i>
+        </div>
+        
+        <h1>Virtual Hug Generator</h1>
+        <p class="subtitle">Untuk hari-hari ketika kamu butuh pengingat betapa berharganya dirimu. Setiap klik adalah pelukan digital yang hangat 💕</p>
+        
+        <button class="hug-button" id="hugButton">
+            <i class="fas fa-heart"></i> AKU BUTUH PELUKAN <i class="fas fa-heart"></i>
+        </button>
+        
+        <div class="compliment-box">
+            <p class="compliment-text" id="complimentText">Klik tombol di atas untuk mendapatkan pelukan & pujian spesial!</p>
+        </div>
+        
+        <div class="counter">
+            Pelukan diberikan: <span id="hugCount">0</span> kali
+        </div>
+        
+        <div class="footer">
+            <p>Dibuat dengan <span class="heart"><i class="fas fa-heart"></i></span> untuk seseorang yang spesial</p>
+            <p>Kamu bisa klik tombol sesering yang kamu mau. Setiap pelukan selalu berbeda!</p>
+        </div>
     </div>
-  </div>
 
-  <script>
-    const overlay = document.getElementById('overlay');
-    document.getElementById('open').onclick = ()=> overlay.style.display='flex';
-    document.getElementById('later').onclick = ()=> overlay.style.display='none';
-    document.getElementById('ok').onclick = ()=>{
-      alert('Peluk hangat terkirim… 🤍'); overlay.style.display='none';
-    };
-    // Tutup dengan ESC
-    document.addEventListener('keydown', e=>{ if(e.key==='Escape') overlay.style.display='none' });
-  </script>
+    <script>
+        // DAFTAR PUJIAN DAN ALASAN DISAYANG
+        const compliments = [
+            "Kamu itu cahayaku di hari yang paling mendung sekalipun. Terima kasih sudah ada.",
+            "Aku bangga banget sama kamu, tahu nggak? Kamu lebih kuat dari yang kamu kira.",
+            "Dunia ini lebih indah dan lebih baik karena ada kamu di dalamnya. Serius.",
+            "Kamu memberikan ketenangan dan kedamaian yang jarang aku temukan di tempat lain.",
+            "Aku sayang caramu memperlakukan semua makhluk dengan lembut dan penuh kasih.",
+            "Tawarmu itu obat paling manjur. Bisa menyembuhkan hari yang buruk sekalipun.",
+            "Kamu adalah pendengar yang sabar dan selalu membuat orang merasa dipahami.",
+            "Aku bersyukur bisa melihat sisi polos dan kekanak-kanakanmu yang hanya kamu tunjukkan padaku.",
+            "Caramu menghadapi tantangan dengan kepala dingin itu menginspirasi banget.",
+            "Kamu selalu ingat hal-hal kecil tentang orang lain. Itu bukti hatimu yang besar.",
+            "Energi positifmu itu menular. Orang jadi lebih cerah setelah ngobrol sama kamu.",
+            "Aku sayang caramu tertawa terbahak-bahak sampai nggak ada suara. Itu tulus banget.",
+            "Kamu punya intuisi yang tajam dan selalu tahu kapan seseorang butuh pertolongan.",
+            "Ketulusanmu itu langka di dunia sekarang. Jangan pernah berubah.",
+            "Kamu adalah kombinasi sempurna antara kuat dan lembut. Itu yang bikin kamu spesial.",
+            "Caramu memandang dunia dengan penuh rasa ingin tahu itu mengingatkanku pada hal-hal indah.",
+            "Aku kagum sama caramu tetap baik ke semua orang, bahkan yang nggak baik ke kamu.",
+            "Kamu itu seperti bintang: bersinar sendiri dan membuat sekitarnya jadi terang.",
+            "Aku sayang caramu cerewet ketika khawatir. Itu menunjukkan betapa kamu peduli.",
+            "Kamu adalah sahabat/partner terbaik yang bisa diminta oleh siapa pun. Aku bersyukur memilikimu.",
+            "Kepedulianmu nggak cuma kata-kata. Kamu selalu ada dengan aksi nyata.",
+            "Caramu menghargai seni dan keindahan kecil dalam hidup itu menginspirasi.",
+            "Kamu punya keberanian untuk menjadi dirimu sendiri. Itu keren banget.",
+            "Aku sayang caramu mengingat mimpi-mimpiku dan mendukungnya seolah itu mimpimu juga.",
+            "Kamu membuatku menjadi versi terbaik dari diriku sendiri. Terima kasih.",
+            "Ketika semua orang sibuk, kamu tetap meluangkan waktu untuk orang yang kamu sayangi.",
+            "Kamu itu seperti pelangi setelah hujan: membawa harapan dan warna baru.",
+            "Caramu memaafkan dan melupakan itu pelajaran berharga buat banyak orang.",
+            "Kamu punya selera humor yang aneh tapi selalu berhasil buat aku tertawa.",
+            "Aku bersyukur setiap hari karena punya kamu dalam hidupku.",
+            "Kamu mengajarkanku arti kesabaran tanpa pernah menggurui.",
+            "Caramu merayakan kesuksesan orang lain tulus banget. Kamu nggak pernah iri.",
+            "Kamu adalah orang pertama yang aku ingat ketika ada hal baik terjadi.",
+            "Keteguhanmu pada prinsip itu mengagumkan. Kamu nggak mudah terbawa arus.",
+            "Aku sayang caramu tersenyum dengan mata. Itu nggak bisa dipalsukan.",
+            "Kamu punya kemampuan untuk menemukan hal baik di situasi terburuk sekalipun.",
+            "Caramu memasak/membuat sesuatu dengan penuh cinta itu bikin hasilnya spesial.",
+            "Kamu selalu punya kata-kata yang tepat di waktu yang tepat.",
+            "Keberadaanmu saja sudah cukup buat bikin hari jadi lebih baik.",
+            "Kamu adalah bukti bahwa kebaikan masih ada di dunia ini."
+        ];
+
+        // Elemen DOM
+        const hugButton = document.getElementById('hugButton');
+        const complimentText = document.getElementById('complimentText');
+        const hugCountElement = document.getElementById('hugCount');
+        
+        // Variabel penghitung
+        let hugCount = 0;
+        let lastComplimentIndex = -1;
+        
+        // Fungsi untuk mendapatkan pujian acak yang berbeda dari sebelumnya
+        function getRandomCompliment() {
+            let randomIndex;
+            
+            // Pastikan pujian tidak sama dengan sebelumnya
+            do {
+                randomIndex = Math.floor(Math.random() * compliments.length);
+            } while (randomIndex === lastComplimentIndex && compliments.length > 1);
+            
+            lastComplimentIndex = randomIndex;
+            return compliments[randomIndex];
+        }
+        
+        // Fungsi untuk memberikan pelukan (menampilkan pujian)
+        function giveHug() {
+            // Reset animasi
+            complimentText.classList.remove('show');
+            
+            // Dapatkan pujian acak setelah jeda singkat
+            setTimeout(() => {
+                const randomCompliment = getRandomCompliment();
+                complimentText.textContent = randomCompliment;
+                
+                // Tambah efek muncul
+                setTimeout(() => {
+                    complimentText.classList.add('show');
+                }, 50);
+            }, 300);
+            
+            // Update counter
+            hugCount++;
+            hugCountElement.textContent = hugCount;
+            
+            // Ubah warna latar compliment box secara acak
+            const colors = ['#fff9fb', '#fff0f5', '#fef9ff', '#f8f9ff', '#f9fff8'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            document.querySelector('.compliment-box').style.backgroundColor = randomColor;
+            
+            // Efek visual pada tombol
+            hugButton.style.background = `linear-gradient(45deg, #${Math.floor(Math.random()*16777215).toString(16)}, #${Math.floor(Math.random()*16777215).toString(16)})`;
+            
+            // Reset warna tombol setelah beberapa saat
+            setTimeout(() => {
+                hugButton.style.background = 'linear-gradient(45deg, #ff6b8b, #ff8e9e)';
+            }, 1000);
+        }
+        
+        // Event listener untuk tombol
+        hugButton.addEventListener('click', giveHug);
+        
+        // Tambah efek ketikan untuk pesan pertama
+        function typeWriter(text, element, speed = 50) {
+            let i = 0;
+            element.textContent = '';
+            
+            function typing() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(typing, speed);
+                } else {
+                    element.classList.add('show');
+                }
+            }
+            
+            typing();
+        }
+        
+        // Jalankan efek ketikan saat halaman pertama dimuat
+        window.addEventListener('DOMContentLoaded', () => {
+            const initialText = "Klik tombol di atas untuk mendapatkan pelukan & pujian spesial!";
+            typeWriter(initialText, complimentText, 30);
+        });
+        
+        // Tambahkan efek keyboard shortcut (tekan H untuk hug)
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'h' || event.key === 'H') {
+                giveHug();
+                // Efek visual feedback
+                hugButton.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    hugButton.style.transform = '';
+                }, 200);
+            }
+        });
+    </script>
 </body>
 </html>
