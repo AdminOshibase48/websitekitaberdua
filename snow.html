@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>❄️ our story together Snow - Virtual Pet dengan Koin</title>
+    <title>❄️ our story together Snow - Virtual Pet</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
@@ -334,6 +334,68 @@
         </div>
     </div>
 
+    <!-- Announcement Popup (Seperti Cookie Consent) -->
+<div class="announcement-overlay" id="announcementPopup">
+    <div class="announcement">
+        <div class="announcement-header">
+            <h2><i class="fas fa-bullhorn"></i> Update v1.2.0!</h2>
+            <button class="announcement-close" onclick="closeAnnouncement()">&times;</button>
+        </div>
+        <div class="announcement-content">
+            <div class="update-features">
+                <h3>🎉 Fitur Baru yang Ditambahkan:</h3>
+                <ul>
+                    <li><i class="fas fa-trophy"></i> <strong>Sistem Achievement</strong> - Dapatkan penghargaan spesial!</li>
+                    <li><i class="fas fa-chart-bar"></i> <strong>Statistik Detail</strong> - Lacak progress bermainmu</li>
+                    <li><i class="fas fa-gamepad"></i> <strong>Mini Game Baru</strong> - Snowball Dodge & Memory Match</li>
+                    <li><i class="fas fa-cog"></i> <strong>Menu Pengaturan</strong> - Sesuaikan pengalaman bermain</li>
+                    <li><i class="fas fa-calendar-alt"></i> <strong>Event Musiman</strong> - Aksesoris limited edition</li>
+                    <li><i class="fas fa-share-alt"></i> <strong>Fitur Berbagi</strong> - Bagikan progress Snow-mu</li>
+                </ul>
+            </div>
+            
+            <div class="update-notes">
+                <h3>📝 Catatan Update:</h3>
+                <p>• <strong>Save data aman</strong> - Progressmu tetap tersimpan</p>
+                <p>• <strong>Backward compatible</strong> - Bisa main seperti biasa</p>
+                <p>• <strong>Optional features</strong> - Fitur baru bisa dimatikan</p>
+            </div>
+            
+            <div class="announcement-actions">
+                <button class="btn-announcement primary" onclick="acceptUpdate()">
+                    <i class="fas fa-check-circle"></i> Keren, Aku Suka!
+                </button>
+                <button class="btn-announcement secondary" onclick="closeAnnouncement()">
+                    <i class="fas fa-times-circle"></i> Nanti Saja
+                </button>
+                <button class="btn-announcement outline" onclick="showWhatsNew()">
+                    <i class="fas fa-info-circle"></i> Lihat Detail
+                </button>
+            </div>
+            
+            <div class="announcement-footer">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="dontShowAgain">
+                    Jangan tampilkan lagi untuk update ini
+                </label>
+                <small>Kamu bisa cek update di menu Pengaturan nanti</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- What's New Detail Popup -->
+<div class="popup-overlay" id="whatsNewPopup">
+    <div class="popup">
+        <div class="popup-header">
+            <h2><i class="fas fa-star"></i> Apa Yang Baru di v1.2.0</h2>
+            <button class="popup-close" onclick="closeWhatsNew()">&times;</button>
+        </div>
+        <div class="popup-content">
+            <!-- Konten akan diisi oleh JavaScript -->
+        </div>
+    </div>
+</div>
     <!-- JavaScript Files -->
     <script src="assets/gamess-snow/js/snow-data.js"></script>
     <script src="assets/gamess-snow/js/snow-game.js"></script>
