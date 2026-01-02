@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our story together Garden for My Love</title>
+    <style>
+        :root {
+            --bg-color: #fff0f5; /* Lavender Blush */
+            --text-color: #d87093;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: crosshair;
+        }
+
+        /* Pesan di pojok */
+        .message {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            font-style: italic;
+            pointer-events: none; /* Biar nggak keganggu pas klik */
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .instruction {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #d87093;
+            text-align: center;
+            pointer-events: none;
+            transition: opacity 1s;
+        }
+
+        /* Styling Bunga/Hati */
+        .flower {
+            position: absolute;
+            font-size: 2rem;
+            user-select: none;
+            pointer-events: none;
+            animation: bloom 2s ease-out forwards;
+        }
+
+        @keyframes bloom {
+            0% {
+                transform: scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.5) rotate(20deg);
+                opacity: 0.8;
+            }
+        }
+    </style>
+</head>
+<body onclick="createFlower(event)">
+
+    <div class="instruction" id="guide">
+        <h1>Hi Cantik.. ❤️</h1>
+        <p>Coba klik di mana aja deh</p>
+    </div>
+
+    <div class="message">"Every click is a reason why I love you."</div>
+
+    <script>
+        const flowers = ['🌸', '🌼', '🌷', '🌹', '🌻', '🌺', '💖', '✨'];
+        const guide = document.getElementById('guide');
+
+        function createFlower(e) {
+            // Hilangkan instruksi setelah klik pertama
+            guide.style.opacity = '0';
+
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            
+            // Pilih emoji acak
+            const randomType = flowers[Math.floor(Math.random() * flowers.length)];
+            flower.innerHTML = randomType;
+
+            // Atur posisi tepat di klik mouse
+            // Dikurangi sedikit (15-20px) supaya center
+            flower.style.left = (e.clientX - 15) + 'px';
+            flower.style.top = (e.clientY - 15) + 'px';
+
+            document.body.appendChild(flower);
+
+            // Hapus elemen setelah animasi selesai supaya nggak berat
+            setTimeout(() => {
+                flower.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
