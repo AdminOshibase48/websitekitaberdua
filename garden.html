@@ -9,117 +9,81 @@
     <link rel="shortcut icon" href="assets/images/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png" />
     <style>
-        :root {
-            --bg-color: #ffafbd;
-            --text-color: #ffffff;
-        }
-
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: linear-gradient(to bottom, #ffafbd, #ffc3a0);
-            font-family: 'Poppins', sans-serif;
-            touch-action: manipulation;
-            user-select: none;
-            -webkit-user-select: none;
+            margin: 0; padding: 0; width: 100%; height: 100%;
+            overflow: hidden; background: linear-gradient(to bottom, #ffafbd, #ffc3a0);
+            font-family: sans-serif; touch-action: manipulation;
+            user-select: none; -webkit-user-select: none;
         }
-
         .instruction {
-            position: absolute;
-            top: 45%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            text-align: center;
-            width: 80%;
-            pointer-events: none;
-            transition: opacity 0.8s;
-            z-index: 5;
+            position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
+            color: white; text-align: center; width: 80%; z-index: 5; transition: 0.8s;
         }
-
-        h1 { font-size: 2rem; margin-bottom: 10px; text-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
-        p { font-size: 1rem; opacity: 0.9; }
-
-        .message {
-            position: absolute;
-            bottom: 30px;
-            width: 100%;
-            text-align: center;
-            color: white;
-            font-size: 0.9rem;
-            font-style: italic;
-            pointer-events: none;
-            z-index: 10;
-            opacity: 0.8;
-        }
-
         .flower {
-            position: absolute;
-            font-size: 2.5rem;
-            pointer-events: none;
-            animation: bloom 2s ease-out forwards;
-            z-index: 2;
+            position: absolute; font-size: 2.5rem; pointer-events: none;
+            animation: bloom 2s ease-out forwards; z-index: 2;
         }
-
         @keyframes bloom {
-            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            0% { transform: scale(0); opacity: 0; }
             30% { opacity: 1; }
-            100% { transform: scale(1.5) translateY(-100px) rotate(25deg); opacity: 0; }
+            100% { transform: scale(1.5) translateY(-100px); opacity: 0; }
+        }
+        .message {
+            position: absolute; bottom: 30px; width: 100%; text-align: center;
+            color: white; font-size: 0.9rem; font-style: italic; opacity: 0.8;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body onmousedown="handleInteraction(event)" ontouchstart="handleInteraction(event)">
-
-    <audio id="myAudio" loop>
-        <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+<body onclick="playAll(event)" ontouchstart="playAll(event)">
 
     <div class="instruction" id="guide">
         <h1>Hi Cantik.. ❤️</h1>
-        <p>Tap layarnya buat nanem bunga & dengerin musik</p>
+        <p>Tap di mana aja yaa...</p>
     </div>
 
     <div class="message">"Every click is a reason why I love you."</div>
 
     <script>
-        const flowers = ['🌸', '🌼', '🌷', '🌹', '🌻', '🌺', '💖', '✨'];
         let musicStarted = false;
+        // Audio Piano Pendek (Base64) - Anti Error Connection Reset
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        
+        function playNote() {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, audioCtx.currentTime); 
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 1);
+        }
 
-        function handleInteraction(e) {
-            // Cegah double event di mobile
+        function playAll(e) {
             if (e.type === 'mousedown' && 'ontouchstart' in window) return;
-
-            const audio = document.getElementById('myAudio');
             
             if (!musicStarted) {
-                // Play audio dengan cara yang didukung semua browser
-                audio.play().catch(error => console.log("Musik butuh interaksi user"));
                 document.getElementById('guide').style.opacity = '0';
                 musicStarted = true;
             }
 
-            // Koordinat sentuhan/klik
+            // Bunyi "Ting" setiap klik
+            if(audioCtx.state === 'suspended') audioCtx.resume();
+            playNote();
+
             const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
             const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
             
-            createFlower(x, y);
-        }
-
-        function createFlower(x, y) {
-            const flower = document.createElement('div');
-            flower.className = 'flower';
-            flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
-            
-            flower.style.left = (x - 20) + 'px';
-            flower.style.top = (y - 20) + 'px';
-
-            document.body.appendChild(flower);
-            setTimeout(() => flower.remove(), 2000);
+            const flowers = ['🌸', '🌼', '🌷', '🌹', '💖', '✨'];
+            const f = document.createElement('div');
+            f.className = 'flower';
+            f.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
+            f.style.left = (x - 20) + 'px';
+            f.style.top = (y - 20) + 'px';
+            document.body.appendChild(f);
+            setTimeout(() => f.remove(), 2000);
         }
     </script>
 </body>
