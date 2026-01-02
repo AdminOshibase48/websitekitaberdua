@@ -2,15 +2,15 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our story together | Garden for My Love</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>our story together | Garden for My Love</title>
     <link rel="icon" type="image/png" href="assets/images/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg" />
     <link rel="shortcut icon" href="assets/images/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="assets/images/apple-touch-icon.png" />
     <style>
         :root {
-            --bg-color: #ffafbd; /* Pink Soft Gradient */
+            --bg-color: #ffafbd;
             --text-color: #ffffff;
         }
 
@@ -22,123 +22,104 @@
             overflow: hidden;
             background: linear-gradient(to bottom, #ffafbd, #ffc3a0);
             font-family: 'Poppins', sans-serif;
-            cursor: crosshair;
-        }
-
-        /* Pesan di pojok */
-        .message {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
-            color: white;
-            font-size: 1rem;
-            font-style: italic;
-            pointer-events: none;
-            z-index: 10;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            opacity: 0.8;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .instruction {
             position: absolute;
-            top: 50%;
+            top: 45%;
             left: 50%;
             transform: translate(-50%, -50%);
             color: white;
             text-align: center;
+            width: 80%;
             pointer-events: none;
-            transition: opacity 1s;
+            transition: opacity 0.8s;
             z-index: 5;
         }
 
-        h1 { font-size: 3rem; margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
-        p { font-size: 1.2rem; opacity: 0.9; }
+        h1 { font-size: 2rem; margin-bottom: 10px; text-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+        p { font-size: 1rem; opacity: 0.9; }
 
-        /* Styling Bunga */
+        .message {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+            font-style: italic;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.8;
+        }
+
         .flower {
             position: absolute;
             font-size: 2.5rem;
-            user-select: none;
             pointer-events: none;
-            animation: bloom 2.5s ease-out forwards;
+            animation: bloom 2s ease-out forwards;
             z-index: 2;
         }
 
         @keyframes bloom {
             0% { transform: scale(0) rotate(0deg); opacity: 0; }
             30% { opacity: 1; }
-            100% { transform: scale(1.8) translateY(-50px) rotate(20deg); opacity: 0; }
-        }
-
-        /* Iframe Musik (Disembunyikan) */
-        #music-container {
-            position: absolute;
-            top: -100px;
-            left: -100px;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-            opacity: 0;
+            100% { transform: scale(1.5) translateY(-100px) rotate(25deg); opacity: 0; }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;1,600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body onclick="handleInteraction(event)">
+<body onmousedown="handleInteraction(event)" ontouchstart="handleInteraction(event)">
 
-    <div id="music-container">
-        <iframe id="youtube-player" width="560" height="315" 
-            src="https://www.youtube.com/embed/jfKfPfyJRdk?enablejsapi=1" 
-            title="YouTube video player" frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-            allowfullscreen>
-        </iframe>
-    </div>
+    <audio id="myAudio" loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <div class="instruction" id="guide">
         <h1>Hi Cantik.. ❤️</h1>
-        <p>Tap layarnya buat dengerin musik & nanem bunga</p>
+        <p>Tap layarnya buat nanem bunga & dengerin musik</p>
     </div>
 
     <div class="message">"Every click is a reason why I love you."</div>
 
     <script>
-        const flowers = ['🌸', '🌼', '🌷', '🌹', '🌻', '🌺', '💖', '✨', '☁️'];
-        const guide = document.getElementById('guide');
+        const flowers = ['🌸', '🌼', '🌷', '🌹', '🌻', '🌺', '💖', '✨'];
         let musicStarted = false;
 
         function handleInteraction(e) {
-            // Mulai musik pada klik pertama
+            // Cegah double event di mobile
+            if (e.type === 'mousedown' && 'ontouchstart' in window) return;
+
+            const audio = document.getElementById('myAudio');
+            
             if (!musicStarted) {
-                startMusic();
-                guide.style.opacity = '0';
+                // Play audio dengan cara yang didukung semua browser
+                audio.play().catch(error => console.log("Musik butuh interaksi user"));
+                document.getElementById('guide').style.opacity = '0';
                 musicStarted = true;
             }
-            createFlower(e);
+
+            // Koordinat sentuhan/klik
+            const x = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+            const y = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+            
+            createFlower(x, y);
         }
 
-        function startMusic() {
-            // Mengirim perintah play ke YouTube Iframe API
-            const player = document.getElementById('youtube-player');
-            player.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-        }
-
-        function createFlower(e) {
+        function createFlower(x, y) {
             const flower = document.createElement('div');
             flower.className = 'flower';
+            flower.innerHTML = flowers[Math.floor(Math.random() * flowers.length)];
             
-            const randomType = flowers[Math.floor(Math.random() * flowers.length)];
-            flower.innerHTML = randomType;
-
-            // Posisi
-            flower.style.left = (e.clientX - 20) + 'px';
-            flower.style.top = (e.clientY - 20) + 'px';
+            flower.style.left = (x - 20) + 'px';
+            flower.style.top = (y - 20) + 'px';
 
             document.body.appendChild(flower);
-
-            // Bersihkan memori
-            setTimeout(() => {
-                flower.remove();
-            }, 2500);
+            setTimeout(() => flower.remove(), 2000);
         }
     </script>
 </body>
