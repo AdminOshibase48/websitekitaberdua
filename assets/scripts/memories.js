@@ -47,8 +47,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function showNotification(message, type = 'success') {
-        // Remove existing notifications
-        document.querySelectorAll('.notification').forEach(n => n.remove());
+        const existingNotifications = document.querySelectorAll('.notification');
+        existingNotifications.forEach(n => n.remove());
         
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
@@ -59,7 +59,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         document.body.appendChild(notification);
         
-        // Add styles if not already added
         if (!document.getElementById('notification-styles')) {
             const style = document.createElement('style');
             style.id = 'notification-styles';
@@ -99,6 +98,48 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     }
     
+    // ================= LOADING STATE =================
+    function showLoading(show) {
+        const loadingIndicator = document.getElementById('loading-indicator');
+        if (!loadingIndicator) return;
+        
+        if (show) {
+            loadingIndicator.style.display = 'flex';
+            if (memoriesGrid) memoriesGrid.style.opacity = '0.5';
+        } else {
+            loadingIndicator.style.display = 'none';
+            if (memoriesGrid) memoriesGrid.style.opacity = '1';
+        }
+    }
+    
+    // ================= STATS FUNCTIONS =================
+    function updateStats(memories) {
+        if (!totalMemoriesEl || !yearsTogetherEl || !specialDaysEl) return;
+        
+        totalMemoriesEl.textContent = memories.length;
+        
+        if (memories.length > 0) {
+            const dates = memories.map(m => new Date(m.memory_date));
+            const oldest = new Date(Math.min(...dates));
+            const newest = new Date(Math.max(...dates));
+            
+            const diffTime = Math.abs(newest - oldest);
+            const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365.25));
+            
+            yearsTogetherEl.textContent = diffYears || 1;
+            
+            const specialDays = memories.filter(m => 
+                m.likes >= 50 || 
+                ['firsts', 'surprises'].includes(m.category)
+            ).length;
+            
+            specialDaysEl.textContent = specialDays;
+        } else {
+            yearsTogetherEl.textContent = '0';
+            specialDaysEl.textContent = '0';
+        }
+    }
+    
     // ================= MEMORIES FUNCTIONS =================
     async function loadMemories() {
         try {
@@ -118,19 +159,23 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             console.error('Error loading memories:', error);
             showNotification('Gagal memuat kenangan', 'error');
-            memoriesGrid.innerHTML = `
-                <div class="empty-state" style="grid-column:1/-1;text-align:center;padding:60px;color:#6C757D">
-                    <i class="fas fa-exclamation-triangle" style="font-size:3rem;margin-bottom:20px;"></i>
-                    <h3>Gagal memuat kenangan</h3>
-                    <p>Silakan refresh halaman atau coba lagi nanti</p>
-                </div>
-            `;
+            if (memoriesGrid) {
+                memoriesGrid.innerHTML = `
+                    <div class="empty-state" style="grid-column:1/-1;text-align:center;padding:60px;color:#6C757D">
+                        <i class="fas fa-exclamation-triangle" style="font-size:3rem;margin-bottom:20px;"></i>
+                        <h3>Gagal memuat kenangan</h3>
+                        <p>Silakan refresh halaman atau coba lagi nanti</p>
+                    </div>
+                `;
+            }
         } finally {
             showLoading(false);
         }
     }
     
     function displayMemories(memories) {
+        if (!memoriesGrid) return;
+        
         memoriesGrid.innerHTML = '';
         
         if (memories.length === 0) {
@@ -181,17 +226,21 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
-        // Add event listeners
         const likeBtn = card.querySelector('.memory-likes');
-        likeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            handleLike(memory.id, likeBtn);
-        });
+        if (likeBtn) {
+            likeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                handleLike(memory.id, likeBtn);
+            });
+        }
         
-        card.querySelector('.view-memory-btn').addEventListener('click', (e) => {
-            e.stopPropagation();
-            showMemoryDetail(memory.id);
-        });
+        const viewBtn = card.querySelector('.view-memory-btn');
+        if (viewBtn) {
+            viewBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showMemoryDetail(memory.id);
+            });
+        }
         
         card.addEventListener('click', (e) => {
             if (!e.target.closest('.memory-likes') && !e.target.closest('.view-memory-btn')) {
@@ -206,17 +255,14 @@ document.addEventListener('DOMContentLoaded', function() {
         try {
             const likeIcon = likeBtn.querySelector('i');
             const likeCount = likeBtn.querySelector('.like-count');
-            let currentLikes = parseInt(likeCount.textContent);
+            let currentLikes = parseInt(likeCount.textContent) || 0;
             
-            // Toggle like state
             const isLiked = likeIcon.classList.contains('liked');
             const newLikes = isLiked ? currentLikes - 1 : currentLikes + 1;
             
-            // Update UI immediately
             likeIcon.classList.toggle('liked');
             likeCount.textContent = newLikes;
             
-            // Update in database
             const { error } = await supabase
                 .from('memories')
                 .update({ likes: newLikes })
@@ -244,12 +290,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const modalTitle = document.getElementById('modal-title');
             const modalDescription = document.getElementById('modal-description');
             
-            modalDate.textContent = formatDate(memory.memory_date);
-            modalTitle.textContent = memory.title;
-            modalDescription.textContent = memory.description;
+            if (modalDate) modalDate.textContent = formatDate(memory.memory_date);
+            if (modalTitle) modalTitle.textContent = memory.title;
+            if (modalDescription) modalDescription.textContent = memory.description;
             
-            memoryModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
+            if (memoryModal) {
+                memoryModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
             
         } catch (error) {
             console.error('Error loading memory detail:', error);
@@ -291,16 +339,20 @@ document.addEventListener('DOMContentLoaded', function() {
             
         } catch (error) {
             console.error('Error loading love notes:', error);
-            loveNotesContainer.innerHTML = `
-                <div class="empty-state" style="text-align:center;padding:40px;color:#6C757D">
-                    <i class="fas fa-exclamation-triangle" style="font-size:2rem;margin-bottom:15px;"></i>
-                    <p>Gagal memuat catatan kenangan</p>
-                </div>
-            `;
+            if (loveNotesContainer) {
+                loveNotesContainer.innerHTML = `
+                    <div class="empty-state" style="text-align:center;padding:40px;color:#6C757D">
+                        <i class="fas fa-exclamation-triangle" style="font-size:2rem;margin-bottom:15px;"></i>
+                        <p>Gagal memuat catatan kenangan</p>
+                    </div>
+                `;
+            }
         }
     }
     
     function displayLoveNotes(notes) {
+        if (!loveNotesContainer) return;
+        
         loveNotesContainer.innerHTML = '';
         
         if (notes.length === 0) {
@@ -346,11 +398,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     async function submitLoveNote() {
-        const author = document.getElementById('note-author').value.trim();
-        const category = document.getElementById('note-category').value || 'memory';
+        const authorInput = document.getElementById('note-author');
+        const categoryInput = document.getElementById('note-category');
+        
+        if (!authorInput || !categoryInput || !noteContent || !submitNoteBtn) return;
+        
+        const author = authorInput.value.trim();
+        const category = categoryInput.value || 'memory';
         const content = noteContent.value.trim();
         
-        // Validation
         if (!author || !content) {
             showNotification('Harap isi nama dan catatan kenangan', 'error');
             return;
@@ -380,15 +436,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             if (error) throw error;
             
-            // Clear form
-            document.getElementById('note-author').value = '';
-            document.getElementById('note-category').value = '';
+            authorInput.value = '';
+            categoryInput.value = '';
             noteContent.value = '';
-            charCount.textContent = '0';
+            if (charCount) charCount.textContent = '0';
             
             showNotification('Catatan kenangan berhasil disimpan!', 'success');
             
-            // Reload notes
             loadLoveNotes();
             
         } catch (error) {
@@ -400,109 +454,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // ================= STATS FUNCTIONS =================
-    function updateStats(memories) {
-        // Total memories
-        totalMemoriesEl.textContent = memories.length;
-        
-        // Calculate years together
-        if (memories.length > 0) {
-            const dates = memories.map(m => new Date(m.memory_date));
-            const oldest = new Date(Math.min(...dates));
-            const newest = new Date(Math.max(...dates));
-            
-            const diffTime = Math.abs(newest - oldest);
-            const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365.25));
-            
-            yearsTogetherEl.textContent = diffYears || 1;
-            
-            // Count special days (memories with 50+ likes or special categories)
-            const specialDays = memories.filter(m => 
-                m.likes >= 50 || 
-                ['firsts', 'surprises'].includes(m.category)
-            ).length;
-            
-            specialDaysEl.textContent = specialDays;
-        } else {
-            yearsTogetherEl.textContent = '0';
-            specialDaysEl.textContent = '0';
-        }
-    }
-    
-    // ================= EVENT LISTENERS =================
-    // Category filter buttons
-    categoryButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            categoryButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            filterMemories(button.dataset.category);
-        });
-    });
-    
-    // Memory modal
-    modalClose.addEventListener('click', () => {
-        memoryModal.classList.remove('active');
-        document.body.style.overflow = 'auto';
-    });
-    
-    memoryModal.addEventListener('click', (e) => {
-        if (e.target === memoryModal) {
-            memoryModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-    });
-    
-    // Character count for textarea
-    noteContent.addEventListener('input', () => {
-        const count = noteContent.value.length;
-        charCount.textContent = count;
-        
-        if (count > 500) {
-            noteContent.value = noteContent.value.substring(0, 500);
-            charCount.textContent = 500;
-            charCount.style.color = '#FF6B9D';
-        } else if (count > 450) {
-            charCount.style.color = '#FF6B9D';
-        } else {
-            charCount.style.color = '#6C757D';
-        }
-    });
-    
-    // Submit love note
-    submitNoteBtn.addEventListener('click', submitLoveNote);
-    
-    // Enter key to submit note
-    noteContent.addEventListener('keydown', (e) => {
-        if (e.ctrlKey && e.key === 'Enter') {
-            submitLoveNote();
-        }
-    });
-    
-    // Escape key to close modal
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && memoryModal.classList.contains('active')) {
-            memoryModal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-    });
-    
-    // ================= LOADING STATE =================
-    function showLoading(show) {
-        const loadingIndicator = document.getElementById('loading-indicator');
-        if (!loadingIndicator) return;
-        
-        if (show) {
-            loadingIndicator.style.display = 'flex';
-            memoriesGrid.style.opacity = '0.5';
-        } else {
-            loadingIndicator.style.display = 'none';
-            memoriesGrid.style.opacity = '1';
-        }
-    }
-    
     // ================= REALTIME SUBSCRIPTIONS =================
     function setupRealtimeSubscriptions() {
-        // Subscribe to memories changes
         supabase
             .channel('memories-changes')
             .on('postgres_changes', {
@@ -515,7 +468,6 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .subscribe();
         
-        // Subscribe to love notes changes
         supabase
             .channel('love-notes-changes')
             .on('postgres_changes', {
@@ -529,20 +481,89 @@ document.addEventListener('DOMContentLoaded', function() {
             .subscribe();
     }
     
+    // ================= EVENT LISTENERS SETUP =================
+    function setupEventListeners() {
+        if (categoryButtons.length > 0) {
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    filterMemories(button.dataset.category);
+                });
+            });
+        }
+        
+        if (modalClose) {
+            modalClose.addEventListener('click', () => {
+                if (memoryModal) {
+                    memoryModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+        
+        if (memoryModal) {
+            memoryModal.addEventListener('click', (e) => {
+                if (e.target === memoryModal) {
+                    memoryModal.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+        
+        if (noteContent && charCount) {
+            noteContent.addEventListener('input', () => {
+                const count = noteContent.value.length;
+                charCount.textContent = count;
+                
+                if (count > 500) {
+                    noteContent.value = noteContent.value.substring(0, 500);
+                    charCount.textContent = 500;
+                    charCount.style.color = '#FF6B9D';
+                } else if (count > 450) {
+                    charCount.style.color = '#FF6B9D';
+                } else {
+                    charCount.style.color = '#6C757D';
+                }
+            });
+        }
+        
+        if (submitNoteBtn) {
+            submitNoteBtn.addEventListener('click', submitLoveNote);
+        }
+        
+        if (noteContent) {
+            noteContent.addEventListener('keydown', (e) => {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    submitLoveNote();
+                }
+            });
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && memoryModal && memoryModal.classList.contains('active')) {
+                memoryModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+    
     // ================= INITIALIZE EVERYTHING =================
     async function initialize() {
         try {
-            // Load initial data
+            setupEventListeners();
+            
             await Promise.all([
                 loadMemories(),
                 loadLoveNotes()
             ]);
             
-            // Setup realtime
             setupRealtimeSubscriptions();
             
-            // Update current year
-            document.getElementById('current-year').textContent = new Date().getFullYear();
+            const currentYearEl = document.getElementById('current-year');
+            if (currentYearEl) {
+                currentYearEl.textContent = new Date().getFullYear();
+            }
             
             console.log('Memories page initialized successfully!');
             
@@ -597,3 +618,16 @@ loadingStyles.textContent = `
     }
 `;
 document.head.appendChild(loadingStyles);
+
+// Fallback untuk memastikan loading screen hilang
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        const loadingScreen = document.querySelector('.loading-screen');
+        if (loadingScreen && loadingScreen.style.display !== 'none') {
+            console.log('Force hiding loading screen');
+            loadingScreen.style.opacity = '0';
+            loadingScreen.style.visibility = 'hidden';
+            loadingScreen.style.display = 'none';
+        }
+    }, 1000);
+});
