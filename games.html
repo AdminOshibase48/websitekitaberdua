@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Our Story Together | Truth or Dare Romantis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ffd6e7 0%, #ffc8dd 25%, #ffafcc 50%, #ffc8dd 75%, #ffd6e7 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            color: #5a3d5c;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(188, 112, 152, 0.2);
+            padding: 25px 20px;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background: linear-gradient(90deg, #ffafcc, #ffc8dd, #ffafcc);
+        }
+
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 105, 180, 0.2);
+            font-size: 20px;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            color: #9d4edd;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            padding: 0 10px;
+        }
+
+        .heart-icon {
+            color: #ff4d6d;
+            margin: 0 8px;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .name-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .input-group label {
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #7b2cbf;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .input-group input {
+            padding: 14px 15px;
+            border: 2px solid #ffc8dd;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background-color: #fffafc;
+            width: 100%;
+            -webkit-appearance: none;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #ff4d6d;
+            box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.2);
+        }
+
+        .buttons-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 30px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (min-width: 768px) {
+            .buttons-container {
+                flex-direction: row;
+                justify-content: center;
+                gap: 30px;
+            }
+            
+            .name-inputs {
+                flex-direction: row;
+                justify-content: center;
+                gap: 20px;
+            }
+            
+            .input-group {
+                width: 48%;
+            }
+        }
+
+        .truth-btn, .dare-btn {
+            width: 100%;
+            height: 170px;
+            border: none;
+            border-radius: 20px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            touch-action: manipulation;
+        }
+
+        @media (min-width: 768px) {
+            .truth-btn, .dare-btn {
+                width: 220px;
+                height: 220px;
+                border-radius: 50%;
+                font-size: 2.2rem;
+            }
+        }
+
+        .truth-btn {
+            background: linear-gradient(135deg, #c77dff, #9d4edd);
+            color: white;
+        }
+
+        .dare-btn {
+            background: linear-gradient(135deg, #ffafcc, #ff4d6d);
+            color: white;
+        }
+
+        .truth-btn:active, .dare-btn:active {
+            transform: scale(0.97);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .btn-icon {
+                font-size: 3.5rem;
+                margin-bottom: 15px;
+            }
+        }
+
+        .result-container {
+            background-color: #fffafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #ffafcc;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .result-title {
+            font-size: 1.3rem;
+            color: #7b2cbf;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-text {
+            font-size: 1.2rem;
+            line-height: 1.5;
+            color: #5a3d5c;
+            padding: 10px;
+            width: 100%;
+            word-wrap: break-word;
+        }
+
+        @media (min-width: 768px) {
+            .result-text {
+                font-size: 1.4rem;
+            }
+        }
+
+        .result-text .name-placeholder {
+            color: #d63384;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sound-toggle, .history-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 10px;
+            border: none;
+            background: #f8f9fa;
+            color: #7b2cbf;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sound-toggle:active, .history-btn:active {
+            transform: scale(0.95);
+        }
+
+        .history-btn {
+            background: linear-gradient(135deg, #ffafcc, #ffc8dd);
+            color: white;
+        }
+
+        .history-panel {
+            background-color: #fffafc;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            position: relative;
+            z-index: 1;
+            border: 2px solid #ffc8dd;
+        }
+
+        .history-panel h3 {
+            color: #7b2cbf;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .history-list {
+            list-style-type: none;
+        }
+
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #ffc8dd;
+            color: #5a3d5c;
+            font-size: 0.9rem;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-item .type {
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 5px;
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        .history-item .type.truth {
+            background-color: #9d4edd;
+            color: white;
+        }
+
+        .history-item .type.dare {
+            background-color: #ff4d6d;
+            color: white;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 25px;
+            color: #7b2cbf;
+            font-style: italic;
+            padding: 15px;
+            border-top: 1px solid #ffc8dd;
+            width: 100%;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .instructions {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            border-left: 5px solid #ffafcc;
+            position: relative;
+            z-index: 1;
+        }
+
+        .instructions h3 {
+            color: #7b2cbf;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+            color: #5a3d5c;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .animated {
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .spin {
+            animation: spin 0.8s ease;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg) scale(0.8); opacity: 0; }
+            100% { transform: rotate(360deg) scale(1); opacity: 1; }
+        }
+
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #ffe6f2;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ffafcc;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff8fab;
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-hearts" id="floatingHearts"></div>
+    
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-heart heart-icon"></i> Truth or Dare Romantis <i class="fas fa-heart heart-icon"></i></h1>
+            <p class="subtitle">Hangatkan hubungan backstreet kalian dengan tantangan seru</p>
+        </header>
+        
+        <div class="name-inputs">
+            <div class="input-group">
+                <label for="name1"><i class="fas fa-user"></i> Namamu</label>
+                <input type="text" id="name1" placeholder="Masukkan namamu" value="Kamu">
+            </div>
+            <div class="input-group">
+                <label for="name2"><i class="fas fa-heart"></i> Nama Pasangan</label>
+                <input type="text" id="name2" placeholder="Masukkan nama pasangan" value="Pasanganmu">
+            </div>
+        </div>
+        
+        <div class="buttons-container">
+            <button class="truth-btn" id="truthBtn">
+                <i class="fas fa-comment-dots btn-icon"></i>
+                TRUTH
+            </button>
+            <button class="dare-btn" id="dareBtn">
+                <i class="fas fa-star btn-icon"></i>
+                DARE
+            </button>
+        </div>
+        
+        <div class="result-container">
+            <div class="result-title">
+                <i class="fas fa-sparkles"></i> Tantangan Romantis
+            </div>
+            <div class="result-text" id="resultText">
+                Masukkan nama kalian di atas, lalu pilih Truth atau Dare untuk memulai permainan!
+            </div>
+            
+            <div class="controls">
+                <button class="sound-toggle" id="soundToggle">
+                    <i class="fas fa-volume-up"></i> <span id="soundStatus">ON</span>
+                </button>
+                <button class="history-btn" id="historyBtn">
+                    <i class="fas fa-history"></i> Riwayat
+                </button>
+            </div>
+        </div>
+        
+        <div class="history-panel" id="historyPanel">
+            <h3>
+                <span><i class="fas fa-history"></i> Riwayat Permainan</span>
+                <button id="clearHistory" style="background: none; border: none; color: #ff4d6d; font-size: 0.9rem; cursor: pointer;">Hapus</button>
+            </h3>
+            <ul class="history-list" id="historyList">
+                <!-- Riwayat akan ditampilkan di sini -->
+            </ul>
+        </div>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> Cara Bermain</h3>
+            <ol>
+                <li>Masukkan namamu dan nama pasanganmu di kolom yang tersedia</li>
+                <li>Klik tombol <strong>TRUTH</strong> untuk mendapatkan pertanyaan yang harus dijawab dengan jujur</li>
+                <li>Klik tombol <strong>DARE</strong> untuk mendapatkan tantangan yang harus dilakukan</li>
+                <li>Nikmati momen romantis dan hangatkan hubungan kalian!</li>
+            </ol>
+        </div>
+        
+        <div class="footer-note">
+            <p><i class="fas fa-heart" style="color:#ff4d6d; margin-right:5px;"></i> Permainan ini dirancang untuk pasangan backstreet yang ingin menjaga kehangatan hubungan mereka</p>
+        </div>
+    </div>
+
+    <script>
+        // Data untuk Truth (pertanyaan) - lebih banyak
+        const truthQuestions = [
+            "Apa hal pertama yang menarik perhatianmu tentang <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Kapan pertama kali kamu menyadari punya perasaan untuk <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Apa kekasih impianmu sebelum bertemu <span class='name-placeholder'>[Nama Pasangan]</span> dan apakah dia sesuai dengan impianmu?",
+            "Apa hal paling romantis yang pernah <span class='name-placeholder'>[Nama Pasangan]</span> lakukan untukmu?",
+            "Jika kamu bisa pergi ke mana saja berdua dengan <span class='name-placeholder'>[Nama Pasangan]</span>, ke mana kamu akan pergi?",
+            "Apa yang paling kamu rindukan dari <span class='name-placeholder'>[Nama Pasangan]</span> saat kalian tidak bersama?",
+            "Apa hal kecil yang dilakukan <span class='name-placeholder'>[Nama Pasangan]</span> yang selalu bikin kamu tersenyum?",
+            "Pernahkah kamu berbohong pada <span class='name-placeholder'>[Nama Pasangan]</span>? Jika iya, tentang apa?",
+            "Apa ketakutan terbesarmu tentang hubungan kalian?",
+            "Jika hubungan kalian adalah sebuah lagu, lagu apa yang paling tepat menggambarkannya?",
+            "Apa yang paling kamu suka dari kepribadian <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Pernahkah kamu memimpikan <span class='name-placeholder'>[Nama Pasangan]</span>? Ceritakan mimpi itu.",
+            "Apa yang kamu harapkan dari hubungan ini di masa depan?",
+            "Apa kenangan bersama <span class='name-placeholder'>[Nama Pasangan]</span> yang paling berkesan untukmu?",
+            "Jika <span class='name-placeholder'>[Nama Pasangan]</span> adalah makanan, makanan apa yang akan dia jadi dan mengapa?",
+            "Apa kebiasaan <span class='name-placeholder'>[Nama Pasangan]</span> yang menurutmu paling menggemaskan?",
+            "Bagaimana perasaanmu saat pertama kali bertemu <span class='name-placeholder'>[Nama Pasangan]</span> secara langsung?",
+            "Apa hal yang paling membuatmu cemburu dalam hubungan ini?",
+            "Pernahkah kamu menyimpan rahasia dari <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Jika kalian bisa menghabiskan 24 jam bersama tanpa gangguan, apa yang akan kalian lakukan?",
+            "Apa kualitas terbaik <span class='name-placeholder'>[Nama Pasangan]</span> yang menurutmu tidak dimiliki orang lain?",
+            "Pernahkah kamu merasa ragu tentang hubungan ini? Kapan dan mengapa?",
+            "Apa yang membuat hubungan kalian berbeda dengan hubungan sebelumnya?",
+            "Bagaimana <span class='name-placeholder'>[Nama Pasangan]</span> membuat hari-harimu lebih baik?",
+            "Apa hal paling berani yang pernah kamu lakukan untuk <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Jika hubungan kalian adalah film, judul apa yang cocok dan mengapa?",
+            "Apa yang pertama kali kamu pikirkan saat bangun tidur tentang <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Apakah ada hal yang ingin kamu ubah dari hubungan kalian?",
+            "Apa arti cinta menurutmu sekarang setelah bersama <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Pernahkah kamu membayangkan masa depan dengan <span class='name-placeholder'>[Nama Pasangan]</span>? Ceritakan."
+        ];
+
+        // Data untuk Dare (tantangan) - lebih banyak
+        const dareChallenges = [
+            "Kirim pesan suara ke <span class='name-placeholder'>[Nama Pasangan]</span> yang berisi alasan mengapa kamu bersyukur memilikinya.",
+            "Foto selfie romantis dan kirim ke <span class='name-placeholder'>[Nama Pasangan]</span> dengan caption yang manis.",
+            "Tulis puisi pendek untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan bacakan lewat telepon.",
+            "Buat playlist lagu cinta untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan bagikan linknya.",
+            "Kirim pesan tebak-tebakan romantis ke <span class='name-placeholder'>[Nama Pasangan]</span> dan beri hadiah jika dia bisa menebak.",
+            "Ceritakan kenangan favoritmu dengan <span class='name-placeholder'>[Nama Pasangan]</span> sambil meneleponnya.",
+            "Unggah story di media sosial dengan petunjuk tersembunyi tentang <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Buat janji virtual berdua dengan <span class='name-placeholder'>[Nama Pasangan]</span> malam ini (nonton film online bersama).",
+            "Kirim 5 foto kenangan kalian berdua ke <span class='name-placeholder'>[Nama Pasangan]</span> dengan caption yang romantis.",
+            "Ucapkan 'Aku mencintaimu' dengan cara yang kreatif dan berbeda dari biasanya.",
+            "Rencanakan kencan virtual spesial untuk <span class='name-placeholder'>[Nama Pasangan]</span> minggu ini.",
+            "Buat surat cinta digital untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan kirim melalui email.",
+            "Ganti foto profil media sosialmu dengan foto yang mengingatkanmu pada <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Tantang <span class='name-placeholder'>[Nama Pasangan]</span> untuk bermain Truth or Dare juga dan kirimkan screenshotnya.",
+            "Kirim hadiah virtual (stiker, e-card) yang romantis ke <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Buat status WhatsApp yang hanya dimengerti oleh <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Bacakan kutipan cinta favoritmu untuk <span class='name-placeholder'>[Nama Pasangan]</span> lewat telepon.",
+            "Rencanakan kegiatan yang ingin kalian lakukan bersama saat bisa bertemu nanti.",
+            "Kirim daftar '10 hal yang aku suka dari kamu' ke <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Buat video pendek berisi pesan cinta untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan kirimkan.",
+            "Atur alarm untuk mengirim pesan 'selamat pagi' ke <span class='name-placeholder'>[Nama Pasangan]</span> besok pagi.",
+            "Buat kuis romantis tentang hubungan kalian untuk <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Kirim bunga virtual dengan pesan romantis ke <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Buat collage foto kenangan kalian dan bagikan ke <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Nyanyikan lagu cinta favoritmu dan kirim rekamannya ke <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Buat jadwal kencan virtual rutin dengan <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Kirim pesan teks setiap jam selama 5 jam berturut-turut ke <span class='name-placeholder'>[Nama Pasangan]</span> dengan kalimat manis.",
+            "Buat akun media sosial rahasia hanya untuk berdua dengan <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Rencanakan kejutan virtual untuk <span class='name-placeholder'>[Nama Pasangan]</span> di akhir pekan.",
+            "Buat 'kupon cinta' digital yang bisa ditukar <span class='name-placeholder'>[Nama Pasangan]</span> nanti saat bertemu."
+        ];
+
+        // Elemen DOM
+        const truthBtn = document.getElementById('truthBtn');
+        const dareBtn = document.getElementById('dareBtn');
+        const resultText = document.getElementById('resultText');
+        const name1Input = document.getElementById('name1');
+        const name2Input = document.getElementById('name2');
+        const soundToggle = document.getElementById('soundToggle');
+        const soundStatus = document.getElementById('soundStatus');
+        const historyBtn = document.getElementById('historyBtn');
+        const historyPanel = document.getElementById('historyPanel');
+        const historyList = document.getElementById('historyList');
+        const clearHistoryBtn = document.getElementById('clearHistory');
+        const floatingHearts = document.getElementById('floatingHearts');
+
+        // Status
+        let soundEnabled = true;
+        let gameHistory = JSON.parse(localStorage.getItem('truthOrDareHistory')) || [];
+        let usedTruthIndices = [];
+        let usedDareIndices = [];
+
+        // Inisialisasi halaman
+        function initPage() {
+            // Tampilkan riwayat jika ada
+            displayHistory();
+            
+            // Buat hati mengambang
+            createFloatingHearts();
+            
+            // Set nama default jika kosong
+            if (!name1Input.value.trim()) name1Input.value = "Kamu";
+            if (!name2Input.value.trim()) name2Input.value = "Pasanganmu";
+            
+            // Event listener untuk sentuhan pada tombol
+            truthBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                this.classList.add('pulse');
+            });
+            
+            truthBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                this.classList.remove('pulse');
+                showResult('truth');
+            });
+            
+            dareBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                this.classList.add('pulse');
+            });
+            
+            dareBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                this.classList.remove('pulse');
+                showResult('dare');
+            });
+            
+            // Event listener untuk klik biasa (desktop)
+            truthBtn.addEventListener('click', () => showResult('truth'));
+            dareBtn.addEventListener('click', () => showResult('dare'));
+            
+            // Event listener untuk input nama
+            name1Input.addEventListener('input', updateResultWithNames);
+            name2Input.addEventListener('input', updateResultWithNames);
+            
+            // Event listener untuk toggle suara
+            soundToggle.addEventListener('click', toggleSound);
+            soundToggle.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                toggleSound();
+            });
+            
+            // Event listener untuk riwayat
+            historyBtn.addEventListener('click', toggleHistoryPanel);
+            historyBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                toggleHistoryPanel();
+            });
+            
+            // Event listener untuk hapus riwayat
+            clearHistoryBtn.addEventListener('click', clearHistory);
+            clearHistoryBtn.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                clearHistory();
+            });
+        }
+
+        // Buat hati mengambang
+        function createFloatingHearts() {
+            const heartCount = 15;
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '<i class="fas fa-heart"></i>';
+                
+                // Posisi acak
+                const left = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const size = 15 + Math.random() * 20;
+                
+                heart.style.left = `${left}%`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.fontSize = `${size}px`;
+                
+                floatingHearts.appendChild(heart);
+            }
+        }
+
+        // Fungsi untuk memutar suara
+        function playSound() {
+            if (!soundEnabled) return;
+            
+            try {
+                // Buat konteks audio
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Atur tipe suara
+                oscillator.type = 'sine';
+                
+                // Buat efek suara yang menarik
+                const now = audioContext.currentTime;
+                oscillator.frequency.setValueAtTime(523.25, now); // C5
+                oscillator.frequency.exponentialRampToValueAtTime(659.25, now + 0.1); // E5
+                oscillator.frequency.exponentialRampToValueAtTime(783.99, now + 0.2); // G5
+                
+                gainNode.gain.setValueAtTime(0.3, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+                
+                oscillator.start(now);
+                oscillator.stop(now + 0.5);
+            } catch (e) {
+                console.log("Audio tidak didukung di browser ini");
+            }
+        }
+
+        // Toggle suara
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            soundStatus.textContent = soundEnabled ? "ON" : "OFF";
+            soundToggle.style.background = soundEnabled ? 
+                "linear-gradient(135deg, #9d4edd, #7b2cbf)" : "#f8f9fa";
+            soundToggle.style.color = soundEnabled ? "white" : "#7b2cbf";
+            
+            // Simpan preferensi
+            localStorage.setItem('truthOrDareSound', soundEnabled);
+        }
+
+        // Toggle panel riwayat
+        function toggleHistoryPanel() {
+            if (historyPanel.style.display === 'block') {
+                historyPanel.style.display = 'none';
+                historyBtn.innerHTML = '<i class="fas fa-history"></i> Riwayat';
+            } else {
+                historyPanel.style.display = 'block';
+                historyBtn.innerHTML = '<i class="fas fa-times"></i> Tutup';
+                displayHistory();
+            }
+        }
+
+        // Tampilkan riwayat
+        function displayHistory() {
+            if (gameHistory.length === 0) {
+                historyList.innerHTML = '<li class="history-item">Belum ada riwayat permainan</li>';
+                return;
+            }
+            
+            historyList.innerHTML = '';
+            // Tampilkan maksimal 10 riwayat terbaru
+            const recentHistory = gameHistory.slice(-10).reverse();
+            
+            recentHistory.forEach(item => {
+                const li = document.createElement('li');
+                li.classList.add('history-item');
+                
+                const typeSpan = document.createElement('span');
+                typeSpan.classList.add('type', item.type);
+                typeSpan.textContent = item.type === 'truth' ? 'TRUTH' : 'DARE';
+                
+                const textSpan = document.createElement('span');
+                textSpan.innerHTML = item.text;
+                
+                li.appendChild(typeSpan);
+                li.appendChild(textSpan);
+                historyList.appendChild(li);
+            });
+        }
+
+        // Hapus riwayat
+        function clearHistory() {
+            if (confirm("Apakah Anda yakin ingin menghapus semua riwayat permainan?")) {
+                gameHistory = [];
+                localStorage.setItem('truthOrDareHistory', JSON.stringify(gameHistory));
+                displayHistory();
+            }
+        }
+
+        // Simpan ke riwayat
+        function saveToHistory(type, text) {
+            const historyItem = {
+                type: type,
+                text: text,
+                timestamp: new Date().toLocaleString('id-ID')
+            };
+            
+            gameHistory.push(historyItem);
+            
+            // Simpan maksimal 50 riwayat
+            if (gameHistory.length > 50) {
+                gameHistory = gameHistory.slice(-50);
+            }
+            
+            localStorage.setItem('truthOrDareHistory', JSON.stringify(gameHistory));
+            
+            // Update tampilan jika panel riwayat terbuka
+            if (historyPanel.style.display === 'block') {
+                displayHistory();
+            }
+        }
+
+        // Fungsi untuk mengganti nama placeholder
+        function replaceNames(text) {
+            let name1 = name1Input.value.trim() || "Kamu";
+            let name2 = name2Input.value.trim() || "Pasanganmu";
+            
+            return text
+                .replace(/\[Nama Kamu\]/g, name1)
+                .replace(/\[Nama Pasangan\]/g, name2);
+        }
+
+        // Fungsi untuk mendapatkan item acak yang belum digunakan
+        function getRandomUnusedItem(array, usedIndices) {
+            // Reset jika semua sudah digunakan
+            if (usedIndices.length >= array.length) {
+                usedIndices.length = 0;
+            }
+            
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * array.length);
+            } while (usedIndices.includes(randomIndex));
+            
+            usedIndices.push(randomIndex);
+            return {
+                text: array[randomIndex],
+                index: randomIndex
+            };
+        }
+
+        // Fungsi untuk menampilkan hasil dengan animasi
+        function showResult(type) {
+            // Validasi nama
+            if (!name1Input.value.trim() || !name2Input.value.trim()) {
+                resultText.innerHTML = "Silakan masukkan kedua nama terlebih dahulu!";
+                resultText.classList.add("animated");
+                return;
+            }
+            
+            // Mainkan suara
+            playSound();
+            
+            // Tampilkan animasi memutar
+            resultText.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Mengocok...";
+            resultText.classList.remove("animated");
+            resultText.classList.add("spin");
+            
+            // Setelah jeda, tampilkan hasil
+            setTimeout(() => {
+                let selectedItem;
+                
+                if (type === 'truth') {
+                    const result = getRandomUnusedItem(truthQuestions, usedTruthIndices);
+                    selectedItem = result.text;
+                } else {
+                    const result = getRandomUnusedItem(dareChallenges, usedDareIndices);
+                    selectedItem = result.text;
+                }
+                
+                // Ganti placeholder dengan nama asli
+                const finalText = replaceNames(selectedItem);
+                
+                // Tampilkan hasil
+                resultText.innerHTML = `<strong>${type === 'truth' ? 'TRUTH' : 'DARE'}:</strong> ${finalText}`;
+                resultText.classList.remove("spin");
+                resultText.classList.add("animated");
+                
+                // Simpan ke riwayat
+                saveToHistory(type, finalText);
+                
+                // Tambahkan efek visual pada tombol yang dipilih
+                const selectedBtn = type === 'truth' ? truthBtn : dareBtn;
+                selectedBtn.style.transform = "scale(0.97)";
+                setTimeout(() => {
+                    selectedBtn.style.transform = "";
+                }, 300);
+            }, 800);
+        }
+
+        // Fungsi untuk memperbarui hasil dengan nama baru
+        function updateResultWithNames() {
+            const currentText = resultText.innerHTML;
+            if (currentText.includes("TRUTH:") || currentText.includes("DARE:")) {
+                const isTruth = currentText.includes("TRUTH:");
+                const itemText = currentText.split(":")[1].trim();
+                
+                // Cari item asli berdasarkan teks
+                const arrayToSearch = isTruth ? truthQuestions : dareChallenges;
+                let originalItem = null;
+                
+                for (let item of arrayToSearch) {
+                    const tempText = replaceNames(item);
+                    if (tempText.includes(itemText.replace(/<[^>]*>/g, '').substring(0, 50))) {
+                        originalItem = item;
+                        break;
+                    }
+                }
+                
+                // Jika ditemukan, perbarui dengan nama baru
+                if (originalItem) {
+                    const finalText = replaceNames(originalItem);
+                    resultText.innerHTML = `<strong>${isTruth ? 'TRUTH' : 'DARE'}:</strong> ${finalText}`;
+                }
+            }
+        }
+
+        // Muat preferensi suara
+        const savedSoundPref = localStorage.getItem('truthOrDareSound');
+        if (savedSoundPref !== null) {
+            soundEnabled = savedSoundPref === 'true';
+            soundStatus.textContent = soundEnabled ? "ON" : "OFF";
+            soundToggle.style.background = soundEnabled ? 
+                "linear-gradient(135deg, #9d4edd, #7b2cbf)" : "#f8f9fa";
+            soundToggle.style.color = soundEnabled ? "white" : "#7b2cbf";
+        }
+
+        // Inisialisasi halaman saat dimuat
+        window.addEventListener('DOMContentLoaded', initPage);
+        
+        // Mencegah zoom pada double tap di mobile
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
