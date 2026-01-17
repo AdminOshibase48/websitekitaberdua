@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bunga Virtual Romantis</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #ff7eb3, #ff758c, #ff7eb3);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(255, 118, 140, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: #a5b1c2;
+            margin-bottom: 20px;
+        }
+
+        .flower-container {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            margin: 30px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flower {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            transition: transform 0.5s ease;
+        }
+
+        .flower:hover {
+            transform: scale(1.05);
+        }
+
+        .petal {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(45deg, #ff7eb3, #ff4d8d);
+            border-radius: 60% 70% 50% 60%;
+            top: 50%;
+            left: 50%;
+            transform-origin: center;
+            box-shadow: 0 5px 15px rgba(255, 126, 179, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .center {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #ffd166, #ffb347);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(255, 179, 71, 0.7);
+        }
+
+        .stem {
+            position: absolute;
+            width: 15px;
+            height: 300px;
+            background: linear-gradient(to bottom, #2ecc71, #27ae60);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            border-radius: 0 0 10px 10px;
+            z-index: -1;
+        }
+
+        .leaf {
+            position: absolute;
+            width: 80px;
+            height: 40px;
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            border-radius: 0 40px 0 40px;
+            top: 70%;
+            left: 50%;
+            transform: translate(20px, 0);
+            z-index: -1;
+        }
+
+        .leaf:nth-child(2) {
+            transform: translate(-100px, 0) rotateY(180deg);
+        }
+
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 30px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .control-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(to right, #ff7eb3, #ff758c);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .message-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 800px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .message-container.show {
+            display: block;
+            opacity: 1;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .message {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #f8f9fa;
+            font-style: italic;
+        }
+
+        .heart {
+            color: #ff4d8d;
+            font-size: 1.5rem;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        .hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .heart-particle {
+            position: absolute;
+            color: #ff4d8d;
+            font-size: 24px;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            font-size: 0.95rem;
+            color: #a5b1c2;
+            max-width: 800px;
+        }
+
+        footer {
+            margin-top: 40px;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        @keyframes rotateFlower {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 126, 179, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(255, 126, 179, 0.8); }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .flower-container {
+                height: 400px;
+            }
+            
+            .flower {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .petal {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .controls, .message-container {
+                padding: 20px;
+            }
+            
+            button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-container" id="heartsContainer"></div>
+    
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-heart heart"></i> Bunga Virtual Romantis <i class="fas fa-heart heart"></i></h1>
+            <p class="subtitle">Sebuah bunga virtual yang penuh makna cinta untuk orang tersayang</p>
+        </header>
+        
+        <div class="flower-container">
+            <div class="flower" id="flower">
+                <!-- Petals will be generated by JavaScript -->
+                <div class="center"></div>
+                <div class="stem"></div>
+                <div class="leaf"></div>
+                <div class="leaf"></div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <h2 style="margin-bottom: 20px; color: #ffb8d9;">Aksi Romantis</h2>
+            <div class="control-group">
+                <button id="rotateBtn" class="btn-primary">
+                    <i class="fas fa-sync-alt"></i> Putar Bunga
+                </button>
+                <button id="floatBtn" class="btn-primary">
+                    <i class="fas fa-feather-alt"></i> Buat Melayang
+                </button>
+                <button id="pulseBtn" class="btn-primary">
+                    <i class="fas fa-heartbeat"></i> Berdetak
+                </button>
+                <button id="heartsBtn" class="btn-secondary">
+                    <i class="fas fa-heart"></i> Hujan Hati
+                </button>
+                <button id="messageBtn" class="btn-secondary">
+                    <i class="fas fa-envelope"></i> Pesan Romantis
+                </button>
+            </div>
+            <div class="control-group">
+                <button id="surpriseBtn" class="btn-primary" style="background: linear-gradient(to right, #ff4d8d, #ff2e63);">
+                    <i class="fas fa-gift"></i> Kejutan Romantis!
+                </button>
+            </div>
+        </div>
+        
+        <div class="message-container" id="messageContainer">
+            <h2 style="margin-bottom: 20px; color: #ffb8d9;">Pesan Untukmu <i class="fas fa-heart heart"></i></h2>
+            <p class="message" id="messageText">
+                <!-- Message will be inserted by JavaScript -->
+            </p>
+            <button id="newMessageBtn" class="btn-secondary">
+                <i class="fas fa-redo"></i> Pesan Lainnya
+            </button>
+        </div>
+        
+        <div class="instructions">
+            <h3 style="color: #ffb8d9; margin-bottom: 10px;">Cara Menggunakan:</h3>
+            <p>Klik tombol-tombol di atas untuk mengontrol bunga virtual ini. Gunakan tombol "Kejutan Romantis!" untuk efek terbaik yang akan membuat pasangan Anda terkesan.</p>
+            <p style="margin-top: 10px;">Bunga ini adalah simbol cinta yang tidak akan pernah layu, seperti perasaan yang tulus untuk orang yang spesial.</p>
+        </div>
+        
+        <footer>
+            <p>Dibuat dengan <i class="fas fa-heart heart"></i> untuk pasangan tersayang | Bunga Virtual Romantis</p>
+        </footer>
+    </div>
+
+    <script>
+        // Elements
+        const flower = document.getElementById('flower');
+        const rotateBtn = document.getElementById('rotateBtn');
+        const floatBtn = document.getElementById('floatBtn');
+        const pulseBtn = document.getElementById('pulseBtn');
+        const heartsBtn = document.getElementById('heartsBtn');
+        const messageBtn = document.getElementById('messageBtn');
+        const surpriseBtn = document.getElementById('surpriseBtn');
+        const messageContainer = document.getElementById('messageContainer');
+        const messageText = document.getElementById('messageText');
+        const newMessageBtn = document.getElementById('newMessageBtn');
+        const heartsContainer = document.getElementById('heartsContainer');
+
+        // Create flower petals
+        function createPetals() {
+            const petalCount = 12;
+            const flowerElement = document.querySelector('.flower');
+            
+            // Clear existing petals
+            const existingPetals = document.querySelectorAll('.petal');
+            existingPetals.forEach(petal => petal.remove());
+            
+            // Create new petals
+            for (let i = 0; i < petalCount; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                
+                // Calculate position for each petal in a circle
+                const angle = (i / petalCount) * 2 * Math.PI;
+                const radius = 100;
+                const x = radius * Math.cos(angle);
+                const y = radius * Math.sin(angle);
+                
+                petal.style.left = `calc(50% + ${x}px)`;
+                petal.style.top = `calc(50% + ${y}px)`;
+                
+                // Rotate each petal
+                const rotateAngle = (i / petalCount) * 360;
+                petal.style.transform = `translate(-50%, -50%) rotate(${rotateAngle}deg)`;
+                
+                flowerElement.appendChild(petal);
+            }
+        }
+
+        // Romantic messages
+        const romanticMessages = [
+            "Jika cinta adalah bunga, maka kamu adalah taman yang membuatku selalu ingin kembali.",
+            "Setiap petal pada bunga ini mewakili setiap senyuman yang kamu berikan padaku.",
+            "Cintaku padamu seperti bunga ini, selalu mekar dan tidak pernah layu.",
+            "Kamu adalah alasan mengapa hatiku selalu berbunga-bunga.",
+            "Di antara semua bunga di dunia, kamulah yang paling indah dan berarti bagiku.",
+            "Seperti bunga yang selalu menghadap matahari, hatiku selalu menghadap padamu.",
+            "Cinta kita seperti bunga yang mekar, indah dan penuh warna.",
+            "Jika aku bisa memberimu satu bunga untuk setiap saat bahagia yang kamu berikan padaku, aku akan memberimu taman seluas alam semesta.",
+            "Bunga-bunga mungkin layu, tetapi cintaku padamu akan tetap abadi.",
+            "Kamu adalah bunga terindah di taman hidupku, yang selalu membuat hari-hariku cerah."
+        ];
+
+        // Display random romantic message
+        function showRandomMessage() {
+            const randomIndex = Math.floor(Math.random() * romanticMessages.length);
+            messageText.textContent = romanticMessages[randomIndex];
+            messageContainer.classList.add('show');
+            
+            // Auto-hide message after 10 seconds
+            setTimeout(() => {
+                messageContainer.classList.remove('show');
+            }, 10000);
+        }
+
+        // Create floating hearts
+        function createHearts(count = 30) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart-particle';
+                    heart.innerHTML = '<i class="fas fa-heart"></i>';
+                    
+                    // Random position
+                    const startX = Math.random() * window.innerWidth;
+                    heart.style.left = `${startX}px`;
+                    heart.style.top = `${window.innerHeight}px`;
+                    
+                    // Random size
+                    const size = 15 + Math.random() * 25;
+                    heart.style.fontSize = `${size}px`;
+                    
+                    // Random color
+                    const colors = ['#ff4d8d', '#ff7eb3', '#ffb8d9', '#ff758c'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    heart.style.color = color;
+                    
+                    heartsContainer.appendChild(heart);
+                    
+                    // Animation
+                    const animationDuration = 2 + Math.random() * 3;
+                    const endY = -50;
+                    const endX = startX + (Math.random() * 200 - 100);
+                    
+                    heart.animate([
+                        { 
+                            transform: `translate(0, 0) rotate(0deg)`, 
+                            opacity: 0.8 
+                        },
+                        { 
+                            transform: `translate(${endX - startX}px, ${endY}px) rotate(${360}deg)`, 
+                            opacity: 0 
+                        }
+                    ], {
+                        duration: animationDuration * 1000,
+                        easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+                    });
+                    
+                    // Remove heart after animation
+                    setTimeout(() => {
+                        heart.remove();
+                    }, animationDuration * 1000);
+                }, i * 100);
+            }
+        }
+
+        // Rotate flower animation
+        function rotateFlower() {
+            flower.style.animation = 'rotateFlower 10s linear infinite';
+            
+            // Stop after 10 seconds
+            setTimeout(() => {
+                flower.style.animation = '';
+            }, 10000);
+        }
+
+        // Float flower animation
+        function floatFlower() {
+            flower.style.animation = 'float 3s ease-in-out infinite';
+            
+            // Stop after 15 seconds
+            setTimeout(() => {
+                flower.style.animation = '';
+            }, 15000);
+        }
+
+        // Pulse flower animation
+        function pulseFlower() {
+            const petals = document.querySelectorAll('.petal');
+            petals.forEach(petal => {
+                petal.style.animation = 'pulse 1.5s infinite';
+            });
+            
+            // Stop after 10 seconds
+            setTimeout(() => {
+                petals.forEach(petal => {
+                    petal.style.animation = '';
+                });
+            }, 10000);
+        }
+
+        // Surprise effect - combination of all animations
+        function surpriseEffect() {
+            // Show message
+            showRandomMessage();
+            
+            // Start all animations
+            rotateFlower();
+            floatFlower();
+            pulseFlower();
+            
+            // Create lots of hearts
+            createHearts(50);
+            
+            // Change background color temporarily
+            const originalBackground = document.body.style.background;
+            document.body.style.background = 'linear-gradient(135deg, #4a1e5a 0%, #2d1b69 50%, #0f3460 100%)';
+            
+            // Revert after 5 seconds
+            setTimeout(() => {
+                document.body.style.background = originalBackground;
+            }, 5000);
+        }
+
+        // Event Listeners
+        rotateBtn.addEventListener('click', rotateFlower);
+        floatBtn.addEventListener('click', floatFlower);
+        pulseBtn.addEventListener('click', pulseFlower);
+        heartsBtn.addEventListener('click', () => createHearts(20));
+        messageBtn.addEventListener('click', showRandomMessage);
+        surpriseBtn.addEventListener('click', surpriseEffect);
+        newMessageBtn.addEventListener('click', showRandomMessage);
+
+        // Close message when clicking outside
+        document.addEventListener('click', (e) => {
+            if (messageContainer.classList.contains('show') && 
+                !messageContainer.contains(e.target) && 
+                e.target !== messageBtn) {
+                messageContainer.classList.remove('show');
+            }
+        });
+
+        // Initialize flower petals on load
+        window.addEventListener('load', () => {
+            createPetals();
+            
+            // Show welcome message after a short delay
+            setTimeout(() => {
+                messageText.textContent = "Selamat datang di Bunga Virtual Romantis! Bunga ini adalah simbol cinta yang tidak akan pernah layu untuk orang yang spesial.";
+                messageContainer.classList.add('show');
+                
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    messageContainer.classList.remove('show');
+                }, 5000);
+            }, 1000);
+            
+            // Create a few hearts on load
+            setTimeout(() => createHearts(5), 1500);
+        });
+
+        // Make flower interactive on hover
+        flower.addEventListener('mouseenter', () => {
+            const petals = document.querySelectorAll('.petal');
+            petals.forEach(petal => {
+                petal.style.transform += ' scale(1.1)';
+            });
+        });
+
+        flower.addEventListener('mouseleave', () => {
+            const petals = document.querySelectorAll('.petal');
+            petals.forEach(petal => {
+                petal.style.transform = petal.style.transform.replace(' scale(1.1)', '');
+            });
+        });
+    </script>
+</body>
+</html>
