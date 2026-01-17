@@ -1803,3 +1803,13 @@ body {
 .shake {
     animation: shake 0.5s ease;
 }
+
+/* ===== LOGIN PAGE STYLES ===== */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #FFE4EF 0%, #B8DB80 100%);
+    padding: 20px;
+}
