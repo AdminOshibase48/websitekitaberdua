@@ -1,7 +1,7 @@
 // Konfigurasi Login
 const VALID_PASSWORD = '171225';
 const VALID_USERS = ['Capi', 'Cipi'];
-const MAIN_PAGE = 'home.html'; // Ganti dengan nama file utama kamu
+const MAIN_PAGE = 'home'; // Ganti dengan nama file utama kamu
 
 // Elemen DOM
 let currentUser = 'Capi';
