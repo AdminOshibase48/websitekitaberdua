@@ -393,6 +393,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     <script src="assets/scripts/main.js"></script>
+    <script src="assets/scripts/auth-check.js"></script>
     <script src="assets/scripts/animations.js"></script>
     <script src="assets/scripts/countdown.js"></script>
     <script src="assets/scripts/gallery.js"></script>
@@ -586,7 +587,7 @@
         `).join('');
     }
     
- // INITIALIZE
+    // INITIALIZE
     document.addEventListener('DOMContentLoaded', function() {
         AOS.init({
             duration: 800,
@@ -611,38 +612,6 @@
         // UPDATE YEAR
         document.getElementById('current-year').textContent = new Date().getFullYear();
     });
-
-        <!-- Authentication Check Script -->
-<script src="assets/scripts/auth-check.js"></script>
-
-<script>
-// Backup check untuk memastikan tidak ada bypass
-(function() {
-    // Double check authentication
-    setTimeout(() => {
-        const isLoggedIn = sessionStorage.getItem('loveLoggedIn');
-        const currentUser = sessionStorage.getItem('loveUser');
-        
-        if (!isLoggedIn || !currentUser) {
-            console.log('Backup auth check failed, redirecting...');
-            sessionStorage.setItem('redirectAfterLogin', window.location.href);
-            window.location.href = 'index.html';
-        }
-    }, 2000);
-    
-    // Clear session jika page di-refresh terlalu cepat (optional)
-    let pageAccessedByReload = (
-        (window.performance.navigation && window.performance.navigation.type === 1) ||
-        window.performance
-            .getEntriesByType('navigation')
-            .map((nav) => nav.type)
-            .includes('reload')
-    );
-    
-    if (pageAccessedByReload) {
-        console.log('Page was reloaded, maintaining session...');
-    }
-})();
     </script>
 </body>
 </html>
