@@ -586,78 +586,8 @@
         `).join('');
     }
     
- // LOGIN PROTECTION SYSTEM
-    function checkLogin() {
-        const isLoggedIn = sessionStorage.getItem('loveLoggedIn');
-        const currentUser = sessionStorage.getItem('loveUser');
-        
-        if (!isLoggedIn || !currentUser) {
-            // Show login protection overlay
-            document.getElementById('login-protection').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            return false;
-        }
-        
-        // User is logged in
-        document.getElementById('login-protection').style.display = 'none';
-        document.body.style.overflow = 'auto';
-        
-        // Add user greeting to navbar
-        const navContainer = document.querySelector('.nav-container');
-        const existingGreeting = document.querySelector('.user-greeting');
-        
-        if (!existingGreeting) {
-            const userGreeting = document.createElement('div');
-            userGreeting.className = 'user-greeting';
-            userGreeting.innerHTML = `
-                <i class="fas fa-user-heart"></i>
-                ${currentUser}
-                <button class="logout-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                </button>
-            `;
-            
-            // Insert before nav-toggle button
-            const navToggle = document.querySelector('.nav-toggle');
-            if (navToggle) {
-                navContainer.insertBefore(userGreeting, navToggle);
-            } else {
-                navContainer.appendChild(userGreeting);
-            }
-        }
-        
-        // Update welcome message
-        document.getElementById('currentUserName').textContent = currentUser;
-        
-        // Hide welcome message after 5 seconds
-        setTimeout(() => {
-            document.getElementById('welcomeMessage').classList.add('hidden');
-        }, 5000);
-        
-        return true;
-    }
-    
-    function redirectToLogin() {
-        sessionStorage.clear();
-        window.location.href = 'index.html';
-    }
-    
-    function logout() {
-        if (confirm('Yakin mau logout sayang? 😢')) {
-            sessionStorage.removeItem('loveLoggedIn');
-            sessionStorage.removeItem('loveUser');
-            window.location.href = 'index';
-        }
-    }
-    
-    // INITIALIZE EVERYTHING
+ // INITIALIZE
     document.addEventListener('DOMContentLoaded', function() {
-        // First check login
-        if (!checkLogin()) {
-            return;
-        }
-        
-        // Initialize AOS
         AOS.init({
             duration: 800,
             offset: 100,
@@ -680,26 +610,6 @@
         
         // UPDATE YEAR
         document.getElementById('current-year').textContent = new Date().getFullYear();
-        
-        // Update Days Together dynamically
-        const startDate = new Date('2025-12-17');
-        const today = new Date();
-        const timeDiff = today.getTime() - startDate.getTime();
-        const daysTogether = Math.floor(timeDiff / (1000 * 3600 * 24));
-        
-        if (daysTogether > 0) {
-            document.getElementById('days-together').textContent = daysTogether;
-        }
-    });
-    
-    // Handle page visibility change (if user switches tabs)
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            // Page is hidden, do nothing
-        } else {
-            // Page is visible again, check login
-            checkLogin();
-        }
     });
     </script>
 </body>
