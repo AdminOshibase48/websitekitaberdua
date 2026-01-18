@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Our Story Together | Truth or Dare Romantis</title>
+    <title>our story together | Truth or Dare Romantis </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -72,6 +72,87 @@
             10% { opacity: 0.7; }
             90% { opacity: 0.7; }
             100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Modal Update Notification */
+        .update-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .update-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .update-badge {
+            background: linear-gradient(135deg, #ff6b9d, #ff4d6d);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .update-modal h2 {
+            color: #d63384;
+            margin-bottom: 15px;
+        }
+
+        .update-modal ul {
+            text-align: left;
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .update-modal li {
+            margin-bottom: 10px;
+            color: #5a3d5c;
+        }
+
+        .close-modal {
+            background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 1rem;
+            transition: transform 0.3s;
+        }
+
+        .close-modal:active {
+            transform: scale(0.95);
         }
 
         header {
@@ -150,6 +231,163 @@
             box-shadow: 0 0 0 3px rgba(255, 77, 109, 0.2);
         }
 
+        /* Area Pemain */
+        .players-section {
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0;
+            position: relative;
+            z-index: 1;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .player-card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            width: 48%;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .player-card.active {
+            border-color: #ff4d6d;
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(255, 77, 109, 0.2);
+        }
+
+        .player-name {
+            font-weight: bold;
+            color: #7b2cbf;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .player-status {
+            font-size: 0.9rem;
+            color: #9d4edd;
+            font-style: italic;
+        }
+
+        .pick-player-btn {
+            background: linear-gradient(135deg, #ffafcc, #ff4d6d);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            font-size: 1rem;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 1;
+        }
+
+        .pick-player-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Animasi Kartu Kocok */
+        .shuffle-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .shuffle-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            perspective: 1000px;
+        }
+
+        .card {
+            position: absolute;
+            width: 200px;
+            height: 120px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+            left: 50px;
+            top: 40px;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #9d4edd, #7b2cbf);
+            color: white;
+            font-weight: bold;
+            font-size: 1.5rem;
+            backface-visibility: hidden;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #ffafcc, #ff4d6d);
+            color: white;
+            transform: rotateY(180deg);
+            backface-visibility: hidden;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .shuffle-text {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .skip-shuffle-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .skip-shuffle-btn:active {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(0.95);
+        }
+
         .buttons-container {
             display: flex;
             flex-direction: column;
@@ -175,6 +413,10 @@
             .input-group {
                 width: 48%;
             }
+            
+            .player-card {
+                width: 30%;
+            }
         }
 
         .truth-btn, .dare-btn {
@@ -196,6 +438,11 @@
             touch-action: manipulation;
         }
 
+        .truth-btn.disabled, .dare-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         @media (min-width: 768px) {
             .truth-btn, .dare-btn {
                 width: 220px;
@@ -215,7 +462,7 @@
             color: white;
         }
 
-        .truth-btn:active, .dare-btn:active {
+        .truth-btn:active:not(.disabled), .dare-btn:active:not(.disabled) {
             transform: scale(0.97);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
         }
@@ -454,12 +701,41 @@
     </style>
 </head>
 <body>
+    <!-- Modal Update Notification -->
+    <div class="update-modal" id="updateModal">
+        <div class="update-modal-content">
+            <div class="update-badge">NEW UPDATE v2.0!</div>
+            <h2>Fitur Baru yang Lebih Seru!</h2>
+            <p>Kami telah menambahkan fitur-fitur baru untuk pengalaman bermain yang lebih seru:</p>
+            <ul>
+                <li><strong>Sistem Pengocokan UNO</strong> - Pilih pemain secara acak seperti main UNO</li>
+                <li><strong>Animasi Kartu Kocok</strong> - Animasi kartu yang keren selama 3 detik</li>
+                <li><strong>Tombol Skip</strong> - Lewati animasi jika tidak sabar</li>
+                <li><strong>Pertanyaan Fresh</strong> - 40 pertanyaan dan tantangan baru yang romantis</li>
+                <li><strong>Penanda Pemain Aktif</strong> - Tahu giliran siapa yang sedang bermain</li>
+            </ul>
+            <button class="close-modal" id="closeModal">Mulai Bermain!</button>
+        </div>
+    </div>
+
+    <!-- Overlay Animasi Kocok -->
+    <div class="shuffle-overlay" id="shuffleOverlay">
+        <div class="shuffle-text" id="shuffleText">Mengocok pemain...</div>
+        <div class="shuffle-container">
+            <div class="card card-front" id="shuffleCard">
+                <i class="fas fa-heart" style="font-size: 3rem; margin-bottom: 10px;"></i>
+                <div>TRUTH OR DARE</div>
+            </div>
+        </div>
+        <button class="skip-shuffle-btn" id="skipShuffleBtn">Skip Animasi</button>
+    </div>
+
     <div class="floating-hearts" id="floatingHearts"></div>
     
     <div class="container">
         <header>
-            <h1><i class="fas fa-heart heart-icon"></i> Truth or Dare Romantis <i class="fas fa-heart heart-icon"></i></h1>
-            <p class="subtitle">Hangatkan hubungan backstreet kalian dengan tantangan seru</p>
+            <h1><i class="fas fa-heart heart-icon"></i> Truth or Dare Romantis v2.0 <i class="fas fa-heart heart-icon"></i></h1>
+            <p class="subtitle">Sistem baru! Kocok pemain seperti UNO sebelum memulai tantangan</p>
         </header>
         
         <div class="name-inputs">
@@ -473,12 +749,27 @@
             </div>
         </div>
         
+        <button class="pick-player-btn" id="pickPlayerBtn">
+            <i class="fas fa-random"></i> Kocok Pemain
+        </button>
+        
+        <div class="players-section">
+            <div class="player-card" id="player1Card">
+                <div class="player-name" id="player1Name">Kamu</div>
+                <div class="player-status" id="player1Status">Menunggu giliran</div>
+            </div>
+            <div class="player-card" id="player2Card">
+                <div class="player-name" id="player2Name">Pasanganmu</div>
+                <div class="player-status" id="player2Status">Menunggu giliran</div>
+            </div>
+        </div>
+        
         <div class="buttons-container">
-            <button class="truth-btn" id="truthBtn">
+            <button class="truth-btn disabled" id="truthBtn">
                 <i class="fas fa-comment-dots btn-icon"></i>
                 TRUTH
             </button>
-            <button class="dare-btn" id="dareBtn">
+            <button class="dare-btn disabled" id="dareBtn">
                 <i class="fas fa-star btn-icon"></i>
                 DARE
             </button>
@@ -489,7 +780,7 @@
                 <i class="fas fa-sparkles"></i> Tantangan Romantis
             </div>
             <div class="result-text" id="resultText">
-                Masukkan nama kalian di atas, lalu pilih Truth atau Dare untuk memulai permainan!
+                Klik tombol "Kocok Pemain" terlebih dahulu untuk menentukan siapa yang bermain pertama!
             </div>
             
             <div class="controls">
@@ -513,12 +804,14 @@
         </div>
         
         <div class="instructions">
-            <h3><i class="fas fa-info-circle"></i> Cara Bermain</h3>
+            <h3><i class="fas fa-info-circle"></i> Cara Bermain v2.0</h3>
             <ol>
-                <li>Masukkan namamu dan nama pasanganmu di kolom yang tersedia</li>
-                <li>Klik tombol <strong>TRUTH</strong> untuk mendapatkan pertanyaan yang harus dijawab dengan jujur</li>
-                <li>Klik tombol <strong>DARE</strong> untuk mendapatkan tantangan yang harus dilakukan</li>
-                <li>Nikmati momen romantis dan hangatkan hubungan kalian!</li>
+                <li>Masukkan namamu dan nama pasanganmu</li>
+                <li>Klik tombol <strong>"Kocok Pemain"</strong> untuk menentukan siapa yang bermain pertama</li>
+                <li>Tonton animasi kartu kocok selama 3 detik (atau skip dengan tombol skip)</li>
+                <li>Setelah pemain dipilih, pilih <strong>TRUTH</strong> atau <strong>DARE</strong></li>
+                <li>Selesaikan tantangan dan nikmati momen romantis!</li>
+                <li>Setelah selesai, kocok lagi untuk giliran berikutnya</li>
             </ol>
         </div>
         
@@ -528,75 +821,102 @@
     </div>
 
     <script>
-        // Data untuk Truth (pertanyaan) - lebih banyak
+        // Data untuk Truth (pertanyaan) - FRESH & UPDATE
         const truthQuestions = [
-            "Apa hal pertama yang menarik perhatianmu tentang <span class='name-placeholder'>[Nama Pasangan]</span>?",
-            "Kapan pertama kali kamu menyadari punya perasaan untuk <span class='name-placeholder'>[Nama Pasangan]</span>?",
-            "Apa kekasih impianmu sebelum bertemu <span class='name-placeholder'>[Nama Pasangan]</span> dan apakah dia sesuai dengan impianmu?",
-            "Apa hal paling romantis yang pernah <span class='name-placeholder'>[Nama Pasangan]</span> lakukan untukmu?",
-            "Jika kamu bisa pergi ke mana saja berdua dengan <span class='name-placeholder'>[Nama Pasangan]</span>, ke mana kamu akan pergi?",
-            "Apa yang paling kamu rindukan dari <span class='name-placeholder'>[Nama Pasangan]</span> saat kalian tidak bersama?",
-            "Apa hal kecil yang dilakukan <span class='name-placeholder'>[Nama Pasangan]</span> yang selalu bikin kamu tersenyum?",
-            "Pernahkah kamu berbohong pada <span class='name-placeholder'>[Nama Pasangan]</span>? Jika iya, tentang apa?",
-            "Apa ketakutan terbesarmu tentang hubungan kalian?",
-            "Jika hubungan kalian adalah sebuah lagu, lagu apa yang paling tepat menggambarkannya?",
-            "Apa yang paling kamu suka dari kepribadian <span class='name-placeholder'>[Nama Pasangan]</span>?",
-            "Pernahkah kamu memimpikan <span class='name-placeholder'>[Nama Pasangan]</span>? Ceritakan mimpi itu.",
-            "Apa yang kamu harapkan dari hubungan ini di masa depan?",
-            "Apa kenangan bersama <span class='name-placeholder'>[Nama Pasangan]</span> yang paling berkesan untukmu?",
-            "Jika <span class='name-placeholder'>[Nama Pasangan]</span> adalah makanan, makanan apa yang akan dia jadi dan mengapa?",
-            "Apa kebiasaan <span class='name-placeholder'>[Nama Pasangan]</span> yang menurutmu paling menggemaskan?",
-            "Bagaimana perasaanmu saat pertama kali bertemu <span class='name-placeholder'>[Nama Pasangan]</span> secara langsung?",
-            "Apa hal yang paling membuatmu cemburu dalam hubungan ini?",
-            "Pernahkah kamu menyimpan rahasia dari <span class='name-placeholder'>[Nama Pasangan]</span>?",
-            "Jika kalian bisa menghabiskan 24 jam bersama tanpa gangguan, apa yang akan kalian lakukan?",
-            "Apa kualitas terbaik <span class='name-placeholder'>[Nama Pasangan]</span> yang menurutmu tidak dimiliki orang lain?",
-            "Pernahkah kamu merasa ragu tentang hubungan ini? Kapan dan mengapa?",
-            "Apa yang membuat hubungan kalian berbeda dengan hubungan sebelumnya?",
-            "Bagaimana <span class='name-placeholder'>[Nama Pasangan]</span> membuat hari-harimu lebih baik?",
-            "Apa hal paling berani yang pernah kamu lakukan untuk <span class='name-placeholder'>[Nama Pasangan]</span>?",
-            "Jika hubungan kalian adalah film, judul apa yang cocok dan mengapa?",
-            "Apa yang pertama kali kamu pikirkan saat bangun tidur tentang <span class='name-placeholder'>[Nama Pasangan]</span>?",
-            "Apakah ada hal yang ingin kamu ubah dari hubungan kalian?",
-            "Apa arti cinta menurutmu sekarang setelah bersama <span class='name-placeholder'>[Nama Pasangan]</span>?",
-            "Pernahkah kamu membayangkan masa depan dengan <span class='name-placeholder'>[Nama Pasangan]</span>? Ceritakan."
+            "Apa momen paling tidak terlupakan dengan <span class='name-placeholder'>[Nama Pasangan]</span> selama hubungan backstreet ini?",
+            "Jika harus memilih antara bertemu <span class='name-placeholder'>[Nama Pasangan]</span> sekarang atau menunggu 1 tahun untuk bisa bersama terbuka, mana yang kamu pilih?",
+            "Apa rahasia kecil tentang <span class='name-placeholder'>[Nama Pasangan]</span> yang hanya kamu tahu?",
+            "Pernahkah kamu berbohong kepada teman atau keluarga tentang <span class='name-placeholder'>[Nama Pasangan]</span>? Ceritakan.",
+            "Apa yang paling membuatmu merasa bersalah dalam hubungan backstreet ini?",
+            "Jika hubungan kalian ketahuan besok, apa hal pertama yang akan kamu lakukan?",
+            "Apa impian terbesar yang ingin kamu wujudkan bersama <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Pernahkah kamu merasa ingin menyerah pada hubungan ini? Kapan dan mengapa?",
+            "Apa hal paling berisiko yang pernah kamu lakukan untuk bertemu <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Bagaimana kamu menggambarkan hubungan kalian dalam 3 kata?",
+            "Apa yang membuat hubungan backstreet ini berbeda dari hubungan biasa?",
+            "Pernahkah kamu cemburu buta pada <span class='name-placeholder'>[Nama Pasangan]</span>? Ceritakan.",
+            "Apa yang paling kamu takuti tentang hubungan backstreet ini?",
+            "Jika kamu bisa mengubah satu hal tentang hubungan kalian, apa itu?",
+            "Apa pelajaran terbesar yang kamu dapat dari hubungan backstreet dengan <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Pernahkah kamu membayangkan bagaimana reaksi orang tua jika tahu tentang hubungan kalian?",
+            "Apa yang membuatmu tetap bertahan dalam hubungan backstreet ini?",
+            "Bagaimana cara kamu mengatasi rasa rindu yang teramat sangat pada <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Apa yang paling kamu lewatkan dari hubungan normal yang tidak bisa kamu dapatkan sekarang?",
+            "Jika hubungan kalian adalah sebuah buku, di bab berapa kalian sekarang?",
+            "Apa hal pertama yang akan kamu lakukan jika hubungan kalian bisa terbuka?",
+            "Pernahkah kamu merasa hubungan ini tidak adil untuk salah satu dari kalian?",
+            "Apa janji terpenting yang pernah kamu buat pada <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Bagaimana hubungan backstreet ini mengubah dirimu sebagai pribadi?",
+            "Apa momen paling romantis yang pernah kamu ciptakan untuk <span class='name-placeholder'>[Nama Pasangan]</span> diam-diam?",
+            "Jika besok adalah hari terakhir hubungan backstreet ini, apa yang akan kamu katakan pada <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Apa yang membuat hubungan dengan <span class='name-placeholder'>[Nama Pasangan]</span> sepadan dengan semua risiko yang diambil?",
+            "Pernahkah kamu berbohong tentang keberadaanmu hanya untuk bertemu <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Apa arti cinta sejati menurut pengalaman backstreet-mu?",
+            "Bagaimana kamu melihat hubungan ini 5 tahun ke depan?",
+            "Apa kode atau bahasa rahasia yang hanya kalian berdua yang mengerti?",
+            "Pernahkah kamu merasa kesepian meskipun sedang bersama <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Apa hal paling dewasa yang telah kamu pelajari dari hubungan backstreet ini?",
+            "Jika bisa, apa nasihat yang akan kamu berikan pada pasangan backstreet lainnya?",
+            "Apa yang membuat kamu percaya bahwa hubungan ini akan bertahan?",
+            "Pernahkah kamu menangis karena hubungan ini? Kapan?",
+            "Apa mimpi bersama yang belum sempat kamu ceritakan pada <span class='name-placeholder'>[Nama Pasangan]</span>?",
+            "Bagaimana cara kamu menjaga percikan cinta tetap hidup dalam hubungan rahasia?",
+            "Apa yang akan kamu lakukan jika suatu hari <span class='name-placeholder'>[Nama Pasangan]</span> meminta putus?",
+            "Apa hadiah terbaik yang pernah kamu berikan pada <span class='name-placeholder'>[Nama Pasangan]</span> tanpa sepengetahuan siapa pun?"
         ];
 
-        // Data untuk Dare (tantangan) - lebih banyak
+        // Data untuk Dare (tantangan) - FRESH & UPDATE
         const dareChallenges = [
-            "Kirim pesan suara ke <span class='name-placeholder'>[Nama Pasangan]</span> yang berisi alasan mengapa kamu bersyukur memilikinya.",
-            "Foto selfie romantis dan kirim ke <span class='name-placeholder'>[Nama Pasangan]</span> dengan caption yang manis.",
-            "Tulis puisi pendek untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan bacakan lewat telepon.",
-            "Buat playlist lagu cinta untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan bagikan linknya.",
-            "Kirim pesan tebak-tebakan romantis ke <span class='name-placeholder'>[Nama Pasangan]</span> dan beri hadiah jika dia bisa menebak.",
-            "Ceritakan kenangan favoritmu dengan <span class='name-placeholder'>[Nama Pasangan]</span> sambil meneleponnya.",
-            "Unggah story di media sosial dengan petunjuk tersembunyi tentang <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Buat janji virtual berdua dengan <span class='name-placeholder'>[Nama Pasangan]</span> malam ini (nonton film online bersama).",
-            "Kirim 5 foto kenangan kalian berdua ke <span class='name-placeholder'>[Nama Pasangan]</span> dengan caption yang romantis.",
-            "Ucapkan 'Aku mencintaimu' dengan cara yang kreatif dan berbeda dari biasanya.",
-            "Rencanakan kencan virtual spesial untuk <span class='name-placeholder'>[Nama Pasangan]</span> minggu ini.",
-            "Buat surat cinta digital untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan kirim melalui email.",
-            "Ganti foto profil media sosialmu dengan foto yang mengingatkanmu pada <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Tantang <span class='name-placeholder'>[Nama Pasangan]</span> untuk bermain Truth or Dare juga dan kirimkan screenshotnya.",
-            "Kirim hadiah virtual (stiker, e-card) yang romantis ke <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Buat status WhatsApp yang hanya dimengerti oleh <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Bacakan kutipan cinta favoritmu untuk <span class='name-placeholder'>[Nama Pasangan]</span> lewat telepon.",
-            "Rencanakan kegiatan yang ingin kalian lakukan bersama saat bisa bertemu nanti.",
-            "Kirim daftar '10 hal yang aku suka dari kamu' ke <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Buat video pendek berisi pesan cinta untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan kirimkan.",
-            "Atur alarm untuk mengirim pesan 'selamat pagi' ke <span class='name-placeholder'>[Nama Pasangan]</span> besok pagi.",
-            "Buat kuis romantis tentang hubungan kalian untuk <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Kirim bunga virtual dengan pesan romantis ke <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Buat collage foto kenangan kalian dan bagikan ke <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Nyanyikan lagu cinta favoritmu dan kirim rekamannya ke <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Buat jadwal kencan virtual rutin dengan <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Kirim pesan teks setiap jam selama 5 jam berturut-turut ke <span class='name-placeholder'>[Nama Pasangan]</span> dengan kalimat manis.",
-            "Buat akun media sosial rahasia hanya untuk berdua dengan <span class='name-placeholder'>[Nama Pasangan]</span>.",
-            "Rencanakan kejutan virtual untuk <span class='name-placeholder'>[Nama Pasangan]</span> di akhir pekan.",
-            "Buat 'kupon cinta' digital yang bisa ditukar <span class='name-placeholder'>[Nama Pasangan]</span> nanti saat bertemu."
+            "Buat video singkat berisi pesan rahasia untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan simpan sebagai draft (jangan dikirim dulu).",
+            "Tulis surat cinta untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan simpan di notes ponselmu dengan password.",
+            "Buat playlist Spotify bernama 'Untuk Kita Berdua' dengan lagu-lagu yang mengingatkanmu pada <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Ambil foto sesuatu yang mengingatkanmu pada <span class='name-placeholder'>[Nama Pasangan]</span> hari ini dan simpan di folder rahasia.",
+            "Tulis 5 alasan mengapa hubungan backstreet ini berharga dan simpan di ponselmu.",
+            "Buat puisi tentang hubungan rahasia kalian dan simpan sebagai draf di email.",
+            "Rekam suaramu membacakan kutipan cinta favorit dan simpan sebagai file audio.",
+            "Buat jadwal pertemuan rahasia untuk bulan depan dengan <span class='name-placeholder'>[Nama Pasangan]</span> (gunakan kode rahasia).",
+            "Desain kartu ucapan digital untuk <span class='name-placeholder'>[Nama Pasangan]</span> dan simpan di galeri.",
+            "Buat daftar '10 Momen Terindah' dengan <span class='name-placeholder'>[Nama Pasangan]</span> dan simpan di notes.",
+            "Ambil screenshot lokasi favorit kalian di Google Maps dan beri tanda hati.",
+            "Buat akun Instagram/Social Media rahasia hanya untuk kalian berdua (gunakan nama samaran).",
+            "Tulis janji untuk <span class='name-placeholder'>[Nama Pasangan]</span> di selembar kertas, foto, lalu hancurkan kertasnya.",
+            "Buat time capsule digital berisi kenangan kalian dan set tanggal buka 1 tahun lagi.",
+            "Rekam video 'A Day in My Life' dan sisipkan momen-momen yang membuatmu ingat <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Buat kode morse atau sandi rahasia untuk komunikasi kalian.",
+            "Desain tato mini simbolis yang merepresentasikan hubungan kalian (digital saja).",
+            "Buat scrapbook digital di ponsel dengan foto-foto dan kenangan kalian.",
+            "Tulis lagu atau rap pendek tentang <span class='name-placeholder'>[Nama Pasangan]</span> dan rekam dalam bentuk audio note.",
+            "Buat daftar bucket list untuk kalian lakukan jika suatu hari hubungan terbuka.",
+            "Ambil foto langit malam dan edit dengan tulisan 'Untukmu' lalu simpan.",
+            "Buat mini podcast 2 menit berisi ucapan terima kasih untuk <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Desain baju couple digital (edit foto baju biasa dengan aplikasi edit).",
+            "Buat kalender khusus menandai hari-hari spesial dalam hubungan kalian.",
+            "Tulis resep 'makanan cinta' favorit <span class='name-placeholder'>[Nama Pasangan]</span> dengan sentuhan romantis.",
+            "Rekam suara detak jantungmu dan kirim ke <span class='name-placeholder'>[Nama Pasangan]</span> dengan caption 'Untukmu'.",
+            "Buat peta lokasi-lokasi spesial kalian di kota (gunakan Google My Maps).",
+            "Desain stiker WhatsApp khusus untuk percakapan kalian berdua.",
+            "Buat puzzle digital dari foto favorit kalian berdua.",
+            "Tulis cerpen pendek tentang pasangan backstreet dengan karakter kalian berdua.",
+            "Rekam audio 'Goodnight Message' khusus untuk <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Buat moodboard digital dengan tema 'Masa Depan Kita'.",
+            "Desain undangan pernikahan digital untuk kalian berdua (hanya untuk koleksi pribadi).",
+            "Buat lagu daftar putar untuk berbagai mood dalam hubungan kalian.",
+            "Tulis surat untuk diri sendiri 5 tahun lagi tentang hubungan ini.",
+            "Buat slideshow foto dengan musik latar yang romantis.",
+            "Desain tattoo temporer dengan henna/drawing pen bertema hubungan kalian.",
+            "Buat puisi akrostik dengan nama <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Rekam video tour kamar/kosanmu seolah-olah untuk <span class='name-placeholder'>[Nama Pasangan]</span>.",
+            "Buat time-lapse video perubahan ekspresimu saat memikirkan <span class='name-placeholder'>[Nama Pasangan]</span>."
         ];
 
         // Elemen DOM
+        const updateModal = document.getElementById('updateModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const shuffleOverlay = document.getElementById('shuffleOverlay');
+        const shuffleCard = document.getElementById('shuffleCard');
+        const shuffleText = document.getElementById('shuffleText');
+        const skipShuffleBtn = document.getElementById('skipShuffleBtn');
+        const pickPlayerBtn = document.getElementById('pickPlayerBtn');
         const truthBtn = document.getElementById('truthBtn');
         const dareBtn = document.getElementById('dareBtn');
         const resultText = document.getElementById('resultText');
@@ -609,15 +929,33 @@
         const historyList = document.getElementById('historyList');
         const clearHistoryBtn = document.getElementById('clearHistory');
         const floatingHearts = document.getElementById('floatingHearts');
+        const player1Card = document.getElementById('player1Card');
+        const player2Card = document.getElementById('player2Card');
+        const player1Name = document.getElementById('player1Name');
+        const player2Name = document.getElementById('player2Name');
+        const player1Status = document.getElementById('player1Status');
+        const player2Status = document.getElementById('player2Status');
 
-        // Status
+        // Status Game
         let soundEnabled = true;
         let gameHistory = JSON.parse(localStorage.getItem('truthOrDareHistory')) || [];
         let usedTruthIndices = [];
         let usedDareIndices = [];
+        let currentPlayer = null;
+        let shuffleAnimation = null;
+        let isShuffling = false;
 
         // Inisialisasi halaman
         function initPage() {
+            // Tampilkan modal update hanya pertama kali
+            const hasSeenUpdate = localStorage.getItem('hasSeenUpdateV2');
+            if (!hasSeenUpdate) {
+                setTimeout(() => {
+                    updateModal.style.display = 'flex';
+                }, 500);
+                localStorage.setItem('hasSeenUpdateV2', 'true');
+            }
+            
             // Tampilkan riwayat jika ada
             displayHistory();
             
@@ -628,56 +966,87 @@
             if (!name1Input.value.trim()) name1Input.value = "Kamu";
             if (!name2Input.value.trim()) name2Input.value = "Pasanganmu";
             
-            // Event listener untuk sentuhan pada tombol
+            // Update nama pemain
+            updatePlayerNames();
+            
+            // Event listener untuk sentuhan
+            setupTouchEvents();
+            
+            // Event listener untuk input nama
+            name1Input.addEventListener('input', updatePlayerNames);
+            name2Input.addEventListener('input', updatePlayerNames);
+            
+            // Event listener untuk toggle suara
+            soundToggle.addEventListener('click', toggleSound);
+            
+            // Event listener untuk riwayat
+            historyBtn.addEventListener('click', toggleHistoryPanel);
+            
+            // Event listener untuk hapus riwayat
+            clearHistoryBtn.addEventListener('click', clearHistory);
+            
+            // Event listener untuk tombol kocok pemain
+            pickPlayerBtn.addEventListener('click', startShuffleAnimation);
+            
+            // Event listener untuk skip animasi
+            skipShuffleBtn.addEventListener('click', skipShuffleAnimation);
+            
+            // Event listener untuk close modal
+            closeModalBtn.addEventListener('click', () => {
+                updateModal.style.display = 'none';
+            });
+        }
+
+        // Update nama pemain
+        function updatePlayerNames() {
+            player1Name.textContent = name1Input.value.trim() || "Kamu";
+            player2Name.textContent = name2Input.value.trim() || "Pasanganmu";
+        }
+
+        // Setup touch events
+        function setupTouchEvents() {
+            // Untuk tombol Truth dan Dare
             truthBtn.addEventListener('touchstart', function(e) {
                 e.preventDefault();
-                this.classList.add('pulse');
+                if (!truthBtn.classList.contains('disabled')) {
+                    this.classList.add('pulse');
+                }
             });
             
             truthBtn.addEventListener('touchend', function(e) {
                 e.preventDefault();
                 this.classList.remove('pulse');
-                showResult('truth');
+                if (!truthBtn.classList.contains('disabled')) {
+                    showResult('truth');
+                }
             });
             
             dareBtn.addEventListener('touchstart', function(e) {
                 e.preventDefault();
-                this.classList.add('pulse');
+                if (!dareBtn.classList.contains('disabled')) {
+                    this.classList.add('pulse');
+                }
             });
             
             dareBtn.addEventListener('touchend', function(e) {
                 e.preventDefault();
                 this.classList.remove('pulse');
-                showResult('dare');
+                if (!dareBtn.classList.contains('disabled')) {
+                    showResult('dare');
+                }
             });
             
             // Event listener untuk klik biasa (desktop)
-            truthBtn.addEventListener('click', () => showResult('truth'));
-            dareBtn.addEventListener('click', () => showResult('dare'));
-            
-            // Event listener untuk input nama
-            name1Input.addEventListener('input', updateResultWithNames);
-            name2Input.addEventListener('input', updateResultWithNames);
-            
-            // Event listener untuk toggle suara
-            soundToggle.addEventListener('click', toggleSound);
-            soundToggle.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                toggleSound();
+            truthBtn.addEventListener('click', () => {
+                if (!truthBtn.classList.contains('disabled')) {
+                    showResult('truth');
+                }
             });
             
-            // Event listener untuk riwayat
-            historyBtn.addEventListener('click', toggleHistoryPanel);
-            historyBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                toggleHistoryPanel();
-            });
-            
-            // Event listener untuk hapus riwayat
-            clearHistoryBtn.addEventListener('click', clearHistory);
-            clearHistoryBtn.addEventListener('touchstart', function(e) {
-                e.preventDefault();
-                clearHistory();
+            dareBtn.addEventListener('click', () => {
+                if (!dareBtn.classList.contains('disabled')) {
+                    showResult('dare');
+                }
             });
         }
 
@@ -689,7 +1058,6 @@
                 heart.classList.add('heart');
                 heart.innerHTML = '<i class="fas fa-heart"></i>';
                 
-                // Posisi acak
                 const left = Math.random() * 100;
                 const delay = Math.random() * 15;
                 const size = 15 + Math.random() * 20;
@@ -702,12 +1070,151 @@
             }
         }
 
+        // Mulai animasi kocok
+        function startShuffleAnimation() {
+            // Validasi nama
+            if (!name1Input.value.trim() || !name2Input.value.trim()) {
+                alert("Silakan masukkan kedua nama terlebih dahulu!");
+                return;
+            }
+            
+            // Reset status pemain
+            player1Card.classList.remove('active');
+            player2Card.classList.remove('active');
+            player1Status.textContent = "Menunggu giliran";
+            player2Status.textContent = "Menunggu giliran";
+            
+            // Tampilkan overlay kocok
+            shuffleOverlay.style.display = 'flex';
+            isShuffling = true;
+            
+            // Reset kartu
+            shuffleCard.classList.remove('flipped');
+            shuffleCard.innerHTML = `
+                <i class="fas fa-heart" style="font-size: 3rem; margin-bottom: 10px;"></i>
+                <div>TRUTH OR DARE</div>
+            `;
+            
+            // Acak teks selama animasi
+            const shuffleMessages = [
+                "Mengocok pemain...",
+                "Memilih secara acak...",
+                "Siapa yang bermain pertama?",
+                "Sedang menentukan...",
+                "Hampir selesai..."
+            ];
+            
+            let messageIndex = 0;
+            const messageInterval = setInterval(() => {
+                shuffleText.textContent = shuffleMessages[messageIndex];
+                messageIndex = (messageIndex + 1) % shuffleMessages.length;
+            }, 500);
+            
+            // Mulai animasi kartu
+            let flipCount = 0;
+            const maxFlips = 6; // 3 detik dengan 500ms per flip
+            shuffleAnimation = setInterval(() => {
+                shuffleCard.classList.toggle('flipped');
+                flipCount++;
+                
+                if (flipCount >= maxFlips) {
+                    finishShuffle(messageInterval);
+                }
+            }, 500);
+        }
+
+        // Selesaikan animasi kocok
+        function finishShuffle(messageInterval) {
+            clearInterval(shuffleAnimation);
+            clearInterval(messageInterval);
+            
+            // Pilih pemain secara acak
+            const players = [name1Input.value.trim() || "Kamu", name2Input.value.trim() || "Pasanganmu"];
+            const randomPlayerIndex = Math.floor(Math.random() * 2);
+            currentPlayer = players[randomPlayerIndex];
+            
+            // Tampilkan nama di kartu
+            shuffleCard.innerHTML = `
+                <div class="card-name">${currentPlayer}</div>
+                <div class="card-title">Akan Bermain</div>
+                <i class="fas fa-play-circle" style="font-size: 2rem; margin-top: 10px;"></i>
+            `;
+            
+            shuffleText.textContent = `${currentPlayer} akan bermain pertama!`;
+            
+            // Tunggu 1 detik lalu tutup overlay
+            setTimeout(() => {
+                shuffleOverlay.style.display = 'none';
+                isShuffling = false;
+                
+                // Aktifkan pemain yang terpilih
+                if (currentPlayer === players[0]) {
+                    player1Card.classList.add('active');
+                    player1Status.textContent = "Sedang bermain";
+                } else {
+                    player2Card.classList.add('active');
+                    player2Status.textContent = "Sedang bermain";
+                }
+                
+                // Aktifkan tombol Truth dan Dare
+                truthBtn.classList.remove('disabled');
+                dareBtn.classList.remove('disabled');
+                
+                // Update teks hasil
+                resultText.innerHTML = `${currentPlayer}, pilih TRUTH atau DARE untuk memulai tantangan!`;
+                resultText.classList.add('animated');
+                
+                // Mainkan suara
+                playSound();
+            }, 1000);
+        }
+
+        // Skip animasi kocok
+        function skipShuffleAnimation() {
+            if (!isShuffling) return;
+            
+            // Hentikan semua interval
+            clearInterval(shuffleAnimation);
+            const intervals = window.setInterval(() => {}, 9999);
+            for (let i = 0; i < intervals; i++) {
+                window.clearInterval(i);
+            }
+            
+            // Langsung pilih pemain
+            const players = [name1Input.value.trim() || "Kamu", name2Input.value.trim() || "Pasanganmu"];
+            const randomPlayerIndex = Math.floor(Math.random() * 2);
+            currentPlayer = players[randomPlayerIndex];
+            
+            // Tampilkan hasil langsung
+            shuffleOverlay.style.display = 'none';
+            isShuffling = false;
+            
+            // Aktifkan pemain yang terpilih
+            if (currentPlayer === players[0]) {
+                player1Card.classList.add('active');
+                player1Status.textContent = "Sedang bermain";
+            } else {
+                player2Card.classList.add('active');
+                player2Status.textContent = "Sedang bermain";
+            }
+            
+            // Aktifkan tombol Truth dan Dare
+            truthBtn.classList.remove('disabled');
+            dareBtn.classList.remove('disabled');
+            
+            // Update teks hasil
+            resultText.innerHTML = `${currentPlayer}, pilih TRUTH atau DARE untuk memulai tantangan!`;
+            resultText.classList.add('animated');
+            
+            // Mainkan suara
+            playSound();
+        }
+
         // Fungsi untuk memutar suara
         function playSound() {
             if (!soundEnabled) return;
             
             try {
-                // Buat konteks audio
                 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
@@ -715,14 +1222,11 @@
                 oscillator.connect(gainNode);
                 gainNode.connect(audioContext.destination);
                 
-                // Atur tipe suara
                 oscillator.type = 'sine';
-                
-                // Buat efek suara yang menarik
                 const now = audioContext.currentTime;
-                oscillator.frequency.setValueAtTime(523.25, now); // C5
-                oscillator.frequency.exponentialRampToValueAtTime(659.25, now + 0.1); // E5
-                oscillator.frequency.exponentialRampToValueAtTime(783.99, now + 0.2); // G5
+                oscillator.frequency.setValueAtTime(523.25, now);
+                oscillator.frequency.exponentialRampToValueAtTime(659.25, now + 0.1);
+                oscillator.frequency.exponentialRampToValueAtTime(783.99, now + 0.2);
                 
                 gainNode.gain.setValueAtTime(0.3, now);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
@@ -730,7 +1234,7 @@
                 oscillator.start(now);
                 oscillator.stop(now + 0.5);
             } catch (e) {
-                console.log("Audio tidak didukung di browser ini");
+                console.log("Audio tidak didukung");
             }
         }
 
@@ -742,7 +1246,6 @@
                 "linear-gradient(135deg, #9d4edd, #7b2cbf)" : "#f8f9fa";
             soundToggle.style.color = soundEnabled ? "white" : "#7b2cbf";
             
-            // Simpan preferensi
             localStorage.setItem('truthOrDareSound', soundEnabled);
         }
 
@@ -766,7 +1269,6 @@
             }
             
             historyList.innerHTML = '';
-            // Tampilkan maksimal 10 riwayat terbaru
             const recentHistory = gameHistory.slice(-10).reverse();
             
             recentHistory.forEach(item => {
@@ -800,19 +1302,18 @@
             const historyItem = {
                 type: type,
                 text: text,
-                timestamp: new Date().toLocaleString('id-ID')
+                timestamp: new Date().toLocaleString('id-ID'),
+                player: currentPlayer
             };
             
             gameHistory.push(historyItem);
             
-            // Simpan maksimal 50 riwayat
             if (gameHistory.length > 50) {
                 gameHistory = gameHistory.slice(-50);
             }
             
             localStorage.setItem('truthOrDareHistory', JSON.stringify(gameHistory));
             
-            // Update tampilan jika panel riwayat terbuka
             if (historyPanel.style.display === 'block') {
                 displayHistory();
             }
@@ -830,7 +1331,6 @@
 
         // Fungsi untuk mendapatkan item acak yang belum digunakan
         function getRandomUnusedItem(array, usedIndices) {
-            // Reset jika semua sudah digunakan
             if (usedIndices.length >= array.length) {
                 usedIndices.length = 0;
             }
@@ -849,9 +1349,9 @@
 
         // Fungsi untuk menampilkan hasil dengan animasi
         function showResult(type) {
-            // Validasi nama
-            if (!name1Input.value.trim() || !name2Input.value.trim()) {
-                resultText.innerHTML = "Silakan masukkan kedua nama terlebih dahulu!";
+            // Validasi pemain
+            if (!currentPlayer) {
+                resultText.innerHTML = "Kocok pemain terlebih dahulu!";
                 resultText.classList.add("animated");
                 return;
             }
@@ -860,7 +1360,7 @@
             playSound();
             
             // Tampilkan animasi memutar
-            resultText.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Mengocok...";
+            resultText.innerHTML = `<i class='fas fa-spinner fa-spin'></i> Mengocok ${type === 'truth' ? 'pertanyaan' : 'tantangan'}...`;
             resultText.classList.remove("animated");
             resultText.classList.add("spin");
             
@@ -880,47 +1380,31 @@
                 const finalText = replaceNames(selectedItem);
                 
                 // Tampilkan hasil
-                resultText.innerHTML = `<strong>${type === 'truth' ? 'TRUTH' : 'DARE'}:</strong> ${finalText}`;
+                resultText.innerHTML = `<strong>${currentPlayer} - ${type === 'truth' ? 'TRUTH' : 'DARE'}:</strong> ${finalText}`;
                 resultText.classList.remove("spin");
                 resultText.classList.add("animated");
                 
                 // Simpan ke riwayat
-                saveToHistory(type, finalText);
+                saveToHistory(type, `${currentPlayer}: ${finalText}`);
                 
-                // Tambahkan efek visual pada tombol yang dipilih
-                const selectedBtn = type === 'truth' ? truthBtn : dareBtn;
-                selectedBtn.style.transform = "scale(0.97)";
+                // Nonaktifkan tombol setelah pemain memilih
+                truthBtn.classList.add('disabled');
+                dareBtn.classList.add('disabled');
+                
+                // Update status pemain
+                const players = [name1Input.value.trim() || "Kamu", name2Input.value.trim() || "Pasanganmu"];
+                if (currentPlayer === players[0]) {
+                    player1Status.textContent = "Telah menyelesaikan tantangan";
+                } else {
+                    player2Status.textContent = "Telah menyelesaikan tantangan";
+                }
+                
+                // Tampilkan instruksi untuk kocok lagi
                 setTimeout(() => {
-                    selectedBtn.style.transform = "";
-                }, 300);
+                    const nextPlayer = currentPlayer === players[0] ? players[1] : players[0];
+                    resultText.innerHTML += `<br><br><small style='color:#9d4edd;'>Klik "Kocok Pemain" lagi untuk giliran ${nextPlayer}</small>`;
+                }, 1500);
             }, 800);
-        }
-
-        // Fungsi untuk memperbarui hasil dengan nama baru
-        function updateResultWithNames() {
-            const currentText = resultText.innerHTML;
-            if (currentText.includes("TRUTH:") || currentText.includes("DARE:")) {
-                const isTruth = currentText.includes("TRUTH:");
-                const itemText = currentText.split(":")[1].trim();
-                
-                // Cari item asli berdasarkan teks
-                const arrayToSearch = isTruth ? truthQuestions : dareChallenges;
-                let originalItem = null;
-                
-                for (let item of arrayToSearch) {
-                    const tempText = replaceNames(item);
-                    if (tempText.includes(itemText.replace(/<[^>]*>/g, '').substring(0, 50))) {
-                        originalItem = item;
-                        break;
-                    }
-                }
-                
-                // Jika ditemukan, perbarui dengan nama baru
-                if (originalItem) {
-                    const finalText = replaceNames(originalItem);
-                    resultText.innerHTML = `<strong>${isTruth ? 'TRUTH' : 'DARE'}:</strong> ${finalText}`;
-                }
-            }
         }
 
         // Muat preferensi suara
@@ -945,6 +1429,12 @@
             }
             lastTouchEnd = now;
         }, false);
+        
+        // Tangani error umum
+        window.addEventListener('error', function(e) {
+            console.log('Error:', e.message);
+            // Tetap biarkan aplikasi berjalan meski ada error kecil
+        });
     </script>
 </body>
 </html>
