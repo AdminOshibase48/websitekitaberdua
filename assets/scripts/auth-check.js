@@ -1,655 +1,262 @@
 /**
- * AUTHENTICATION CHECK SCRIPT - RESPONSIVE VERSION
- * Cek login dan buat logout button untuk PC & Mobile
+ * AUTHENTICATION CHECK SCRIPT
+ * Cek apakah user sudah login sebelum mengakses halaman utama
  */
 
 // Konfigurasi
 const LOGIN_PAGE = 'index';
 const VALID_USERS = ['Capi', 'Cipi'];
-const SESSION_TIMEOUT = 24 * 60 * 60 * 1000; // 24 jam (dalam milliseconds)
-
-// Cache DOM elements
-let domCache = {};
 
 // Fungsi utama untuk cek authentication
 function checkAuth() {
-    console.log('🔒 Starting authentication check...');
-    
     // Ambil data dari sessionStorage
     const isLoggedIn = sessionStorage.getItem('loveLoggedIn');
     const currentUser = sessionStorage.getItem('loveUser');
-    const loginTime = sessionStorage.getItem('loginTime');
     
-    // Debug info
-    console.log('📊 Auth Status:', { isLoggedIn, currentUser, loginTime });
-    
-    // Cek session timeout
-    if (loginTime && (Date.now() - parseInt(loginTime)) > SESSION_TIMEOUT) {
-        console.log('⏰ Session expired due to timeout');
-        sessionStorage.clear();
-        redirectToLogin();
-        return false;
-    }
+    // Debug (bisa dihapus setelah testing)
+    console.log('🔒 Auth Status:', {
+        isLoggedIn: isLoggedIn,
+        currentUser: currentUser
+    });
     
     // Cek jika belum login atau user tidak valid
     if (!isLoggedIn || !currentUser || !VALID_USERS.includes(currentUser)) {
-        console.log('❌ Not authenticated or invalid user');
-        showLoginOverlay(currentUser || 'Unknown');
+        console.log('❌ Not authenticated, redirecting to login...');
+        showLoginRequiredOverlay();
         return false;
     }
     
-    // Jika sudah login, setup UI
-    console.log('✅ User authenticated:', currentUser);
-    setupAuthenticatedUI(currentUser);
+    // Jika sudah login, tampilkan user info
+    displayUserInfo(currentUser);
+    addLogoutToMobileMenu(currentUser);
     return true;
 }
 
-// Setup UI untuk user yang sudah login
-function setupAuthenticatedUI(user) {
-    // Tunggu hingga DOM siap
+// Tampilkan overlay login required
+function showLoginRequiredOverlay() {
+    // Cek jika overlay sudah ada
+    if (document.getElementById('loginRequiredOverlay')) return;
+    
+    const overlay = document.createElement('div');
+    overlay.id = 'loginRequiredOverlay';
+    overlay.className = 'login-required-overlay';
+    overlay.innerHTML = `
+        <div class="login-required-content" data-aos="zoom-in">
+            <div class="login-required-icon">
+                <i class="fas fa-heart-lock"></i>
+            </div>
+            <h2 class="login-required-title">Akses Terbatas</h2>
+            <p class="login-required-message">
+                Halaman ini hanya untuk Capi & Cipi.<br>
+                Silakan login terlebih dahulu untuk melihat kenangan indah kita.
+            </p>
+            <button class="login-required-btn" onclick="goToLogin()">
+                <i class="fas fa-sign-in-alt"></i>
+                Pergi ke Halaman Login
+            </button>
+            <p class="login-required-note">
+                <small><i class="fas fa-info-circle"></i> Password: tanggal spesial kita</small>
+            </p>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    addLoginRequiredStyles();
+    
+    // Redirect otomatis setelah 5 detik
     setTimeout(() => {
-        // Setup logout untuk PC (navbar)
-        setupDesktopLogout(user);
+        if (overlay.parentNode) {
+            goToLogin();
+        }
+    }, 5000);
+}
+
+// Go to login page
+function goToLogin() {
+    sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+    window.location.href = LOGIN_PAGE;
+}
+
+// Tampilkan informasi user di navbar (untuk desktop)
+function displayUserInfo(user) {
+    // Tunggu hingga navbar siap
+    setTimeout(() => {
+        const navContainer = document.querySelector('.nav-container');
         
-        // Setup logout untuk Mobile (hamburger menu)
-        setupMobileLogout(user);
+        if (navContainer && !document.querySelector('.user-info-desktop')) {
+            // Buat container untuk desktop
+            const userInfo = document.createElement('div');
+            userInfo.className = 'user-info-desktop';
+            userInfo.innerHTML = `
+                <div class="user-info-wrapper">
+                    <div class="user-badge">
+                        <i class="fas fa-user-heart"></i>
+                        <span class="user-name">${user}</span>
+                    </div>
+                    <button class="logout-btn-desktop" onclick="logout()" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            `;
+            
+            // Sisipkan sebelum nav-toggle (mobile menu button)
+            const navToggle = document.querySelector('.nav-toggle');
+            if (navToggle) {
+                navContainer.insertBefore(userInfo, navToggle);
+            } else {
+                navContainer.appendChild(userInfo);
+            }
+            
+            addDesktopUserStyles();
+        }
         
-        // Update page title
+        // Update judul halaman dengan nama user
         updatePageTitle(user);
         
         // Tampilkan welcome message
         showWelcomeMessage(user);
         
-        // Setup event listeners
-        setupEventListeners();
+    }, 1000);
+}
+
+// Tambahkan logout option di mobile menu
+function addLogoutToMobileMenu(user) {
+    setTimeout(() => {
+        const navMenu = document.querySelector('.nav-menu');
         
-        // Start session monitor
-        startSessionMonitor();
+        if (navMenu && !document.querySelector('.logout-mobile-item')) {
+            // Buat logout item untuk mobile
+            const logoutItem = document.createElement('div');
+            logoutItem.className = 'logout-mobile-item';
+            logoutItem.innerHTML = `
+                <div class="mobile-user-info">
+                    <i class="fas fa-user-heart"></i>
+                    <span>Login sebagai: <strong>${user}</strong></span>
+                </div>
+                <a href="javascript:void(0)" class="nav-link logout-mobile-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            `;
+            
+            // Tambahkan ke akhir menu
+            navMenu.appendChild(logoutItem);
+            addMobileLogoutStyles();
+        }
         
-    }, 800); // Delay untuk pastikan navbar sudah load
+        // Setup mobile menu toggle untuk logout item
+        setupMobileMenuToggle();
+        
+    }, 1500);
 }
 
-// Setup logout button untuk PC (Desktop)
-function setupDesktopLogout(user) {
-    console.log('🖥️ Setting up desktop logout for:', user);
-    
-    // Cari navbar container
-    const navContainer = document.querySelector('.nav-container');
-    const navMenu = document.querySelector('.nav-menu');
-    
-    if (!navContainer) {
-        console.warn('Nav container not found, retrying...');
-        setTimeout(() => setupDesktopLogout(user), 500);
-        return;
-    }
-    
-    // Hapus existing user info jika ada
-    const existingInfo = document.querySelector('.user-info-container');
-    if (existingInfo) existingInfo.remove();
-    
-    // Buat container info user untuk desktop
-    const userInfo = document.createElement('div');
-    userInfo.className = 'user-info-container';
-    userInfo.innerHTML = `
-        <div class="user-info">
-            <div class="user-avatar">
-                <i class="fas fa-user-heart"></i>
-            </div>
-            <div class="user-details">
-                <span class="user-name">${user}</span>
-                <button class="logout-btn desktop-logout" title="Logout dari akun ${user}">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-        </div>
-    `;
-    
-    // Tambahkan ke navbar (sebelah kanan)
-    navContainer.appendChild(userInfo);
-    
-    // Tambahkan styles jika belum ada
-    addAuthStyles();
-}
-
-// Setup logout untuk Mobile
-function setupMobileLogout(user) {
-    console.log('📱 Setting up mobile logout for:', user);
-    
-    // Cari nav menu
-    const navMenu = document.querySelector('.nav-menu');
-    if (!navMenu) {
-        console.warn('Nav menu not found for mobile, retrying...');
-        setTimeout(() => setupMobileLogout(user), 500);
-        return;
-    }
-    
-    // Cek jika sudah ada logout mobile item
-    const existingMobileLogout = document.querySelector('.nav-link.mobile-logout');
-    if (existingMobileLogout) existingMobileLogout.remove();
-    
-    // Buat logout item untuk mobile menu
-    const mobileLogoutItem = document.createElement('a');
-    mobileLogoutItem.className = 'nav-link mobile-logout';
-    mobileLogoutItem.href = '#';
-    mobileLogoutItem.innerHTML = `
-        <i class="fas fa-sign-out-alt"></i>
-        <span>Logout (${user})</span>
-    `;
-    
-    // Tambahkan event listener
-    mobileLogoutItem.addEventListener('click', function(e) {
-        e.preventDefault();
-        logout();
-    });
-    
-    // Tambahkan ke nav menu (di bagian akhir)
-    navMenu.appendChild(mobileLogoutItem);
-    
-    // Update mobile menu toggle jika ada
-    updateMobileMenuToggle();
-}
-
-// Update mobile menu toggle behavior
-function updateMobileMenuToggle() {
+// Setup mobile menu toggle behavior
+function setupMobileMenuToggle() {
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.querySelector('.nav-menu');
     
     if (navToggle && navMenu) {
-        // Clone existing toggle untuk reset event listeners
+        navToggle.addEventListener('click', function() {
+            navMenu.classList.toggle('active');
+            document.body.classList.toggle('menu-open');
+        });
+    }
+    
+    // Close menu ketika klik diluar
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.nav-container') && navMenu.classList.contains('active')) {
+            navMenu.classList.remove('active');
+            document.body.classList.remove('menu-open');
+        }
+    });
+}
+
+// Update judul halaman
+function updatePageTitle(user) {
+    const title = document.querySelector('title');
+    if (title && !title.textContent.includes(user)) {
+        // Hanya tambahkan jika belum ada
+        const baseTitle = title.textContent.replace(" | our story together", "");
+        title.textContent = `${baseTitle} | ${user}'s Love Story`;
     }
 }
 
 // Tampilkan welcome message
 function showWelcomeMessage(user) {
-    // Cek jika sudah ada welcome message hari ini
-    const lastWelcome = localStorage.getItem(`lastWelcome_${user}`);
-    const today = new Date().toDateString();
+    // Hanya tampilkan sekali per session
+    if (sessionStorage.getItem('welcomeShown')) return;
     
-    if (lastWelcome === today) {
-        console.log('Welcome message already shown today');
-        return;
-    }
-    
-    // Buat welcome toast
-    const toast = document.createElement('div');
-    toast.className = 'welcome-toast';
-    toast.innerHTML = `
-        <div class="toast-content">
-            <div class="toast-icon">
-                <i class="fas fa-heart"></i>
-            </div>
-            <div class="toast-text">
-                <strong>Selamat datang kembali, ${user}! 💖</strong>
-                <span>Momen indah kita menanti...</span>
-            </div>
-            <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    `;
-    
-    document.body.appendChild(toast);
-    
-    // Simpan tanggal welcome
-    localStorage.setItem(`lastWelcome_${user}`, today);
-    
-    // Auto remove setelah 5 detik
     setTimeout(() => {
-        if (toast.parentNode) {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateX(100%)';
-            setTimeout(() => toast.remove(), 300);
-        }
-    }, 5000);
+        const toast = document.createElement('div');
+        toast.className = 'welcome-toast';
+        toast.setAttribute('data-aos', 'fade-left');
+        toast.innerHTML = `
+            <div class="toast-content">
+                <div class="toast-heart">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="toast-text">
+                    <div class="toast-title">Hai, ${user}! 💕</div>
+                    <div class="toast-subtitle">Selamat menikmati kenangan indah kita</div>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Auto remove setelah 5 detik
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 5000);
+        
+        // Tandai sudah ditampilkan
+        sessionStorage.setItem('welcomeShown', 'true');
+        
+        addWelcomeToastStyles();
+        
+    }, 2000);
 }
 
 // Fungsi logout
-function logout(immediate = false) {
-    if (!immediate) {
-        // Tampilkan custom confirm dialog
-        showLogoutConfirmation();
-        return;
-    }
+function logout() {
+    // Sweet confirmation
+    const confirmLogout = confirm('Yakin mau keluar dari dunia cinta kita? 💔\n\nKamu bisa login lagi kapan saja dengan password spesial kita.');
     
-    // Proses logout
-    console.log('👋 Logging out...');
-    
-    // Hapus session data
-    sessionStorage.removeItem('loveLoggedIn');
-    sessionStorage.removeItem('loveUser');
-    sessionStorage.removeItem('loginTime');
-    
-    // Hapus redirect URL
-    sessionStorage.removeItem('redirectAfterLogin');
-    
-    // Tampilkan logout message
-    showLogoutMessage();
-    
-    // Redirect setelah delay
-    setTimeout(() => {
-        window.location.href = LOGIN_PAGE;
-    }, 1500);
-}
-
-// Tampilkan custom logout confirmation
-function showLogoutConfirmation() {
-    // Buat modal konfirmasi
-    const modal = document.createElement('div');
-    modal.className = 'logout-modal-overlay';
-    modal.innerHTML = `
-        <div class="logout-modal">
-            <div class="modal-icon">
-                <i class="fas fa-heart-broken"></i>
-            </div>
-            <h3>Yakin mau keluar? 😢</h3>
-            <p>Kamu akan meninggalkan dunia cinta kita...</p>
-            <div class="modal-actions">
-                <button class="modal-btn cancel-btn">
-                    <i class="fas fa-times"></i> Tidak, tetap di sini
-                </button>
-                <button class="modal-btn confirm-btn">
-                    <i class="fas fa-sign-out-alt"></i> Ya, logout
-                </button>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(modal);
-    
-    // Event listeners untuk modal
-    modal.querySelector('.cancel-btn').addEventListener('click', () => {
-        modal.remove();
-    });
-    
-    modal.querySelector('.confirm-btn').addEventListener('click', () => {
-        modal.remove();
-        logout(true); // Immediate logout
-    });
-    
-    // Close modal jika klik di luar
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.remove();
-        }
-    });
-}
-
-// Tampilkan logout message
-function showLogoutMessage() {
-    const message = document.createElement('div');
-    message.className = 'logout-message';
-    message.innerHTML = `
-        <div class="message-content">
-            <i class="fas fa-heart"></i>
-            <div class="message-text">
-                <strong>Sampai jumpa lagi! 👋</strong>
-                <span>Selalu menunggumu kembali...</span>
-            </div>
-        </div>
-    `;
-    
-    document.body.appendChild(message);
-    
-    // Auto remove
-    setTimeout(() => {
-        message.style.opacity = '0';
-        setTimeout(() => message.remove(), 300);
-    }, 3000);
-}
-
-// Tampilkan login overlay jika belum login
-function showLoginOverlay(user) {
-    console.log('🔐 Showing login overlay');
-    
-    // Buat overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'login-required-overlay';
-    overlay.innerHTML = `
-        <div class="login-required-content">
-            <div class="login-required-icon">
-                <i class="fas fa-lock-heart"></i>
-            </div>
-            <h2 class="login-required-title">Akses Terbatas 💝</h2>
-            <p class="login-required-message">
-                Halaman ini khusus untuk Capi & Cipi saja.<br>
-                Masuk dengan password cinta kita untuk melihat kenangan indah.
-            </p>
-            <div class="login-required-actions">
-                <button class="login-required-btn" id="goToLogin">
-                    <i class="fas fa-sign-in-alt"></i> Ke Halaman Login
-                </button>
-                <button class="back-home-btn" id="goToHomepage">
-                    <i class="fas fa-home"></i> Kembali ke Homepage
-                </button>
-            </div>
-            <p class="login-hint">
-                <i class="fas fa-lightbulb"></i>
-                Password: tanggal spesial pertama kita (6 digit)
-            </p>
-        </div>
-    `;
-    
-    // Hide existing content
-    document.body.style.overflow = 'hidden';
-    const mainContent = document.querySelector('main, .container, section');
-    if (mainContent) mainContent.style.opacity = '0.3';
-    
-    document.body.appendChild(overlay);
-    
-    // Event listeners
-    overlay.querySelector('#goToLogin').addEventListener('click', redirectToLogin);
-    overlay.querySelector('#goToHomepage').addEventListener('click', () => {
-        overlay.remove();
-        document.body.style.overflow = '';
-        if (mainContent) mainContent.style.opacity = '1';
-    });
-}
-
-// Redirect ke login
-function redirectToLogin() {
-    console.log('🔄 Redirecting to login page...');
-    
-    // Simpan current URL untuk redirect back
-    sessionStorage.setItem('redirectAfterLogin', window.location.href);
-    
-    // Add transition effect
-    document.body.style.opacity = '0.7';
-    
-    setTimeout(() => {
-        window.location.href = LOGIN_PAGE;
-    }, 500);
-}
-
-// Update page title
-function updatePageTitle(user) {
-    const title = document.querySelector('title');
-    if (title && !title.textContent.includes(user)) {
-        const originalTitle = title.textContent.replace(/^.*?\|/, '').trim();
-        title.textContent = `${user}'s Love Story | ${originalTitle}`;
-    }
-}
-
-// Setup event listeners
-function setupEventListeners() {
-    // Logout button click (desktop)
-    document.addEventListener('click', (e) => {
-        if (e.target.closest('.desktop-logout') || e.target.closest('.logout-btn')) {
-            e.preventDefault();
-            logout();
-        }
-    });
-    
-    // Mobile menu toggle
-    const navToggle = document.querySelector('.nav-toggle');
-    if (navToggle) {
-        navToggle.addEventListener('click', () => {
-            const navMenu = document.querySelector('.nav-menu');
-            if (navMenu) {
-                navMenu.classList.toggle('show');
-                navToggle.classList.toggle('active');
-            }
-        });
-    }
-    
-    // Close mobile menu when clicking outside
-    document.addEventListener('click', (e) => {
-        const navMenu = document.querySelector('.nav-menu');
-        const navToggle = document.querySelector('.nav-toggle');
+    if (confirmLogout) {
+        // Animation sebelum logout
+        const logoutBtn = event?.target?.closest('.logout-btn-desktop, .logout-mobile-btn') || 
+                          document.querySelector('.logout-btn-desktop, .logout-mobile-btn');
         
-        if (navMenu && navToggle && 
-            !navMenu.contains(e.target) && 
-            !navToggle.contains(e.target) &&
-            navMenu.classList.contains('show')) {
-            navMenu.classList.remove('show');
-            navToggle.classList.remove('active');
+        if (logoutBtn) {
+            logoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            logoutBtn.disabled = true;
         }
-    });
-}
-
-// Start session monitor
-function startSessionMonitor() {
-    // Update last activity setiap 30 detik
-    setInterval(() => {
-        sessionStorage.setItem('lastActivity', Date.now());
-    }, 30000);
-    
-    // Cek inactivity setiap menit
-    setInterval(() => {
-        const lastActivity = sessionStorage.getItem('lastActivity');
-        const loginTime = sessionStorage.getItem('loginTime');
         
-        if (lastActivity && loginTime) {
-            const inactiveTime = Date.now() - parseInt(lastActivity);
-            const totalTime = Date.now() - parseInt(loginTime);
+        // Hapus session data
+        setTimeout(() => {
+            sessionStorage.clear();
+            localStorage.removeItem('rememberedLoveUser');
             
-            // Jika inactive lebih dari 30 menit ATAU session lebih dari 24 jam
-            if (inactiveTime > 30 * 60 * 1000 || totalTime > SESSION_TIMEOUT) {
-                console.log('🕐 Session timeout due to inactivity');
-                logout(true);
-            }
-        }
-    }, 60000); // Cek setiap 1 menit
+            // Redirect ke login page
+            window.location.href = LOGIN_PAGE;
+        }, 1000);
+    }
 }
 
-// Tambahkan styles untuk auth components
-function addAuthStyles() {
-    const styleId = 'auth-styles';
+// ===== STYLE FUNCTIONS =====
+
+// Styles untuk login required overlay
+function addLoginRequiredStyles() {
+    const styleId = 'login-required-styles';
     if (!document.getElementById(styleId)) {
         const style = document.createElement('style');
         style.id = styleId;
         style.textContent = `
-            /* ===== AUTH STYLES ===== */
-            
-            /* User Info for Desktop */
-            .user-info-container {
-                margin-left: auto;
-                display: flex;
-                align-items: center;
-            }
-            
-            .user-info {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                background: linear-gradient(135deg, rgba(255, 107, 157, 0.1), rgba(184, 219, 128, 0.1));
-                padding: 10px 18px;
-                border-radius: 25px;
-                border: 2px solid transparent;
-                border-image: linear-gradient(135deg, #FF6B9D, #B8DB80) 1;
-                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                position: relative;
-                overflow: hidden;
-            }
-            
-            .user-info::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-                transition: left 0.6s;
-            }
-            
-            .user-info:hover::before {
-                left: 100%;
-            }
-            
-            .user-info:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 10px 25px rgba(255, 107, 157, 0.2);
-            }
-            
-            .user-avatar {
-                width: 40px;
-                height: 40px;
-                background: linear-gradient(135deg, #FF6B9D 0%, #B8DB80 100%);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 1.1rem;
-                box-shadow: 0 4px 10px rgba(255, 107, 157, 0.3);
-                transition: transform 0.3s ease;
-            }
-            
-            .user-info:hover .user-avatar {
-                transform: rotate(15deg) scale(1.1);
-            }
-            
-            .user-details {
-                display: flex;
-                flex-direction: column;
-                gap: 3px;
-            }
-            
-            .user-name {
-                font-weight: 700;
-                color: #333;
-                font-size: 0.95rem;
-                font-family: 'Poppins', sans-serif;
-            }
-            
-            .logout-btn {
-                background: none;
-                border: none;
-                color: #FF6B9D;
-                font-size: 0.8rem;
-                cursor: pointer;
-                padding: 0;
-                text-align: left;
-                transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                font-weight: 500;
-            }
-            
-            .logout-btn:hover {
-                color: #e0558a;
-                gap: 8px;
-                text-shadow: 0 0 10px rgba(255, 107, 157, 0.3);
-            }
-            
-            .logout-btn i {
-                font-size: 0.8rem;
-                transition: transform 0.3s ease;
-            }
-            
-            .logout-btn:hover i {
-                transform: translateX(2px);
-            }
-            
-            /* Mobile Logout Item */
-            .nav-link.mobile-logout {
-                display: none;
-                background: linear-gradient(to right, rgba(255, 107, 157, 0.1), rgba(184, 219, 128, 0.1));
-                border-left: 4px solid #FF6B9D;
-                margin-top: 10px;
-                animation: slideInLeft 0.3s ease;
-            }
-            
-            .nav-link.mobile-logout i {
-                color: #FF6B9D;
-            }
-            
-            .nav-link.mobile-logout span {
-                color: #FF6B9D;
-                font-weight: 600;
-            }
-            
-            .nav-link.mobile-logout:hover {
-                background: linear-gradient(to right, rgba(255, 107, 157, 0.2), rgba(184, 219, 128, 0.2));
-            }
-            
-            /* Welcome Toast */
-            .welcome-toast {
-                position: fixed;
-                top: 100px;
-                right: 20px;
-                z-index: 9999;
-                animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                max-width: 380px;
-            }
-            
-            .toast-content {
-                background: white;
-                border-radius: 18px;
-                padding: 20px;
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-                border: 2px solid transparent;
-                border-image: linear-gradient(135deg, #FF6B9D, #B8DB80) 1;
-                display: flex;
-                align-items: center;
-                gap: 18px;
-                position: relative;
-                overflow: hidden;
-            }
-            
-            .toast-content::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 6px;
-                height: 100%;
-                background: linear-gradient(to bottom, #FF6B9D, #B8DB80);
-            }
-            
-            .toast-icon {
-                width: 50px;
-                height: 50px;
-                background: linear-gradient(135deg, #FF6B9D, #FFA8C8);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 1.5rem;
-                animation: heartbeat 1.5s infinite;
-                flex-shrink: 0;
-            }
-            
-            .toast-text {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-                gap: 5px;
-            }
-            
-            .toast-text strong {
-                color: #333;
-                font-size: 1.1rem;
-                font-weight: 700;
-            }
-            
-            .toast-text span {
-                color: #666;
-                font-size: 0.9rem;
-                opacity: 0.9;
-            }
-            
-            .toast-close {
-                background: none;
-                border: none;
-                color: #999;
-                cursor: pointer;
-                font-size: 1.1rem;
-                padding: 8px;
-                border-radius: 50%;
-                transition: all 0.3s ease;
-                flex-shrink: 0;
-                align-self: flex-start;
-            }
-            
-            .toast-close:hover {
-                background: #f5f5f5;
-                color: #666;
-                transform: rotate(90deg);
-            }
-            
             /* Login Required Overlay */
             .login-required-overlay {
                 position: fixed;
@@ -657,26 +264,25 @@ function addAuthStyles() {
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: linear-gradient(135deg, rgba(255, 228, 239, 0.98), rgba(184, 219, 128, 0.98));
+                background: linear-gradient(135deg, #FFE4EF 0%, #B8DB80 100%);
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                z-index: 9999;
+                z-index: 99999;
                 padding: 20px;
-                backdrop-filter: blur(10px);
+                text-align: center;
             }
             
             .login-required-content {
-                background: white;
-                padding: 50px 40px;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 40px 30px;
                 border-radius: 25px;
-                box-shadow: 0 25px 60px rgba(0, 0, 0, 0.15);
-                text-align: center;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+                border: 2px solid rgba(255, 107, 157, 0.3);
                 max-width: 500px;
-                width: 100%;
-                animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                border: 3px solid transparent;
-                border-image: linear-gradient(135deg, #FF6B9D, #B8DB80) 1;
+                width: 90%;
             }
             
             .login-required-icon {
@@ -696,211 +302,326 @@ function addAuthStyles() {
             
             .login-required-message {
                 color: #666;
-                margin-bottom: 35px;
+                margin-bottom: 30px;
                 line-height: 1.7;
                 font-size: 1.1rem;
             }
             
-            .login-required-actions {
-                display: flex;
-                flex-direction: column;
-                gap: 15px;
-                margin-bottom: 30px;
-            }
-            
             .login-required-btn {
-                background: linear-gradient(135deg, #FF6B9D, #FFA8C8);
+                background: linear-gradient(135deg, #FF6B9D 0%, #FFA8C8 100%);
                 color: white;
                 border: none;
-                padding: 18px 30px;
+                padding: 16px 35px;
                 border-radius: 15px;
                 font-size: 1.1rem;
                 font-weight: 600;
                 cursor: pointer;
-                transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                display: flex;
+                transition: all 0.3s ease;
+                display: inline-flex;
                 align-items: center;
                 justify-content: center;
                 gap: 12px;
+                margin: 0 auto;
                 box-shadow: 0 8px 25px rgba(255, 107, 157, 0.3);
             }
             
             .login-required-btn:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 15px 35px rgba(255, 107, 157, 0.4);
+                transform: translateY(-3px);
+                box-shadow: 0 12px 30px rgba(255, 107, 157, 0.4);
             }
             
-            .back-home-btn {
-                background: white;
-                color: #666;
-                border: 2px solid #FFA8C8;
-                padding: 16px 30px;
-                border-radius: 15px;
-                font-size: 1rem;
-                font-weight: 500;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
+            .login-required-btn:active {
+                transform: translateY(-1px);
             }
             
-            .back-home-btn:hover {
-                background: #FFA8C8;
-                color: white;
-                border-color: #FFA8C8;
-            }
-            
-            .login-hint {
+            .login-required-note {
+                margin-top: 25px;
                 color: #888;
                 font-size: 0.9rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-                margin-top: 25px;
-                padding-top: 15px;
-                border-top: 1px solid #eee;
             }
             
-            .login-hint i {
+            .login-required-note i {
                 color: #B8DB80;
+                margin-right: 8px;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Styles untuk user info desktop
+function addDesktopUserStyles() {
+    const styleId = 'desktop-user-styles';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+            /* Desktop User Info */
+            .user-info-desktop {
+                display: flex;
+                align-items: center;
+                margin-left: auto;
+                margin-right: 20px;
             }
             
-            /* Logout Modal */
-            .logout-modal-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7);
+            .user-info-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(5px);
+                padding: 8px 15px;
+                border-radius: 25px;
+                border: 1px solid rgba(255, 107, 157, 0.2);
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+                transition: all 0.3s ease;
+            }
+            
+            .user-info-wrapper:hover {
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+                transform: translateY(-2px);
+                border-color: rgba(255, 107, 157, 0.4);
+            }
+            
+            .user-badge {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                color: #333;
+                font-weight: 500;
+            }
+            
+            .user-badge i {
+                color: #FF6B9D;
+                font-size: 1.1rem;
+            }
+            
+            .user-name {
+                font-size: 0.95rem;
+                font-weight: 600;
+            }
+            
+            .logout-btn-desktop {
+                background: none;
+                border: none;
+                color: #FF6B9D;
+                cursor: pointer;
+                width: 36px;
+                height: 36px;
+                border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                z-index: 10000;
-                backdrop-filter: blur(5px);
-                animation: fadeIn 0.3s ease;
+                font-size: 1.1rem;
+                transition: all 0.3s ease;
+                padding: 0;
             }
             
-            .logout-modal {
-                background: white;
-                padding: 40px;
-                border-radius: 25px;
-                text-align: center;
-                max-width: 400px;
-                width: 90%;
-                animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                border: 3px solid transparent;
-                border-image: linear-gradient(135deg, #FF6B9D, #B8DB80) 1;
+            .logout-btn-desktop:hover {
+                background: rgba(255, 107, 157, 0.1);
+                color: #e0558a;
+                transform: rotate(15deg);
             }
             
-            .modal-icon {
-                font-size: 3.5rem;
-                color: #FF6B9D;
-                margin-bottom: 20px;
-                animation: heartbeat 1.2s infinite;
+            /* Responsive untuk desktop user info */
+            @media (max-width: 768px) {
+                .user-info-desktop {
+                    display: none !important;
+                }
             }
-            
-            .logout-modal h3 {
-                font-family: 'Playfair Display', serif;
-                color: #333;
-                margin-bottom: 10px;
-                font-size: 1.8rem;
-            }
-            
-            .logout-modal p {
-                color: #666;
-                margin-bottom: 30px;
-                line-height: 1.6;
-            }
-            
-            .modal-actions {
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Styles untuk mobile logout
+function addMobileLogoutStyles() {
+    const styleId = 'mobile-logout-styles';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+            /* Mobile Logout Styles */
+            .logout-mobile-item {
+                margin-top: auto;
+                padding-top: 20px;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
                 display: flex;
+                flex-direction: column;
                 gap: 15px;
             }
             
-            .modal-btn {
-                flex: 1;
-                padding: 16px;
-                border: none;
-                border-radius: 12px;
-                font-size: 1rem;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.3s ease;
+            .mobile-user-info {
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                gap: 8px;
-            }
-            
-            .cancel-btn {
-                background: #f0f0f0;
-                color: #666;
-            }
-            
-            .cancel-btn:hover {
-                background: #e0e0e0;
-                transform: translateY(-2px);
-            }
-            
-            .confirm-btn {
-                background: linear-gradient(135deg, #FF6B9D, #e0558a);
+                gap: 12px;
+                padding: 12px 15px;
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
                 color: white;
-                box-shadow: 0 6px 20px rgba(255, 107, 157, 0.3);
+                font-size: 0.9rem;
             }
             
-            .confirm-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 10px 25px rgba(255, 107, 157, 0.4);
+            .mobile-user-info i {
+                color: #FFA8C8;
+                font-size: 1.2rem;
             }
             
-            /* Logout Message */
-            .logout-message {
+            .mobile-user-info strong {
+                color: #FFA8C8;
+            }
+            
+            .logout-mobile-btn {
+                display: flex !important;
+                align-items: center;
+                gap: 12px;
+                padding: 15px !important;
+                background: rgba(255, 107, 157, 0.15) !important;
+                border-radius: 12px !important;
+                margin-top: 5px !important;
+                color: white !important;
+                transition: all 0.3s ease !important;
+            }
+            
+            .logout-mobile-btn:hover {
+                background: rgba(255, 107, 157, 0.25) !important;
+                transform: translateX(5px);
+            }
+            
+            .logout-mobile-btn i {
+                color: #FFA8C8 !important;
+                font-size: 1.2rem;
+            }
+            
+            /* Mobile menu active state */
+            @media (max-width: 768px) {
+                .nav-menu.active .logout-mobile-item {
+                    display: flex !important;
+                    animation: slideUp 0.4s ease;
+                }
+                
+                .logout-mobile-item {
+                    display: none;
+                }
+            }
+            
+            @keyframes slideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// Styles untuk welcome toast
+function addWelcomeToastStyles() {
+    const styleId = 'welcome-toast-styles';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+            /* Welcome Toast */
+            .welcome-toast {
                 position: fixed;
                 top: 100px;
                 right: 20px;
-                z-index: 9999;
-                animation: slideInRight 0.5s ease;
-                max-width: 350px;
+                z-index: 10000;
+                animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
             
-            .message-content {
-                background: white;
-                border-radius: 18px;
+            @media (max-width: 768px) {
+                .welcome-toast {
+                    top: 80px;
+                    right: 10px;
+                    left: 10px;
+                }
+            }
+            
+            .toast-content {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
                 padding: 20px;
                 box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-                border-left: 6px solid #B8DB80;
+                border: 2px solid rgba(255, 107, 157, 0.3);
                 display: flex;
                 align-items: center;
-                gap: 15px;
+                gap: 18px;
+                max-width: 380px;
+                width: 100%;
+                animation: fadeIn 0.5s ease;
             }
             
-            .message-content i {
-                font-size: 1.8rem;
-                color: #B8DB80;
-                animation: fadeInOut 2s infinite;
+            @media (max-width: 768px) {
+                .toast-content {
+                    max-width: 100%;
+                }
             }
             
-            .message-text {
+            .toast-heart {
+                width: 50px;
+                height: 50px;
+                background: linear-gradient(135deg, #FF6B9D 0%, #FFA8C8 100%);
+                border-radius: 50%;
                 display: flex;
-                flex-direction: column;
-                gap: 5px;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.5rem;
+                flex-shrink: 0;
+                animation: heartbeat 1.5s infinite;
             }
             
-            .message-text strong {
+            .toast-text {
+                flex: 1;
+                text-align: left;
+            }
+            
+            .toast-title {
                 color: #333;
-                font-size: 1rem;
+                font-weight: 700;
+                font-size: 1.2rem;
+                margin-bottom: 5px;
+                font-family: 'Playfair Display', serif;
             }
             
-            .message-text span {
+            .toast-subtitle {
                 color: #666;
-                font-size: 0.9rem;
+                font-size: 0.95rem;
+                line-height: 1.4;
             }
             
-            /* Animations */
+            .toast-close {
+                background: none;
+                border: none;
+                color: #999;
+                cursor: pointer;
+                font-size: 1rem;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                flex-shrink: 0;
+                align-self: flex-start;
+                margin-top: -5px;
+                margin-right: -5px;
+            }
+            
+            .toast-close:hover {
+                background: #f5f5f5;
+                color: #666;
+            }
+            
             @keyframes slideInRight {
                 from {
                     transform: translateX(100%);
@@ -911,147 +632,65 @@ function addAuthStyles() {
                     opacity: 1;
                 }
             }
-            
-            @keyframes slideInLeft {
-                from {
-                    transform: translateX(-20px);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            
-            @keyframes popIn {
-                from {
-                    transform: scale(0.8);
-                    opacity: 0;
-                }
-                to {
-                    transform: scale(1);
-                    opacity: 1;
-                }
-            }
-            
-            @keyframes fadeIn {
-                from { opacity: 0; }
-                to { opacity: 1; }
-            }
-            
-            @keyframes fadeInOut {
-                0%, 100% { opacity: 0.5; }
-                50% { opacity: 1; }
-            }
-            
-            @keyframes heartbeat {
-                0%, 100% { transform: scale(1); }
-                5% { transform: scale(1.1); }
-                10% { transform: scale(1); }
-                15% { transform: scale(1.1); }
-                20% { transform: scale(1); }
-            }
-            
-            /* Responsive Styles */
-            @media (max-width: 768px) {
-                .user-info-container {
-                    display: none;
-                }
-                
-                .nav-link.mobile-logout {
-                    display: flex;
-                }
-                
-                .welcome-toast {
-                    top: 80px;
-                    right: 10px;
-                    left: 10px;
-                    max-width: none;
-                }
-                
-                .toast-content {
-                    padding: 15px;
-                }
-                
-                .toast-icon {
-                    width: 40px;
-                    height: 40px;
-                    font-size: 1.2rem;
-                }
-                
-                .login-required-content {
-                    padding: 30px 20px;
-                }
-                
-                .login-required-title {
-                    font-size: 1.8rem;
-                }
-                
-                .login-required-message {
-                    font-size: 1rem;
-                }
-                
-                .modal-actions {
-                    flex-direction: column;
-                }
-            }
-            
-            @media (max-width: 480px) {
-                .user-avatar {
-                    width: 35px;
-                    height: 35px;
-                    font-size: 1rem;
-                }
-                
-                .user-name {
-                    font-size: 0.85rem;
-                }
-                
-                .logout-btn {
-                    font-size: 0.75rem;
-                }
-            }
         `;
         document.head.appendChild(style);
     }
 }
 
-// Inisialisasi ketika DOM siap
+// ===== UTILITY FUNCTIONS =====
+
+// Fungsi untuk cek login secara periodik
+function startAuthMonitor() {
+    setInterval(() => {
+        const isLoggedIn = sessionStorage.getItem('loveLoggedIn');
+        if (!isLoggedIn && !window.location.href.includes('index.html')) {
+            console.log('Session expired, redirecting...');
+            goToLogin();
+        }
+    }, 60000); // Cek setiap 60 detik
+}
+
+// Setup beforeunload listener
+function setupBeforeUnload() {
+    window.addEventListener('beforeunload', function() {
+        sessionStorage.setItem('lastActivity', Date.now());
+    });
+}
+
+// ===== INITIALIZATION =====
+
+// Inisialisasi semua fungsi ketika DOM siap
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🚀 Starting authentication system...');
+    console.log('🔒 Initializing authentication system...');
     
-    // Setup cache
-    domCache = {
-        navContainer: null,
-        navMenu: null,
-        navToggle: null
-    };
-    
-    // Check authentication
+    // Jalankan cek auth utama
     const isAuthenticated = checkAuth();
     
-    // Expose functions globally
-    window.logout = logout;
-    window.checkAuth = checkAuth;
-    
-    console.log('🎯 Auth system ready. Status:', isAuthenticated ? 'Authenticated' : 'Not authenticated');
-});
-
-// Fallback check (jika ada masalah dengan DOM ready)
-setTimeout(() => {
-    if (!sessionStorage.getItem('loveLoggedIn')) {
-        const overlay = document.querySelector('.login-required-overlay');
-        if (!overlay) {
-            const user = sessionStorage.getItem('loveUser') || 'Guest';
-            showLoginOverlay(user);
-        }
-    }
-}, 2000);
-
-// Handle browser back/forward
-window.addEventListener('pageshow', function(event) {
-    if (event.persisted) {
-        console.log('Page restored from bfcache, rechecking auth...');
-        checkAuth();
+    if (isAuthenticated) {
+        console.log('✅ User authenticated, welcome!');
+        
+        // Setup monitor session
+        startAuthMonitor();
+        
+        // Setup beforeunload listener
+        setupBeforeUnload();
+        
+        // Expose logout function globally
+        window.logout = logout;
+        window.goToLogin = goToLogin;
+        
+    } else {
+        console.log('❌ Authentication required');
     }
 });
+
+// Handle storage events (untuk multi-tab)
+window.addEventListener('storage', function(e) {
+    if (e.key === 'loveLoggedIn' && !e.newValue && !window.location.href.includes('index.html')) {
+        goToLogin();
+    }
+});
+
+// Expose fungsi ke global scope
+window.logout = logout;
+window.goToLogin = goToLogin;
