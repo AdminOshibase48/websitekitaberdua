@@ -3,19 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>our story together| Maafin Aku Ya? ❤️</title>
+    <title>Untuk Kamu ❤️</title>
     <style>
-        :root {
-            --pink-soft: #ffcad4;
-            --pink-dark: #f08080;
-            --cream: #fff5f5;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: var(--cream);
+            background: #fff0f3;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,188 +17,159 @@
             overflow-x: hidden;
         }
 
-        /* Latar belakang kelopak bunga */
-        .bg-flowers {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
+        .card {
             background: white;
             width: 90%;
-            max-width: 450px;
-            padding: 25px;
-            border-radius: 30px;
-            box-shadow: 0 15px 35px rgba(240, 128, 128, 0.2);
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(255, 75, 110, 0.15);
             text-align: center;
             position: relative;
-            z-index: 10;
-            border: 5px solid var(--pink-soft);
         }
 
-        .main-gif {
-            width: 120px;
+        .header-gif {
+            width: 100px;
             margin-bottom: 15px;
         }
 
-        h2 { color: var(--pink-dark); font-size: 1.5rem; margin: 10px 0; }
-        p { color: #777; font-size: 0.95rem; line-height: 1.5; }
-
-        /* Galeri Foto Estetik */
-        .photo-frame {
-            position: relative;
+        h2 { color: #ff4d6d; font-size: 1.4rem; margin-bottom: 10px; }
+        
+        /* Frame Foto Responsive */
+        .slider-container {
             width: 100%;
-            height: 250px;
-            margin: 20px 0;
+            aspect-ratio: 1/1; /* Biar kotak sempurna di HP/Laptop */
             overflow: hidden;
             border-radius: 15px;
-            border: 8px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 4px solid #ffe5ec;
+            margin-bottom: 20px;
         }
 
         .slides {
             display: flex;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             height: 100%;
         }
 
         .slides img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: cover; /* Foto gak bakal gepeng */
             flex-shrink: 0;
         }
 
-        /* Tombol */
-        .btn-group {
+        .btn-wrapper {
             display: flex;
-            justify-content: space-around;
-            align-items: center;
-            margin-top: 25px;
-            height: 60px;
+            justify-content: center;
+            gap: 15px;
+            height: 50px;
+            margin-top: 10px;
+            position: relative;
         }
 
         button {
-            padding: 12px 25px;
+            padding: 10px 25px;
             border: none;
             border-radius: 50px;
             font-weight: bold;
             cursor: pointer;
-            transition: 0.3s;
             font-size: 1rem;
+            transition: 0.2s;
         }
 
-        #yesBtn {
-            background-color: var(--pink-dark);
-            color: white;
-            box-shadow: 0 5px 15px rgba(240, 128, 128, 0.4);
-        }
-
-        #noBtn {
-            background-color: #eee;
-            color: #888;
-            position: absolute;
-        }
-
-        /* Animasi Hati */
-        .heart-fly {
-            position: fixed;
-            bottom: -50px;
-            font-size: 24px;
-            animation: fly 4s linear infinite;
+        #yesBtn { background: #ff4d6d; color: white; z-index: 2; }
+        
+        #noBtn { 
+            background: #adb5bd; 
+            color: white; 
+            position: absolute; 
             z-index: 1;
+            white-space: nowrap;
         }
 
-        @keyframes fly {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        /* Animasi Love */
+        .heart {
+            position: fixed;
+            font-size: 20px;
+            top: -20px;
+            user-select: none;
+            z-index: 99;
+            animation: fall 3s linear forwards;
         }
 
-        @media (max-width: 480px) {
-            .container { padding: 15px; }
-            h2 { font-size: 1.2rem; }
+        @keyframes fall {
+            to { transform: translateY(105vh) rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
-    <div class="bg-flowers" id="flowerContainer"></div>
-
-    <div class="container" id="mainCard">
-        <img src="https://media.tenor.com/On7_5W_pCcYAAAAi/cute-bear-studying.gif" class="main-gif" alt="cute gif">
+    <div class="card">
+        <img src="https://media.tenor.com/CAtscY0p_pYAAAAi/hug-love.gif" class="header-gif">
+        <h2 id="text">Maafin aku ya sayang? ✨</h2>
         
-        <h2 id="title">Maafin Aku Ya Sayang? 🥺</h2>
-        <p id="desc">Aku tau aku nyebelin, tapi liat deh foto-foto kita ini... Masa kamu masih mau marah sama aku? hehe.</p>
-
-        <div class="photo-frame">
+        <div class="slider-container">
             <div class="slides" id="slider">
-                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1768731018/IMG-20251231-WA000011_vs8kkx.jpg" alt="Foto 1">
-                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1768691347/IMG20251214072100_lkohwo.jpg" alt="Foto 2">
-                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1769163099/IMG20260104074746_01_m2kryp.jpg" alt="Foto 3">
-                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1769163101/IMG20260104074840_01_ghi0oy.jpg" alt="Foto 4">
+                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1768731018/IMG-20251231-WA000011_vs8kkx.jpg">
+                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1768691347/IMG20251214072100_lkohwo.jpg">
+                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1769163099/IMG20260104074746_01_m2kryp.jpg">
+                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1769163101/IMG20260104074840_01_ghi0oy.jpg">
             </div>
         </div>
 
-        <div class="btn-group">
-            <button id="yesBtn">Iya, Maafin ❤️</button>
+        <div class="btn-wrapper" id="btnWrapper">
+            <button id="yesBtn">Iya Maafin</button>
             <button id="noBtn">Enggak!</button>
         </div>
     </div>
 
     <script>
-        // 1. Logika Slider Foto Otomatis
+        // 1. Slider Foto Otomatis
         const slider = document.getElementById('slider');
-        let index = 0;
-        const totalImages = 4;
-
+        let idx = 0;
         setInterval(() => {
-            index++;
-            if (index >= totalImages) index = 0;
-            slider.style.transform = `translateX(${-index * 100}%)`;
-        }, 3000);
+            idx++;
+            if(idx > 3) idx = 0;
+            slider.style.transform = `translateX(${-idx * 100}%)`;
+        }, 2500);
 
-        // 2. Tombol "No" yang kabur
+        // 2. Logika Tombol No (Pintar & Anti Keluar Layar)
         const noBtn = document.getElementById('noBtn');
-        noBtn.addEventListener('mouseover', moveButton);
-        noBtn.addEventListener('touchstart', moveButton); // Untuk HP
+        const moveNo = () => {
+            // Membatasi pergerakan di area yang aman di layar HP
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        };
 
-        function moveButton(e) {
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            noBtn.style.left = `${x}px`;
-            noBtn.style.top = `${y}px`;
-        }
-
-        // 3. Tombol "Yes" diklik
-        const yesBtn = document.getElementById('yesBtn');
-        const title = document.getElementById('title');
-        const desc = document.getElementById('desc');
-        const gif = document.querySelector('.main-gif');
-
-        yesBtn.addEventListener('click', () => {
-            title.innerHTML = "Makasih Cantik! ❤️";
-            desc.innerHTML = "Janji deh besok aku jemput terus kita jalan-jalan. Love you more!";
-            gif.src = "https://media.tenor.com/gU_Pb_6Y85YAAAAj/cute-duck-love.gif";
-            noBtn.style.display = "none";
-            yesBtn.innerHTML = "I Love You!";
-            
-            // Hujan hati
-            setInterval(createHeart, 200);
+        noBtn.addEventListener('mouseover', moveNo);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Mencegah klik di HP
+            moveNo();
         });
 
-        // 4. Efek Hati Terbang
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart-fly');
-            heart.innerHTML = ['❤️', '🌸', '✨', '💕'][Math.floor(Math.random() * 4)];
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = (Math.random() * 2 + 2) + "s";
-            document.body.appendChild(heart);
+        // 3. Logika Klik Yes
+        const yesBtn = document.getElementById('yesBtn');
+        const text = document.getElementById('text');
+        
+        yesBtn.addEventListener('click', () => {
+            text.innerHTML = "Makasih ya! Love you! ❤️";
+            noBtn.style.display = 'none';
+            yesBtn.style.transform = "scale(1.2)";
             
-            setTimeout(() => heart.remove(), 4000);
-        }
+            // Hujan Love
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerHTML = '❤️';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
+            }, 150);
+        });
     </script>
 </body>
 </html>
