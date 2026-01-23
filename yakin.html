@@ -3,173 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Untuk Kamu ❤️</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            background: #fff0f3;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        .card {
-            background: white;
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(255, 75, 110, 0.15);
-            text-align: center;
-            position: relative;
-        }
-
-        .header-gif {
-            width: 100px;
-            margin-bottom: 15px;
-        }
-
-        h2 { color: #ff4d6d; font-size: 1.4rem; margin-bottom: 10px; }
-        
-        /* Frame Foto Responsive */
-        .slider-container {
-            width: 100%;
-            aspect-ratio: 1/1; /* Biar kotak sempurna di HP/Laptop */
-            overflow: hidden;
-            border-radius: 15px;
-            border: 4px solid #ffe5ec;
-            margin-bottom: 20px;
-        }
-
-        .slides {
-            display: flex;
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            height: 100%;
-        }
-
-        .slides img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* Foto gak bakal gepeng */
-            flex-shrink: 0;
-        }
-
-        .btn-wrapper {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            height: 50px;
-            margin-top: 10px;
-            position: relative;
-        }
-
-        button {
-            padding: 10px 25px;
-            border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: 0.2s;
-        }
-
-        #yesBtn { background: #ff4d6d; color: white; z-index: 2; }
-        
-        #noBtn { 
-            background: #adb5bd; 
-            color: white; 
-            position: absolute; 
-            z-index: 1;
-            white-space: nowrap;
-        }
-
-        /* Animasi Love */
-        .heart {
-            position: fixed;
-            font-size: 20px;
-            top: -20px;
-            user-select: none;
-            z-index: 99;
-            animation: fall 3s linear forwards;
-        }
-
-        @keyframes fall {
-            to { transform: translateY(105vh) rotate(360deg); }
-        }
-    </style>
+    <title>our story together | Untuk Sayangku</title>
+    <link rel="stylesheet" href="assets/styles/yakin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <div class="card">
-        <img src="https://media.tenor.com/CAtscY0p_pYAAAAi/hug-love.gif" class="header-gif">
-        <h2 id="text">Maafin aku ya sayang? ✨</h2>
-        
-        <div class="slider-container">
-            <div class="slides" id="slider">
-                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1768731018/IMG-20251231-WA000011_vs8kkx.jpg">
-                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1768691347/IMG20251214072100_lkohwo.jpg">
-                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1769163099/IMG20260104074746_01_m2kryp.jpg">
-                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1769163101/IMG20260104074840_01_ghi0oy.jpg">
+    <div class="container">
+        <div class="card">
+            <h1 class="title">Untuk Sayangku...</h1>
+            <div class="gallery">
+                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1769163099/IMG20260104074746_01_m2kryp.jpg" alt="Foto Bersama 1">
+                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1769163101/IMG20260104074840_01_ghi0oy.jpg" alt="Foto Bersama 2">
+                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1769163095/IMG-20260114-WA0045_jnhy0b.jpg" alt="Foto Bersama 3">
+                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1768731018/IMG-20251231-WA000011_vs8kkx.jpg" alt="Foto Bersama 4">
+                <img src="https://res.cloudinary.com/deospx6aw/image/upload/v1768691347/IMG20251217134312_rjluot.jpg" alt="Foto Bersama 5">
             </div>
-        </div>
-
-        <div class="btn-wrapper" id="btnWrapper">
-            <button id="yesBtn">Iya Maafin</button>
-            <button id="noBtn">Enggak!</button>
+            <p id="message" class="message">
+                Sayang... Aku tahu aku sudah buat salah besar dan itu melukai hatimu. Maafkan aku ya? Aku janji akan belajar dari kesalahanku dan berusaha menjadi pribadi yang lebih baik. Kebahagiaanmu adalah segalanya bagiku.
+            </p>
+            <div class="buttons">
+                <button id="yesButton" class="btn yes-btn">IYA!</button>
+                <button id="noButton" class="btn no-btn">Belum</button>
+            </div>
+            <p id="thankYouMessage" class="thank-you-message hidden">
+                Terima kasih, Sayangku! Aku janji akan selalu menjagamu.
+                <br>
+                <span class="heart-emoji">❤️</span>
+            </p>
         </div>
     </div>
-
-    <script>
-        // 1. Slider Foto Otomatis
-        const slider = document.getElementById('slider');
-        let idx = 0;
-        setInterval(() => {
-            idx++;
-            if(idx > 3) idx = 0;
-            slider.style.transform = `translateX(${-idx * 100}%)`;
-        }, 2500);
-
-        // 2. Logika Tombol No (Pintar & Anti Keluar Layar)
-        const noBtn = document.getElementById('noBtn');
-        const moveNo = () => {
-            // Membatasi pergerakan di area yang aman di layar HP
-            const x = Math.random() * (window.innerWidth - 100);
-            const y = Math.random() * (window.innerHeight - 50);
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
-        };
-
-        noBtn.addEventListener('mouseover', moveNo);
-        noBtn.addEventListener('touchstart', (e) => {
-            e.preventDefault(); // Mencegah klik di HP
-            moveNo();
-        });
-
-        // 3. Logika Klik Yes
-        const yesBtn = document.getElementById('yesBtn');
-        const text = document.getElementById('text');
-        
-        yesBtn.addEventListener('click', () => {
-            text.innerHTML = "Makasih ya! Love you! ❤️";
-            noBtn.style.display = 'none';
-            yesBtn.style.transform = "scale(1.2)";
-            
-            // Hujan Love
-            setInterval(() => {
-                const heart = document.createElement('div');
-                heart.classList.add('heart');
-                heart.innerHTML = '❤️';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
-                document.body.appendChild(heart);
-                setTimeout(() => heart.remove(), 3000);
-            }, 150);
-        });
-    </script>
+    <script src="assets/scripts/yakin.js"></script>
 </body>
 </html>
