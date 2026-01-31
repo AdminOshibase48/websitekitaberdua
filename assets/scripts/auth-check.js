@@ -7,6 +7,9 @@
 const LOGIN_PAGE = 'index';
 const VALID_USERS = ['Capi', 'Cipi'];
 
+// Variabel global untuk toggle menu
+let isMobileMenuOpen = false;
+
 // Fungsi utama untuk cek authentication
 function checkAuth() {
     // Ambil data dari sessionStorage
@@ -14,7 +17,7 @@ function checkAuth() {
     const currentUser = sessionStorage.getItem('loveUser');
     
     // Debug (bisa dihapus setelah testing)
-    console.log('🔒 Auth Status:', {
+    console.log('Auth Status:', {
         isLoggedIn: isLoggedIn,
         currentUser: currentUser
     });
@@ -22,93 +25,72 @@ function checkAuth() {
     // Cek jika belum login atau user tidak valid
     if (!isLoggedIn || !currentUser || !VALID_USERS.includes(currentUser)) {
         console.log('❌ Not authenticated, redirecting to login...');
-        showLoginRequiredOverlay();
+        redirectToLogin();
         return false;
     }
     
     // Jika sudah login, tampilkan user info
     displayUserInfo(currentUser);
-    addLogoutToMobileMenu(currentUser);
+    
+    // Setup mobile menu handler
+    setupMobileMenu();
+    
     return true;
 }
 
-// Tampilkan overlay login required
-function showLoginRequiredOverlay() {
-    // Cek jika overlay sudah ada
-    if (document.getElementById('loginRequiredOverlay')) return;
-    
-    const overlay = document.createElement('div');
-    overlay.id = 'loginRequiredOverlay';
-    overlay.className = 'login-required-overlay';
-    overlay.innerHTML = `
-        <div class="login-required-content" data-aos="zoom-in">
-            <div class="login-required-icon">
-                <i class="fas fa-heart-lock"></i>
-            </div>
-            <h2 class="login-required-title">Akses Terbatas</h2>
-            <p class="login-required-message">
-                Halaman ini hanya untuk Capi & Cipi.<br>
-                Silakan login terlebih dahulu untuk melihat kenangan indah kita.
-            </p>
-            <button class="login-required-btn" onclick="goToLogin()">
-                <i class="fas fa-sign-in-alt"></i>
-                Pergi ke Halaman Login
-            </button>
-            <p class="login-required-note">
-                <small><i class="fas fa-info-circle"></i> Password: tanggal spesial kita</small>
-            </p>
-        </div>
-    `;
-    
-    document.body.appendChild(overlay);
-    addLoginRequiredStyles();
-    
-    // Redirect otomatis setelah 5 detik
-    setTimeout(() => {
-        if (overlay.parentNode) {
-            goToLogin();
-        }
-    }, 5000);
-}
-
-// Go to login page
-function goToLogin() {
+// Redirect ke halaman login
+function redirectToLogin() {
+    // Simpan halaman saat ini untuk redirect back setelah login (opsional)
     sessionStorage.setItem('redirectAfterLogin', window.location.pathname);
+    
+    // Redirect ke login page
     window.location.href = LOGIN_PAGE;
 }
 
-// Tampilkan informasi user di navbar (untuk desktop)
+// Tampilkan informasi user di navbar
 function displayUserInfo(user) {
-    // Tunggu hingga navbar siap
+    // Tunggu hingga DOM siap
     setTimeout(() => {
+        // Cari navbar container
         const navContainer = document.querySelector('.nav-container');
+        const navMenu = document.querySelector('.nav-menu');
         
-        if (navContainer && !document.querySelector('.user-info-desktop')) {
-            // Buat container untuk desktop
-            const userInfo = document.createElement('div');
-            userInfo.className = 'user-info-desktop';
-            userInfo.innerHTML = `
-                <div class="user-info-wrapper">
-                    <div class="user-badge">
-                        <i class="fas fa-user-heart"></i>
-                        <span class="user-name">${user}</span>
-                    </div>
-                    <button class="logout-btn-desktop" onclick="logout()" title="Logout">
-                        <i class="fas fa-sign-out-alt"></i>
+        if (!navContainer) return;
+        
+        // Hapus user info lama jika ada
+        const oldUserInfo = document.querySelector('.user-info-container');
+        if (oldUserInfo) oldUserInfo.remove();
+        
+        // Buat container info user untuk desktop
+        const userInfo = document.createElement('div');
+        userInfo.className = 'user-info-container';
+        userInfo.innerHTML = `
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="user-details">
+                    <span class="user-name">${user}</span>
+                    <button class="logout-btn" onclick="logout()" title="Logout">
+                        <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 </div>
-            `;
-            
-            // Sisipkan sebelum nav-toggle (mobile menu button)
-            const navToggle = document.querySelector('.nav-toggle');
-            if (navToggle) {
-                navContainer.insertBefore(userInfo, navToggle);
-            } else {
-                navContainer.appendChild(userInfo);
-            }
-            
-            addDesktopUserStyles();
+            </div>
+        `;
+        
+        // Tambahkan ke navbar (sebelah kanan sebelum toggle button)
+        const navToggle = document.querySelector('.nav-toggle');
+        if (navToggle) {
+            navContainer.insertBefore(userInfo, navToggle);
+        } else {
+            navContainer.appendChild(userInfo);
         }
+        
+        // Tambahkan logout option di mobile menu
+        addMobileLogoutOption(user);
+        
+        // Tambahkan style jika belum ada
+        addUserInfoStyles();
         
         // Update judul halaman dengan nama user
         updatePageTitle(user);
@@ -116,131 +98,198 @@ function displayUserInfo(user) {
         // Tampilkan welcome message
         showWelcomeMessage(user);
         
-    }, 1000);
+    }, 500);
 }
 
 // Tambahkan logout option di mobile menu
-function addLogoutToMobileMenu(user) {
-    setTimeout(() => {
-        const navMenu = document.querySelector('.nav-menu');
-        
-        if (navMenu && !document.querySelector('.logout-mobile-item')) {
-            // Buat logout item untuk mobile
-            const logoutItem = document.createElement('div');
-            logoutItem.className = 'logout-mobile-item';
-            logoutItem.innerHTML = `
-                <div class="mobile-user-info">
-                    <i class="fas fa-user-heart"></i>
-                    <span>Login sebagai: <strong>${user}</strong></span>
-                </div>
-                <a href="javascript:void(0)" class="nav-link logout-mobile-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            `;
-            
-            // Tambahkan ke akhir menu
-            navMenu.appendChild(logoutItem);
-            addMobileLogoutStyles();
-        }
-        
-        // Setup mobile menu toggle untuk logout item
-        setupMobileMenuToggle();
-        
-    }, 1500);
-}
-
-// Setup mobile menu toggle behavior
-function setupMobileMenuToggle() {
-    const navToggle = document.querySelector('.nav-toggle');
+function addMobileLogoutOption(user) {
+    // Cari nav menu
     const navMenu = document.querySelector('.nav-menu');
+    if (!navMenu) return;
     
-    if (navToggle && navMenu) {
-        navToggle.addEventListener('click', function() {
-            navMenu.classList.toggle('active');
-            document.body.classList.toggle('menu-open');
-        });
-    }
+    // Hapus logout mobile lama jika ada
+    const oldLogout = document.querySelector('.nav-link.logout-mobile');
+    if (oldLogout) oldLogout.remove();
     
-    // Close menu ketika klik diluar
-    document.addEventListener('click', function(e) {
-        if (!e.target.closest('.nav-container') && navMenu.classList.contains('active')) {
-            navMenu.classList.remove('active');
-            document.body.classList.remove('menu-open');
-        }
+    // Buat logout link untuk mobile
+    const logoutLink = document.createElement('a');
+    logoutLink.className = 'nav-link logout-mobile';
+    logoutLink.href = '#';
+    logoutLink.innerHTML = `
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout (${user})</span>
+    `;
+    
+    // Tambahkan event listener
+    logoutLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        logout();
     });
+    
+    // Tambahkan ke mobile menu
+    navMenu.appendChild(logoutLink);
 }
 
 // Update judul halaman
 function updatePageTitle(user) {
     const title = document.querySelector('title');
     if (title && !title.textContent.includes(user)) {
-        // Hanya tambahkan jika belum ada
-        const baseTitle = title.textContent.replace(" | our story together", "");
-        title.textContent = `${baseTitle} | ${user}'s Love Story`;
+        title.textContent = `${user}'s Love Story | our story together`;
     }
 }
 
 // Tampilkan welcome message
 function showWelcomeMessage(user) {
-    // Hanya tampilkan sekali per session
-    if (sessionStorage.getItem('welcomeShown')) return;
+    // Cek jika sudah pernah tampil di session ini
+    const welcomeShown = sessionStorage.getItem('welcomeShown');
+    if (welcomeShown === 'true') return;
     
-    setTimeout(() => {
-        const toast = document.createElement('div');
-        toast.className = 'welcome-toast';
-        toast.setAttribute('data-aos', 'fade-left');
-        toast.innerHTML = `
-            <div class="toast-content">
-                <div class="toast-heart">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="toast-text">
-                    <div class="toast-title">Hai, ${user}! 💕</div>
-                    <div class="toast-subtitle">Selamat menikmati kenangan indah kita</div>
-                </div>
-                <button class="toast-close" onclick="this.parentElement.parentElement.remove()">
-                    <i class="fas fa-times"></i>
-                </button>
+    // Buat toast notification
+    const toast = document.createElement('div');
+    toast.className = 'welcome-toast';
+    toast.innerHTML = `
+        <div class="toast-content">
+            <i class="fas fa-heart"></i>
+            <div class="toast-text">
+                <strong>Selamat datang, ${user}!</strong>
+                <span>Nikmati setiap momen indah kita ❤️</span>
             </div>
-        `;
-        
-        document.body.appendChild(toast);
-        
-        // Auto remove setelah 5 detik
+            <button class="toast-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    `;
+    
+    // Tambahkan ke body
+    document.body.appendChild(toast);
+    
+    // Setup close button
+    const closeBtn = toast.querySelector('.toast-close');
+    closeBtn.addEventListener('click', function() {
+        toast.classList.add('fade-out');
         setTimeout(() => {
             if (toast.parentNode) {
                 toast.remove();
             }
-        }, 5000);
+        }, 300);
+    });
+    
+    // Auto remove setelah 5 detik
+    setTimeout(() => {
+        if (toast.parentNode && !toast.classList.contains('fade-out')) {
+            toast.classList.add('fade-out');
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 300);
+        }
+    }, 5000);
+    
+    // Tandai sudah ditampilkan
+    sessionStorage.setItem('welcomeShown', 'true');
+    
+    // Tambahkan style untuk toast
+    addToastStyles();
+}
+
+// Setup mobile menu handler
+function setupMobileMenu() {
+    const navToggle = document.querySelector('.nav-toggle');
+    const navMenu = document.querySelector('.nav-menu');
+    
+    if (!navToggle || !navMenu) return;
+    
+    // Hapus event listener lama
+    const newToggle = navToggle.cloneNode(true);
+    navToggle.parentNode.replaceChild(newToggle, navToggle);
+    
+    // Tambahkan event listener baru
+    newToggle.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent event bubbling
+        toggleMobileMenu();
+    });
+    
+    // Close menu ketika klik di luar
+    document.addEventListener('click', function(e) {
+        if (isMobileMenuOpen && 
+            !navMenu.contains(e.target) && 
+            !newToggle.contains(e.target)) {
+            closeMobileMenu();
+        }
+    });
+    
+    // Close menu ketika klik link di dalam menu
+    const navLinks = navMenu.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            closeMobileMenu();
+        });
+    });
+}
+
+// Toggle mobile menu
+function toggleMobileMenu() {
+    const navMenu = document.querySelector('.nav-menu');
+    const navToggle = document.querySelector('.nav-toggle');
+    const hamburgerLines = document.querySelectorAll('.hamburger-line');
+    
+    if (!navMenu || !navToggle) return;
+    
+    if (!isMobileMenuOpen) {
+        // Open menu
+        navMenu.classList.add('active');
+        navToggle.classList.add('active');
         
-        // Tandai sudah ditampilkan
-        sessionStorage.setItem('welcomeShown', 'true');
+        // Animate hamburger to X
+        hamburgerLines[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+        hamburgerLines[1].style.opacity = '0';
+        hamburgerLines[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
         
-        addWelcomeToastStyles();
-        
-    }, 2000);
+        isMobileMenuOpen = true;
+    } else {
+        // Close menu
+        closeMobileMenu();
+    }
+}
+
+// Close mobile menu
+function closeMobileMenu() {
+    const navMenu = document.querySelector('.nav-menu');
+    const navToggle = document.querySelector('.nav-toggle');
+    const hamburgerLines = document.querySelectorAll('.hamburger-line');
+    
+    if (navMenu) navMenu.classList.remove('active');
+    if (navToggle) navToggle.classList.remove('active');
+    
+    // Reset hamburger
+    hamburgerLines[0].style.transform = 'none';
+    hamburgerLines[1].style.opacity = '1';
+    hamburgerLines[2].style.transform = 'none';
+    
+    isMobileMenuOpen = false;
 }
 
 // Fungsi logout
 function logout() {
-    // Sweet confirmation
-    const confirmLogout = confirm('Yakin mau keluar dari dunia cinta kita? 💔\n\nKamu bisa login lagi kapan saja dengan password spesial kita.');
+    // Konfirmasi logout dengan sweet message
+    const user = sessionStorage.getItem('loveUser') || 'Sayang';
+    const confirmLogout = confirm(`${user}, yakin mau logout dari dunia cinta kita? 😢\n\nKamu bisa login lagi kapan saja dengan password cinta kita ❤️`);
     
     if (confirmLogout) {
-        // Animation sebelum logout
-        const logoutBtn = event?.target?.closest('.logout-btn-desktop, .logout-mobile-btn') || 
-                          document.querySelector('.logout-btn-desktop, .logout-mobile-btn');
+        // Animasi sebelum logout
+        const logoutBtns = document.querySelectorAll('.logout-btn, .logout-mobile');
+        logoutBtns.forEach(btn => {
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging out...';
+            btn.disabled = true;
+        });
         
-        if (logoutBtn) {
-            logoutBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            logoutBtn.disabled = true;
-        }
-        
-        // Hapus session data
+        // Hapus session data setelah delay
         setTimeout(() => {
-            sessionStorage.clear();
-            localStorage.removeItem('rememberedLoveUser');
+            sessionStorage.removeItem('loveLoggedIn');
+            sessionStorage.removeItem('loveUser');
+            sessionStorage.removeItem('welcomeShown');
+            sessionStorage.removeItem('redirectAfterLogin');
             
             // Redirect ke login page
             window.location.href = LOGIN_PAGE;
@@ -248,271 +297,183 @@ function logout() {
     }
 }
 
-// ===== STYLE FUNCTIONS =====
-
-// Styles untuk login required overlay
-function addLoginRequiredStyles() {
-    const styleId = 'login-required-styles';
+// Tambahkan styles untuk user info
+function addUserInfoStyles() {
+    const styleId = 'user-info-styles';
     if (!document.getElementById(styleId)) {
         const style = document.createElement('style');
         style.id = styleId;
         style.textContent = `
-            /* Login Required Overlay */
-            .login-required-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(135deg, #FFE4EF 0%, #B8DB80 100%);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                z-index: 99999;
-                padding: 20px;
-                text-align: center;
-            }
-            
-            .login-required-content {
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                padding: 40px 30px;
-                border-radius: 25px;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-                border: 2px solid rgba(255, 107, 157, 0.3);
-                max-width: 500px;
-                width: 90%;
-            }
-            
-            .login-required-icon {
-                font-size: 4.5rem;
-                color: #FF6B9D;
-                margin-bottom: 25px;
-                animation: heartbeat 1.5s infinite;
-            }
-            
-            .login-required-title {
-                font-family: 'Playfair Display', serif;
-                font-size: 2.2rem;
-                color: #333;
-                margin-bottom: 15px;
-                font-weight: 700;
-            }
-            
-            .login-required-message {
-                color: #666;
-                margin-bottom: 30px;
-                line-height: 1.7;
-                font-size: 1.1rem;
-            }
-            
-            .login-required-btn {
-                background: linear-gradient(135deg, #FF6B9D 0%, #FFA8C8 100%);
-                color: white;
-                border: none;
-                padding: 16px 35px;
-                border-radius: 15px;
-                font-size: 1.1rem;
-                font-weight: 600;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                gap: 12px;
-                margin: 0 auto;
-                box-shadow: 0 8px 25px rgba(255, 107, 157, 0.3);
-            }
-            
-            .login-required-btn:hover {
-                transform: translateY(-3px);
-                box-shadow: 0 12px 30px rgba(255, 107, 157, 0.4);
-            }
-            
-            .login-required-btn:active {
-                transform: translateY(-1px);
-            }
-            
-            .login-required-note {
-                margin-top: 25px;
-                color: #888;
-                font-size: 0.9rem;
-            }
-            
-            .login-required-note i {
-                color: #B8DB80;
-                margin-right: 8px;
-            }
-        `;
-        document.head.appendChild(style);
-    }
-}
-
-// Styles untuk user info desktop
-function addDesktopUserStyles() {
-    const styleId = 'desktop-user-styles';
-    if (!document.getElementById(styleId)) {
-        const style = document.createElement('style');
-        style.id = styleId;
-        style.textContent = `
-            /* Desktop User Info */
-            .user-info-desktop {
-                display: flex;
-                align-items: center;
+            /* User Info Styles - PERTAHANKAN WARNA PINK */
+            .user-info-container {
                 margin-left: auto;
-                margin-right: 20px;
-            }
-            
-            .user-info-wrapper {
+                margin-right: 15px;
                 display: flex;
                 align-items: center;
-                gap: 15px;
-                background: rgba(255, 255, 255, 0.8);
-                backdrop-filter: blur(5px);
-                padding: 8px 15px;
-                border-radius: 25px;
-                border: 1px solid rgba(255, 107, 157, 0.2);
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-                transition: all 0.3s ease;
             }
             
-            .user-info-wrapper:hover {
-                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
-                transform: translateY(-2px);
-                border-color: rgba(255, 107, 157, 0.4);
-            }
-            
-            .user-badge {
+            .user-info {
                 display: flex;
                 align-items: center;
                 gap: 10px;
-                color: #333;
-                font-weight: 500;
+                background: rgba(255, 107, 157, 0.15);
+                padding: 6px 12px;
+                border-radius: 20px;
+                border: 2px solid #FFA8C8;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(255, 107, 157, 0.1);
             }
             
-            .user-badge i {
-                color: #FF6B9D;
-                font-size: 1.1rem;
+            .user-info:hover {
+                background: rgba(255, 107, 157, 0.25);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(255, 107, 157, 0.2);
+                border-color: #FF6B9D;
             }
             
-            .user-name {
-                font-size: 0.95rem;
-                font-weight: 600;
-            }
-            
-            .logout-btn-desktop {
-                background: none;
-                border: none;
-                color: #FF6B9D;
-                cursor: pointer;
-                width: 36px;
-                height: 36px;
+            .user-avatar {
+                width: 32px;
+                height: 32px;
+                background: linear-gradient(135deg, #FF6B9D 0%, #FFA8C8 100%);
                 border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 1.1rem;
-                transition: all 0.3s ease;
-                padding: 0;
-            }
-            
-            .logout-btn-desktop:hover {
-                background: rgba(255, 107, 157, 0.1);
-                color: #e0558a;
-                transform: rotate(15deg);
-            }
-            
-            /* Responsive untuk desktop user info */
-            @media (max-width: 768px) {
-                .user-info-desktop {
-                    display: none !important;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-}
-
-// Styles untuk mobile logout
-function addMobileLogoutStyles() {
-    const styleId = 'mobile-logout-styles';
-    if (!document.getElementById(styleId)) {
-        const style = document.createElement('style');
-        style.id = styleId;
-        style.textContent = `
-            /* Mobile Logout Styles */
-            .logout-mobile-item {
-                margin-top: auto;
-                padding-top: 20px;
-                border-top: 1px solid rgba(255, 255, 255, 0.2);
-                display: flex;
-                flex-direction: column;
-                gap: 15px;
-            }
-            
-            .mobile-user-info {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                padding: 12px 15px;
-                background: rgba(255, 255, 255, 0.1);
-                border-radius: 12px;
                 color: white;
                 font-size: 0.9rem;
+                border: 2px solid white;
+                box-shadow: 0 3px 10px rgba(255, 107, 157, 0.3);
             }
             
-            .mobile-user-info i {
-                color: #FFA8C8;
-                font-size: 1.2rem;
+            .user-details {
+                display: flex;
+                flex-direction: column;
             }
             
-            .mobile-user-info strong {
-                color: #FFA8C8;
+            .user-name {
+                font-weight: 600;
+                color: #FF6B9D;
+                font-size: 0.85rem;
+                font-family: 'Poppins', sans-serif;
             }
             
-            .logout-mobile-btn {
-                display: flex !important;
+            .logout-btn {
+                background: none;
+                border: none;
+                color: #FF6B9D;
+                font-size: 0.7rem;
+                cursor: pointer;
+                padding: 0;
+                text-align: left;
+                transition: all 0.3s ease;
+                display: flex;
                 align-items: center;
-                gap: 12px;
-                padding: 15px !important;
-                background: rgba(255, 107, 157, 0.15) !important;
-                border-radius: 12px !important;
-                margin-top: 5px !important;
-                color: white !important;
-                transition: all 0.3s ease !important;
+                gap: 4px;
+                font-family: 'Poppins', sans-serif;
+                font-weight: 500;
             }
             
-            .logout-mobile-btn:hover {
-                background: rgba(255, 107, 157, 0.25) !important;
-                transform: translateX(5px);
+            .logout-btn:hover {
+                color: #e0558a;
+                transform: translateX(2px);
             }
             
-            .logout-mobile-btn i {
-                color: #FFA8C8 !important;
-                font-size: 1.2rem;
+            .logout-btn i {
+                font-size: 0.65rem;
             }
             
-            /* Mobile menu active state */
+            /* Mobile Menu Logout Option */
+            .logout-mobile {
+                display: none !important;
+                background: rgba(255, 107, 157, 0.1) !important;
+                border-left: 3px solid #FF6B9D !important;
+            }
+            
+            .logout-mobile i {
+                color: #FF6B9D !important;
+            }
+            
+            .logout-mobile span {
+                color: #FF6B9D !important;
+                font-weight: 600;
+            }
+            
+            /* Mobile responsive untuk user info */
             @media (max-width: 768px) {
-                .nav-menu.active .logout-mobile-item {
-                    display: flex !important;
-                    animation: slideUp 0.4s ease;
+                .user-info-container {
+                    display: none !important;
                 }
                 
-                .logout-mobile-item {
-                    display: none;
+                .logout-mobile {
+                    display: flex !important;
+                    margin-top: 10px;
+                    border-top: 1px solid rgba(255, 107, 157, 0.2);
+                    padding-top: 10px;
+                }
+                
+                /* Fix mobile menu z-index */
+                .nav-menu {
+                    z-index: 1001 !important;
+                }
+                
+                .nav-toggle {
+                    z-index: 1002 !important;
+                    position: relative;
                 }
             }
             
-            @keyframes slideUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(20px);
+            /* Fix untuk navbar glass di mobile */
+            @media (max-width: 768px) {
+                .navbar-glass {
+                    padding: 12px 20px;
                 }
-                to {
-                    opacity: 1;
+                
+                .nav-menu {
+                    position: fixed;
+                    top: 80px;
+                    left: 0;
+                    width: 100%;
+                    background: rgba(255, 255, 255, 0.98);
+                    backdrop-filter: blur(20px);
+                    flex-direction: column;
+                    padding: 20px;
+                    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+                    border-radius: 0 0 20px 20px;
+                    transform: translateY(-100%);
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                    z-index: 1000;
+                }
+                
+                .nav-menu.active {
                     transform: translateY(0);
+                    opacity: 1;
+                    visibility: visible;
+                }
+                
+                .nav-link {
+                    padding: 15px 20px;
+                    width: 100%;
+                    justify-content: flex-start;
+                    border-radius: 12px;
+                    margin: 5px 0;
+                }
+                
+                .hamburger-line {
+                    transition: all 0.3s ease;
+                }
+                
+                .nav-toggle.active .hamburger-line:nth-child(1) {
+                    transform: rotate(45deg) translate(5px, 5px);
+                }
+                
+                .nav-toggle.active .hamburger-line:nth-child(2) {
+                    opacity: 0;
+                }
+                
+                .nav-toggle.active .hamburger-line:nth-child(3) {
+                    transform: rotate(-45deg) translate(7px, -6px);
                 }
             }
         `;
@@ -520,106 +481,88 @@ function addMobileLogoutStyles() {
     }
 }
 
-// Styles untuk welcome toast
-function addWelcomeToastStyles() {
-    const styleId = 'welcome-toast-styles';
+// Tambahkan styles untuk welcome toast
+function addToastStyles() {
+    const styleId = 'toast-styles';
     if (!document.getElementById(styleId)) {
         const style = document.createElement('style');
         style.id = styleId;
         style.textContent = `
-            /* Welcome Toast */
+            /* Welcome Toast Styles */
             .welcome-toast {
                 position: fixed;
                 top: 100px;
                 right: 20px;
-                z-index: 10000;
+                z-index: 9999;
                 animation: slideInRight 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             }
             
-            @media (max-width: 768px) {
-                .welcome-toast {
-                    top: 80px;
-                    right: 10px;
-                    left: 10px;
-                }
-            }
-            
             .toast-content {
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(10px);
-                border-radius: 20px;
-                padding: 20px;
-                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-                border: 2px solid rgba(255, 107, 157, 0.3);
+                background: white;
+                border-radius: 15px;
+                padding: 15px 20px;
+                box-shadow: 0 10px 40px rgba(255, 107, 157, 0.2);
+                border-left: 4px solid #FF6B9D;
                 display: flex;
                 align-items: center;
-                gap: 18px;
-                max-width: 380px;
-                width: 100%;
+                gap: 15px;
+                max-width: 350px;
                 animation: fadeIn 0.5s ease;
+                border: 1px solid #FFD1E0;
             }
             
-            @media (max-width: 768px) {
-                .toast-content {
-                    max-width: 100%;
-                }
-            }
-            
-            .toast-heart {
-                width: 50px;
-                height: 50px;
-                background: linear-gradient(135deg, #FF6B9D 0%, #FFA8C8 100%);
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-size: 1.5rem;
-                flex-shrink: 0;
+            .toast-content i.fa-heart {
+                color: #FF6B9D;
+                font-size: 1.8rem;
                 animation: heartbeat 1.5s infinite;
+                filter: drop-shadow(0 3px 5px rgba(255, 107, 157, 0.3));
             }
             
             .toast-text {
                 flex: 1;
-                text-align: left;
+                display: flex;
+                flex-direction: column;
             }
             
-            .toast-title {
-                color: #333;
-                font-weight: 700;
-                font-size: 1.2rem;
+            .toast-text strong {
+                color: #FF6B9D;
+                font-size: 1.1rem;
                 margin-bottom: 5px;
-                font-family: 'Playfair Display', serif;
+                font-family: 'Poppins', sans-serif;
+                font-weight: 600;
             }
             
-            .toast-subtitle {
-                color: #666;
-                font-size: 0.95rem;
-                line-height: 1.4;
+            .toast-text span {
+                color: #FF6B9D;
+                font-size: 0.9rem;
+                opacity: 0.8;
+                font-family: 'Poppins', sans-serif;
             }
             
             .toast-close {
                 background: none;
                 border: none;
-                color: #999;
+                color: #FFA8C8;
                 cursor: pointer;
-                font-size: 1rem;
-                width: 32px;
-                height: 32px;
+                font-size: 1.1rem;
+                padding: 5px;
                 border-radius: 50%;
+                transition: all 0.3s ease;
+                width: 30px;
+                height: 30px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                transition: all 0.3s ease;
-                flex-shrink: 0;
-                align-self: flex-start;
-                margin-top: -5px;
-                margin-right: -5px;
             }
             
             .toast-close:hover {
-                background: #f5f5f5;
-                color: #666;
+                background: rgba(255, 107, 157, 0.1);
+                color: #FF6B9D;
+                transform: rotate(90deg);
+            }
+            
+            .fade-out {
+                animation: fadeOut 0.3s ease forwards !important;
             }
             
             @keyframes slideInRight {
@@ -632,65 +575,90 @@ function addWelcomeToastStyles() {
                     opacity: 1;
                 }
             }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; transform: scale(0.9); }
+                to { opacity: 1; transform: scale(1); }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; transform: scale(1); }
+                to { opacity: 0; transform: scale(0.9); }
+            }
+            
+            @media (max-width: 768px) {
+                .welcome-toast {
+                    top: 80px;
+                    right: 10px;
+                    left: 10px;
+                    max-width: none;
+                }
+                
+                .toast-content {
+                    padding: 12px 15px;
+                }
+            }
         `;
         document.head.appendChild(style);
     }
 }
 
-// ===== UTILITY FUNCTIONS =====
-
 // Fungsi untuk cek login secara periodik
 function startAuthMonitor() {
+    // Cek setiap 60 detik apakah masih login
     setInterval(() => {
         const isLoggedIn = sessionStorage.getItem('loveLoggedIn');
-        if (!isLoggedIn && !window.location.href.includes('index.html')) {
+        if (!isLoggedIn && window.location.pathname.includes('home.html')) {
             console.log('Session expired, redirecting...');
-            goToLogin();
+            redirectToLogin();
         }
-    }, 60000); // Cek setiap 60 detik
+    }, 60000);
 }
 
-// Setup beforeunload listener
+// Setup event listener untuk sebelum page unload
 function setupBeforeUnload() {
     window.addEventListener('beforeunload', function() {
+        // Simpan timestamp terakhir aktif
         sessionStorage.setItem('lastActivity', Date.now());
     });
 }
 
-// ===== INITIALIZATION =====
-
 // Inisialisasi semua fungsi ketika DOM siap
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🔒 Initializing authentication system...');
+    console.log('🔒 Initializing authentication check...');
+    
+    // Close mobile menu jika open
+    closeMobileMenu();
     
     // Jalankan cek auth utama
     const isAuthenticated = checkAuth();
     
     if (isAuthenticated) {
-        console.log('✅ User authenticated, welcome!');
+        console.log('✅ User authenticated, loading page...');
         
-        // Setup monitor session
+        // Setup monitor
         startAuthMonitor();
         
         // Setup beforeunload listener
         setupBeforeUnload();
         
-        // Expose logout function globally
-        window.logout = logout;
-        window.goToLogin = goToLogin;
-        
     } else {
-        console.log('❌ Authentication required');
+        console.log('❌ User not authenticated');
     }
 });
 
-// Handle storage events (untuk multi-tab)
-window.addEventListener('storage', function(e) {
-    if (e.key === 'loveLoggedIn' && !e.newValue && !window.location.href.includes('index.html')) {
-        goToLogin();
-    }
-});
-
-// Expose fungsi ke global scope
+// Expose logout function globally
 window.logout = logout;
-window.goToLogin = goToLogin;
+
+// Expose mobile menu functions
+window.toggleMobileMenu = toggleMobileMenu;
+window.closeMobileMenu = closeMobileMenu;
+
+// Auto redirect jika session expired
+window.addEventListener('storage', function(e) {
+    if (e.key === 'loveLoggedIn' && !e.newValue) {
+        if (window.location.pathname.includes('home.html')) {
+            redirectToLogin();
+        }
+    }
+});
