@@ -92,20 +92,61 @@
                     </div>
                 </a>
             </div>
-            <div class="nav-menu">
-                <a href="#home" class="nav-link active"><i class="fas fa-home"></i><span>Home</span></a>
-                <a href="#countdown" class="nav-link"><i class="fas fa-calendar-heart"></i><span>Countdown</span></a>
-                <a href="#story" class="nav-link"><i class="fas fa-book-open"></i><span>Our Story</span></a>
-                <a href="#gallery" class="nav-link"><i class="fas fa-images"></i><span>Gallery</span></a>
-                <a href="https://photowebberdua.netlify.app/" class="nav-link" 
-   target="_blank" rel="noopener noreferrer">
-   Photobooth
-</a>
-                <a href="#contact" class="nav-link"><i class="fas fa-envelope"></i><span>Love Notes</span></a>
+            <<div class="nav-menu">
+            <!-- Menu Utama -->
+            <a href="#home" class="nav-link active"><i class="fas fa-home"></i><span>Home</span></a>
+            <a href="#countdown" class="nav-link"><i class="fas fa-calendar-heart"></i><span>Countdown</span></a>
+            <a href="#story" class="nav-link"><i class="fas fa-book-open"></i><span>Our Story</span></a>
+            <a href="#gallery" class="nav-link"><i class="fas fa-images"></i><span>Gallery</span></a>
+            <a href="#memories" class="nav-link"><i class="fas fa-star"></i><span>Memories</span></a>
+            <a href="#love-notes" class="nav-link"><i class="fas fa-envelope"></i><span>Love Notes</span></a>
+            
+            <!-- Dropdown untuk Fitur Lainnya -->
+            <div class="nav-dropdown">
+                <a href="javascript:void(0)" class="nav-link dropdown-toggle">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>More</span>
+                    <i class="fas fa-chevron-down dropdown-arrow"></i>
+                </a>
+                <div class="dropdown-menu">
+                    <a href="https://photowebberdua.netlify.app/" class="dropdown-item" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-camera-retro"></i>
+                        <span>Photobooth</span>
+                    </a>
+                    <a href="#snow-game" class="dropdown-item" onclick="loadSnowGame()">
+                        <i class="fas fa-snowflake"></i>
+                        <span>Snow Game</span>
+                    </a>
+                    <a href="#valentine" class="dropdown-item coming-soon">
+                        <i class="fas fa-heart-circle-plus"></i>
+                        <span>Valentine Special</span>
+                        <span class="badge">Coming Soon</span>
+                    </a>
+                    <a href="#calendar" class="dropdown-item coming-soon">
+                        <i class="fas fa-calendar-days"></i>
+                        <span>Our Calendar</span>
+                        <span class="badge">Coming Soon</span>
+                    </a>
+                    <a href="#love-meter" class="dropdown-item coming-soon">
+                        <i class="fas fa-heart-pulse"></i>
+                        <span>Love Meter</span>
+                        <span class="badge">Coming Soon</span>
+                    </a>
+                    <a href="#messages" class="dropdown-item coming-soon">
+                        <i class="fas fa-message-heart"></i>
+                        <span>Secret Messages</span>
+                        <span class="badge">Coming Soon</span>
+                    </a>
+                </div>
             </div>
-            <button class="nav-toggle"><span class="hamburger-line"></span><span class="hamburger-line"></span><span class="hamburger-line"></span></button>
         </div>
-    </nav>
+        <button class="nav-toggle">
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+            <span class="hamburger-line"></span>
+        </button>
+    </div>
+</nav>
 
     <!-- Hero Section -->
     <section id="home" class="hero-section" data-aos="fade-in">
