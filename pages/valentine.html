@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Quest of Us - Mini RPG/Adventure</title>
+    <link rel="stylesheet" href=".../assets/styles/valentine.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=DotGothic16&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-heart"></i> THE QUEST OF US <i class="fas fa-heart"></i></h1>
+            <p class="subtitle">Petualangan 8-bit mengumpulkan kenangan indah bersama</p>
+        </header>
+
+        <div class="game-container">
+            <div class="game-info">
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-label">Kenangan Dikumpulkan:</span>
+                        <span id="memories-collected">0</span>/<span id="total-memories">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Langkah:</span>
+                        <span id="steps">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Nyawa:</span>
+                        <span id="health">❤️❤️❤️</span>
+                    </div>
+                </div>
+                
+                <div class="controls">
+                    <h3><i class="fas fa-gamepad"></i> Kontrol</h3>
+                    <div class="control-keys">
+                        <div class="key-row">
+                            <div class="key">W</div>
+                            <span>Atas</span>
+                        </div>
+                        <div class="key-row">
+                            <div class="key">A</div>
+                            <div class="key">S</div>
+                            <div class="key">D</div>
+                            <span>Kiri, Bawah, Kanan</span>
+                        </div>
+                    </div>
+                    <p>Atau gunakan tombol panah di keyboard</p>
+                    <button id="reset-btn" class="btn"><i class="fas fa-redo"></i> Mulai Ulang</button>
+                    <button id="hint-btn" class="btn"><i class="fas fa-lightbulb"></i> Petunjuk</button>
+                </div>
+                
+                <div class="instructions">
+                    <h3><i class="fas fa-info-circle"></i> Cara Bermain</h3>
+                    <p>Gerakkan karakter untuk mengumpulkan item kenangan. Setiap item akan menampilkan foto dan pesan khusus!</p>
+                    <p>Hindari rintangan (warna merah) agar tidak kehilangan nyawa.</p>
+                    <p>Kumpulkan semua kenangan untuk menyelesaikan petualangan!</p>
+                </div>
+            </div>
+            
+            <div class="game-area">
+                <div class="canvas-container">
+                    <canvas id="gameCanvas" width="640" height="480"></canvas>
+                    <div class="overlay" id="startOverlay">
+                        <h2>THE QUEST OF US</h2>
+                        <p>Petualangan untuk mengumpulkan kenangan indah bersama</p>
+                        <button id="start-btn" class="btn start-btn"><i class="fas fa-play"></i> Mulai Petualangan</button>
+                        <div class="player-select">
+                            <p>Pilih karakter:</p>
+                            <div class="character-options">
+                                <div class="char-option selected" data-char="player">
+                                    <div class="char-preview player-char"></div>
+                                    <p>Pahlawan</p>
+                                </div>
+                                <div class="char-option" data-char="princess">
+                                    <div class="char-preview princess-char"></div>
+                                    <p>Putri</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="memory-display" id="memoryDisplay">
+                    <div class="memory-header">
+                        <h3><i class="fas fa-gem"></i> Kenangan Ditemukan!</h3>
+                        <button id="close-memory" class="close-btn">&times;</button>
+                    </div>
+                    <div class="memory-content">
+                        <div class="memory-image" id="memoryImage"></div>
+                        <div class="memory-text">
+                            <h4 id="memoryTitle">Judul Kenangan</h4>
+                            <p id="memoryDescription">Deskripsi kenangan akan muncul di sini...</p>
+                            <p class="memory-date" id="memoryDate">Tanggal: --/--/----</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="inventory">
+                <h3><i class="fas fa-backpack"></i> Inventori Kenangan</h3>
+                <div class="inventory-items" id="inventoryItems">
+                    <p class="empty-inventory">Belum ada kenangan yang dikumpulkan. Mulai petualangan!</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Dibuat dengan <i class="fas fa-heart"></i> untuk mengingat setiap momen indah | The Quest of Us - Mini RPG/Adventure</p>
+        </footer>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="bgMusic" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-game-level-music-689.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="collectSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="stepSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-retro-game-emergency-alarm-1000.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script src=".../assets/scripts/valentine.js"></script>
+</body>
+</html>
