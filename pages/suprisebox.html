@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise Box! 🎁</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffd1d1 0%, #ffe6e6 100%);
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .surprise-box {
+            background: white;
+            border-radius: 60px 60px 30px 30px;
+            padding: 40px;
+            box-shadow: 0 30px 60px rgba(255, 150, 150, 0.3);
+            text-align: center;
+            border: 5px dashed #ffb6b6;
+        }
+
+        h1 {
+            color: #ff6b6b;
+            font-size: 3em;
+            margin: 0;
+            text-shadow: 5px 5px 0 #ffe6e6;
+        }
+
+        .box-container {
+            position: relative;
+            margin: 40px auto;
+            width: 300px;
+            height: 300px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .box-container:hover {
+            transform: scale(1.05);
+        }
+
+        .box-lid {
+            position: absolute;
+            top: -30px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(145deg, #ff9a9e, #ff6b6b);
+            border-radius: 30px 30px 0 0;
+            transform-origin: bottom;
+            transition: transform 0.5s;
+            z-index: 2;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.1);
+        }
+
+        .box-body {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 270px;
+            background: linear-gradient(145deg, #ffb6c1, #ff9eb5);
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+            color: white;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+        }
+
+        .box-lid.open {
+            transform: rotateX(120deg);
+        }
+
+        .surprise-content {
+            background: #fff9f9;
+            border-radius: 40px;
+            padding: 30px;
+            margin: 30px 0;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 3px solid #ffb6b6;
+        }
+
+        .surprise-emoji {
+            font-size: 5em;
+            margin: 20px 0;
+            animation: pop 0.5s ease;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .surprise-text {
+            font-size: 1.5em;
+            color: #ff6b6b;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .surprise-desc {
+            color: #666;
+            font-size: 1.1em;
+            line-height: 1.6;
+            max-width: 400px;
+        }
+
+        .open-count {
+            background: #ffe6e6;
+            padding: 15px;
+            border-radius: 50px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            color: #ff6b6b;
+        }
+
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+            border: 3px solid white;
+            box-shadow: 0 10px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 107, 107, 0.4);
+        }
+
+        .history-box {
+            background: white;
+            border-radius: 30px;
+            padding: 20px;
+            margin-top: 30px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .history-title {
+            color: #ff6b6b;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .history-item {
+            background: #fff5f5;
+            padding: 10px 15px;
+            border-radius: 50px;
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #666;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="surprise-box">
+            <h1>🎁 Surprise Box</h1>
+            <p style="color: #888;">Klik kotaknya buat dapet kejutan!</p>
+
+            <div class="box-container" onclick="openBox()">
+                <div class="box-lid" id="boxLid"></div>
+                <div class="box-body">
+                    <span id="boxEmoji">🎁</span>
+                </div>
+            </div>
+
+            <div class="open-count" id="openCount">
+                Udah dibuka: 0 kali
+            </div>
+
+            <div class="surprise-content" id="surpriseContent">
+                <div class="surprise-emoji">✨</div>
+                <div class="surprise-text">Ayo buka kotaknya!</div>
+                <div class="surprise-desc">Klik kotak di atas buat dapet kejutan manis dari akuu 🥰</div>
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button onclick="resetBox()">🔄 Reset</button>
+                <button onclick="showAllSurprises()">📦 Lihat Semua Kejutan</button>
+            </div>
+
+            <div class="history-box" id="historyBox" style="display: none;">
+                <div class="history-title">📜 History Kejutan:</div>
+                <div id="historyList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let openCount = 0;
+        let surprises = [];
+        
+        const surpriseData = [
+            {
+                emoji: "🌸",
+                text: "Kamu Cantik!",
+                desc: "Iya kamu banget! Cantik luar dalem!"
+            },
+            {
+                emoji: "💪",
+                text: "Kuat!",
+                desc: "Kamu kuat ngadepin badmood, akuu tau itu!"
+            },
+            {
+                emoji: "🎉",
+                text: "Selamat!",
+                desc: "Kamu berhasil bikin akuu makin sayang!"
+            },
+            {
+                emoji: "💝",
+                text: "Spesial!",
+                desc: "Kamu spesial banget buat akuu!"
+            },
+            {
+                emoji: "🌟",
+                text: "Bintang!",
+                desc: "Kamu bersinar terang di hari akuu!"
+            },
+            {
+                emoji: "🦋",
+                text: "Indah!",
+                desc: "Kamu indah kayak kupu-kupu!"
+            },
+            {
+                emoji: "🌺",
+                text: "Mekar!",
+                desc: "Senyum kamu mekar kayak bunga!"
+            },
+            {
+                emoji: "👑",
+                text: "Ratu!",
+                desc: "Kamu ratunya hati akuu!"
+            },
+            {
+                emoji: "🕊️",
+                text: "Damai!",
+                desc: "Semoga cepet baikan moodnya ya sayang!"
+            },
+            {
+                emoji: "🌈",
+                text: "Pelangi!",
+                desc: "akuu janji bakal selalu ada buat kamu!"
+            }
+        ];
+
+        function openBox() {
+            // Animasi buka kotak
+            document.getElementById('boxLid').classList.add('open');
+            
+            // Random surprise
+            const randomIndex = Math.floor(Math.random() * surpriseData.length);
+            const surprise = surpriseData[randomIndex];
+            
+            // Update count
+            openCount++;
+            document.getElementById('openCount').textContent = `Udah dibuka: ${openCount} kali`;
+            
+            // Tampilin surprise
+            document.getElementById('surpriseContent').innerHTML = `
+                <div class="surprise-emoji">${surprise.emoji}</div>
+                <div class="surprise-text">${surprise.text}</div>
+                <div class="surprise-desc">${surprise.desc}</div>
+            `;
+            
+            // Ganti emoji box
+            document.getElementById('boxEmoji').textContent = surprise.emoji;
+            
+            // Simpen history
+            surprises.push({
+                time: new Date().toLocaleTimeString(),
+                ...surprise
+            });
+            
+            // Update emoji box
+            setTimeout(() => {
+                document.getElementById('boxLid').classList.remove('open');
+            }, 1000);
+
+            // Kasih pesan tambahan
+            if (openCount === 5) {
+                setTimeout(() => {
+                    alert("🎉 Wah udah 5 kali! akuu makin sayang nih!");
+                }, 500);
+            } else if (openCount === 10) {
+                setTimeout(() => {
+                    alert("🏆 10 kali! Kamu juaranya! Love you!");
+                }, 500);
+            }
+        }
+
+        function resetBox() {
+            openCount = 0;
+            surprises = [];
+            document.getElementById('openCount').textContent = 'Udah dibuka: 0 kali';
+            document.getElementById('surpriseContent').innerHTML = `
+                <div class="surprise-emoji">✨</div>
+                <div class="surprise-text">Ayo buka kotaknya!</div>
+                <div class="surprise-desc">Klik kotak di atas buat dapet kejutan manis dari akuu 🥰</div>
+            `;
+            document.getElementById('boxEmoji').textContent = '🎁';
+            document.getElementById('historyBox').style.display = 'none';
+        }
+
+        function showAllSurprises() {
+            if (surprises.length === 0) {
+                alert('😢 Belum ada kejutan nih, buka kotaknya dulu yuk!');
+                return;
+            }
+
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = surprises.reverse().map(s => `
+                <div class="history-item">
+                    ${s.time} - ${s.emoji} ${s.text}
+                </div>
+            `).join('');
+            
+            document.getElementById('historyBox').style.display = 'block';
+        }
+
+        // Bonus: Kasih surprise pas pertama kali buka
+        setTimeout(() => {
+            if (openCount === 0) {
+                document.getElementById('surpriseContent').innerHTML = `
+                    <div class="surprise-emoji">💌</div>
+                    <div class="surprise-text">Pesan Buat Kamu</div>
+                    <div class="surprise-desc">"Badmood boleh, tapi jangan lupa kalo akuu selalu sayang kamu!"</div>
+                `;
+            }
+        }, 3000);
+    </script>
+</body>
+</html>
