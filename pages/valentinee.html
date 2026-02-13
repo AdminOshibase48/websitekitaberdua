@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>untuk bocil kesayangan ✨</title>
+  <!-- Google Fonts: Poppins + Inter (clean & playful) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* RESET & GLOBAL */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', 'Inter', sans-serif;
+      background: #fef9f2;  /* warm cream */
+      color: #3f2e2e;
+      line-height: 1.5;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* floating hearts container (fixed, covers whole view) */
+    .hearts-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: 0;
+      color: rgba(255, 120, 160, 0.25);  /* soft candy pink */
+      font-size: 1.8rem;
+      opacity: 0.7;
+      animation: floatUp 10s linear infinite;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0.6;
+      }
+      100% {
+        transform: translateY(-105vh) rotate(20deg);
+        opacity: 0;
+      }
+    }
+
+    /* main content sits above hearts */
+    .wrapper {
+      position: relative;
+      z-index: 5;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 2rem 3rem;
+      background: transparent;
+    }
+
+    /* ----- music toggle (discreet) ----- */
+    .music-control {
+      position: fixed;
+      top: 20px;
+      right: 25px;
+      background: #ffe5eb;
+      padding: 0.6rem 1.2rem;
+      border-radius: 40px;
+      box-shadow: 0 4px 10px rgba(255, 140, 170, 0.2);
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #b1476b;
+      border: 2px solid #ffb6c1;
+      cursor: pointer;
+      z-index: 99;
+      backdrop-filter: blur(4px);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .music-control:hover {
+      background: #ffd9e2;
+      transform: scale(1.02);
+      border-color: #ff8da1;
+    }
+
+    .music-control:active {
+      transform: scale(0.98);
+    }
+
+    /* ----- LANDING (main message) ----- */
+    .hero {
+      text-align: center;
+      padding: 3.5rem 1rem 4rem;
+      background: rgba(255, 245, 240, 0.5); /* very soft veil */
+      backdrop-filter: blur(2px);
+      border-radius: 60px 60px 40px 40px;
+      margin: 2rem 0 3rem;
+      box-shadow: 0 10px 30px -15px rgba(255, 150, 180, 0.3);
+    }
+
+    .hero p {
+      max-width: 800px;
+      margin: 0 auto;
+      font-size: clamp(1.5rem, 7vw, 3.2rem);
+      font-weight: 600;
+      line-height: 1.3;
+      color: #442b2b;
+      text-shadow: 2px 2px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    /* ----- GALLERY SECTION ----- */
+    .gallery-section {
+      margin: 4rem 0;
+    }
+
+    .gallery-section h2, .gallery-section .sub-gallery {
+      display: none;  /* no extra headline, just clean */
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem 1.5rem;
+      justify-items: center;
+      margin: 2rem 0;
+    }
+
+    .gallery-card {
+      background: white;
+      border-radius: 42px 42px 30px 30px;
+      box-shadow: 0 20px 30px -10px rgba(253, 147, 167, 0.25);
+      transition: transform 0.25s ease, box-shadow 0.3s;
+      overflow: hidden;
+      width: 100%;
+      max-width: 340px;
+      border: 4px solid #fff5f0;
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 40px -10px #ffb8c9;
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+      background: #ffe4e9;  /* placeholder bg if image is missing */
+      border-bottom: 3px solid #ffe2e2;
+    }
+
+    /* caption under gallery */
+    .gallery-caption {
+      text-align: center;
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      font-weight: 400;
+      background: rgba(255, 240, 245, 0.7);
+      padding: 1.3rem 1.5rem;
+      border-radius: 100px;
+      max-width: 700px;
+      margin: 2rem auto 0;
+      color: #4f3535;
+      border: 2px dashed #ffb0c3;
+    }
+
+    /* ----- EMERGENCY BUTTON (playful & big) ----- */
+    .emergency-area {
+      display: flex;
+      justify-content: center;
+      margin: 3.5rem 0 4rem;
+    }
+
+    .wa-button {
+      background: #ff98a8;  /* warm playful pink */
+      border: none;
+      padding: 1.6rem 2.8rem;
+      border-radius: 60px 60px 60px 20px;  /* whimsical shape */
+      font-size: clamp(1.4rem, 5vw, 2.2rem);
+      font-weight: 700;
+      color: #2d1f1f;
+      box-shadow: 0 20px 0 #b14f64, 0 12px 30px rgba(255, 80, 120, 0.4);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      border: 3px solid #fff5ed;
+      font-family: inherit;
+      line-height: 1.2;
+      display: inline-flex;
+      align-items: center;
+      gap: 15px;
+      transform: rotate(-0.5deg);
+    }
+
+    .wa-button:hover {
+      transform: translateY(6px) rotate(-0.2deg);
+      box-shadow: 0 12px 0 #b14f64, 0 12px 30px #ff92ae;
+      background: #ffadbb;
+    }
+
+    .wa-button:active {
+      transform: translateY(16px) rotate(0);
+      box-shadow: 0 4px 0 #b14f64, 0 12px 30px #ff92ae;
+    }
+
+    /* small footnote for phone number reminder */
+    .reminder-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #9b7b7b;
+      margin-top: -1rem;
+      background: rgba(255,255,240,0.5);
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* responsive tweaks */
+    @media (max-width: 600px) {
+      .wrapper { padding: 0.8rem 1rem 2rem; }
+      .hero { padding: 2.5rem 0.5rem; }
+      .wa-button { padding: 1.2rem 1.8rem; }
+      .music-control { top: 10px; right: 10px; padding: 0.4rem 1rem; font-size: 0.85rem; }
+    }
+
+    /* simple footer (optional) */
+    .tiny-footer {
+      text-align: center;
+      color: #c7a1a1;
+      font-size: 0.8rem;
+      margin-top: 4rem;
+      font-weight: 300;
+    }
+
+    /* styling placeholder images nicely */
+    img {
+      background: linear-gradient(145deg, #fcd9e5, #ffe4d6);
+      border-radius: 30px 30px 16px 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating hearts injected via JS but styled with CSS (will add 15 hearts) -->
+  <div class="hearts-container" id="heartsContainer"></div>
+
+  <!-- discreet music toggle button -->
+  <div class="music-control" id="musicToggleBtn">
+    <span>🎵</span> <span id="musicBtnText">nyalain musik, yuk!</span>
+  </div>
+
+  <div class="wrapper">
+    <!-- LANDING / MAIN MESSAGE -->
+    <section class="hero">
+      <p>
+        I know you can do everything by yourself.<br>
+        But you don't have to.<br>
+        Here, you're allowed to be small.<br>
+        <span style="font-size: 0.9em; display: inline-block; margin-top: 0.7rem; background: #ffe9dd; padding: 0.2rem 1.2rem; border-radius: 40px;">❤️ Happy Valentine, my favorite kiddo. ❤️</span>
+      </p>
+    </section>
+
+    <!-- "THE LITTLE THINGS" GALLERY -->
+    <section class="gallery-section">
+      <!-- responsive grid with styled placeholder images -->
+      <div class="gallery-grid">
+        <!-- foto makan berantakan -->
+        <div class="gallery-card">
+          <img src="https://via.placeholder.com/300x400/FEE0E8/AA4A6C?text=Foto+Makan+Berantakan" alt="makan berantakan" loading="lazy">
+        </div>
+        <!-- foto ngantuk -->
+        <div class="gallery-card">
+          <img src="https://via.placeholder.com/300x400/FDD9DE/993F5C?text=Foto+Ngantuk" alt="ngantuk lucu">
+        </div>
+        <!-- screenshot chat lucu -->
+        <div class="gallery-card">
+          <img src="https://via.placeholder.com/300x400/FFE5D9/B3556F?text=Screenshot+Chat+Lucu" alt="chat lucu">
+        </div>
+        <!-- extra one: selfie random (just for more bocil vibe) -->
+        <div class="gallery-card">
+          <img src="https://via.placeholder.com/300x400/FCE2DB/9F4968?text=Selfi+Bocil" alt="selfi random">
+        </div>
+      </div>
+
+      <!-- caption below gallery -->
+      <div class="gallery-caption">
+        ✨ Kangen versi kamu yang ini. Jangan cepet dewasa ya kalau sama aku. ✨
+      </div>
+    </section>
+
+    <!-- "EMERGENCY CALL FOR HELP" BUTTON (whatsapp) -->
+    <div class="emergency-area">
+      <button class="wa-button" id="waButton">
+        <span>🥺</span> Sayang, aku capek jadi orang dewasa hari ini. Tolong manjaain! <span>🥺</span>
+      </button>
+    </div>
+    <!-- tiny reminder to replace number -->
+    <div class="reminder-note">
+      ⚡ jangan lupa ganti nomor WA di kode (lihat comment) ⚡
+    </div>
+
+    <!-- hidden audio player (autoplay attempt, but hidden controls) -->
+    <audio id="bgMusic" loop preload="auto" style="display: none;">
+      <source src=".../assets/music/i-wanna-be-yours.mp3" type="audio/mpeg">
+      your browser doesn't support audio.
+    </audio>
+
+    <div class="tiny-footer">
+      🩷 untuk kamu yang paling kecil di hati aku 🩷
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- FLOATING HEARTS (CSS animated, but injected via JS) ----------
+      const heartsContainer = document.getElementById('heartsContainer');
+      const heartCount = 18;  // just enough to look dreamy
+
+      for (let i = 0; i < heartCount; i++) {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        // randomize size, left position, duration, delay for natural effect
+        const size = Math.random() * 2 + 1.2;  // rem: between 1.2 and 3.2
+        const left = Math.random() * 98;       // %
+        const duration = Math.random() * 10 + 8; // 8–18s
+        const delay = Math.random() * -20;      // negative so they start staggered
+        const opacity = Math.random() * 0.4 + 0.2; // 0.2–0.6
+        heart.style.fontSize = (Math.random() * 1.8 + 1) + 'rem';
+        heart.style.left = left + '%';
+        heart.style.animationDuration = duration + 's';
+        heart.style.animationDelay = delay + 's';
+        heart.style.opacity = opacity;
+        // random heart symbols (some with variation)
+        heart.innerHTML = ['❤️', '🧡', '💛', '💖', '💘', '❤️‍🔥', '❤️'][Math.floor(Math.random() * 6)];
+        heartsContainer.appendChild(heart);
+      }
+
+      // ---------- BACKGROUND MUSIC (hidden autoplay attempt + toggle) ----------
+      const audio = document.getElementById('bgMusic');
+      const toggleBtn = document.getElementById('musicToggleBtn');
+      const musicBtnText = document.getElementById('musicBtnText');
+
+      // Autoplay is attempted, but will likely be blocked — so we handle via toggle
+      audio.volume = 0.35; // soft
+
+      // attempt autoplay (won't work on most browsers without gesture)
+      let playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          // autoplay success! update button
+          musicBtnText.innerText = '🔊 musik nyala';
+        }).catch(() => {
+          // autoplay blocked, button stays "play music"
+          musicBtnText.innerText = '🎶 putar musik';
+        });
+      }
+
+      // toggle play/pause when button clicked
+      toggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (audio.paused) {
+          audio.play()
+            .then(() => {
+              musicBtnText.innerText = '🔊 musik nyala';
+            })
+            .catch(err => {
+              alert('yah, gak bisa muter musik. coba klik lagi?');
+              musicBtnText.innerText = '🎶 coba lagi';
+            });
+        } else {
+          audio.pause();
+          musicBtnText.innerText = '🎶 putar musik';
+        }
+      });
+
+      // ---------- WHATSAPP BUTTON (emergency call) ----------
+      const waBtn = document.getElementById('waButton');
+      waBtn.addEventListener('click', function() {
+        // ==========  IMPORTANT: REPLACE YOUR_PHONE_NUMBER ==========
+        // include country code, no '+' or '00', example '628123456789'
+        const phoneNumber = 'YOUR_PHONE_NUMBER';  // <-- GANTI NOMOR DISINI (pakai kode negara, contoh: 628123456789)
+        const message = 'Sayang, aku capek jadi orang dewasa hari ini. Tolong manjaain! 🥺';
+        const waUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        
+        // small validation reminder for user (but still open)
+        if (phoneNumber === 'YOUR_PHONE_NUMBER') {
+          const shouldOpen = confirm('Hei! ☺️ jangan lupa ganti nomor WA di kode (YOUR_PHONE_NUMBER). Mau coba buka WA tetap?');
+          if (!shouldOpen) return;
+          window.open('https://wa.me/62895401553089?text=Sayang%2C%20aku%20capek%20jadi%20orang%20dewasa%20hari%20ini.%20Tolong%20manjaain%21%20%F0%9F%A5%BA', '_blank');
+        } else {
+          window.open(waUrl, '_blank');
+        }
+      });
+
+      // EXTRA: tiny confetti burst on page load? (optional but low-key) – floating hearts already there. 
+      // But for a little extra pop: add one-time class or short burst? I'll do a mini fade of hearts container? 
+      // No need, but we can add a couple of hearts with bigger emojis on load? 
+      // I'll just let the floating hearts do the magic. But if you want extra, let's add a 'confetti-ish' with js? 
+      // Actually sticking to "floating hearts first" spec, so hearts are already there. perfect.
+
+      // optional quick extra: subtle change after 1 sec (no confetti, but we can add a one extra large heart that fades)
+      // but not necessary.
+    })();
+  </script>
+
+  <!-- small note: the placeholder images have texts inside via.placeholder, which is neat.
+       PLEASE REPLACE the phone number in JS above. Also make sure 'i-wanna-be-yours.mp3' exists in same folder.
+  -->
+</body>
+</html>
