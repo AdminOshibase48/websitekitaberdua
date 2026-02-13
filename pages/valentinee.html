@@ -102,6 +102,12 @@
       transform: scale(0.98);
     }
 
+    .music-control.playing {
+      background: #c1e5c0;
+      border-color: #8fcc8f;
+      color: #2d6e2d;
+    }
+
     /* ----- LANDING (main message) ----- */
     .hero {
       text-align: center;
@@ -262,7 +268,7 @@
 
   <!-- discreet music toggle button -->
   <div class="music-control" id="musicToggleBtn">
-    <span>🎵</span> <span id="musicBtnText">nyalain musik, yuk!</span>
+    <span>🎵</span> <span id="musicBtnText">putar musik dulu yuk</span>
   </div>
 
   <div class="wrapper">
@@ -315,11 +321,8 @@
       ⚡ jangan lupa ganti nomor WA di kode (lihat comment) ⚡
     </div>
 
-    <!-- hidden audio player (autoplay attempt, but hidden controls) -->
-    <audio id="bgMusic" loop preload="auto" style="display: none;">
-      <source src=".../assets/music/i-wanna-be-yours.mp3" type="audio/mpeg">
-      your browser doesn't support audio.
-    </audio>
+    <!-- hidden audio player with multiple sources -->
+    <audio id="bgMusic" loop preload="auto" style="display: none;"></audio>
 
     <div class="tiny-footer">
       🩷 untuk kamu yang paling kecil di hati aku 🩷
@@ -328,77 +331,131 @@
 
   <script>
     (function() {
-      // ---------- FLOATING HEARTS (CSS animated, but injected via JS) ----------
+      // ---------- FLOATING HEARTS ----------
       const heartsContainer = document.getElementById('heartsContainer');
-      const heartCount = 18;  // just enough to look dreamy
+      const heartCount = 18;
 
       for (let i = 0; i < heartCount; i++) {
         const heart = document.createElement('div');
         heart.classList.add('heart');
-        // randomize size, left position, duration, delay for natural effect
-        const size = Math.random() * 2 + 1.2;  // rem: between 1.2 and 3.2
-        const left = Math.random() * 98;       // %
-        const duration = Math.random() * 10 + 8; // 8–18s
-        const delay = Math.random() * -20;      // negative so they start staggered
-        const opacity = Math.random() * 0.4 + 0.2; // 0.2–0.6
+        const left = Math.random() * 98;
+        const duration = Math.random() * 10 + 8;
+        const delay = Math.random() * -20;
         heart.style.fontSize = (Math.random() * 1.8 + 1) + 'rem';
         heart.style.left = left + '%';
         heart.style.animationDuration = duration + 's';
         heart.style.animationDelay = delay + 's';
-        heart.style.opacity = opacity;
-        // random heart symbols (some with variation)
+        heart.style.opacity = Math.random() * 0.4 + 0.2;
         heart.innerHTML = ['❤️', '🧡', '💛', '💖', '💘', '❤️‍🔥', '❤️'][Math.floor(Math.random() * 6)];
         heartsContainer.appendChild(heart);
       }
 
-      // ---------- BACKGROUND MUSIC (hidden autoplay attempt + toggle) ----------
+      // ---------- BETTER AUDIO HANDLING ----------
       const audio = document.getElementById('bgMusic');
       const toggleBtn = document.getElementById('musicToggleBtn');
       const musicBtnText = document.getElementById('musicBtnText');
 
-      // Autoplay is attempted, but will likely be blocked — so we handle via toggle
-      audio.volume = 0.35; // soft
+      // Set volume rendah biar ga kaget
+      audio.volume = 0.3;
 
-      // attempt autoplay (won't work on most browsers without gesture)
-      let playPromise = audio.play();
-      if (playPromise !== undefined) {
-        playPromise.then(() => {
-          // autoplay success! update button
-          musicBtnText.innerText = '🔊 musik nyala';
-        }).catch(() => {
-          // autoplay blocked, button stays "play music"
-          musicBtnText.innerText = '🎶 putar musik';
-        });
+      // Daftar sumber lagu (backup link kalo file lokal ga ada)
+      const musicSources = [
+        '.../assets/music/i-wanna-be-yours.mp3',  // file lokal
+        'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', // backup lagu instrumental
+        'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Tours/Enthusiast/Tours_-_01_-_Enthusiast.mp3' // backup lain
+      ];
+
+      let currentSourceIndex = 0;
+      
+      function loadAudioSource(index) {
+        if (index >= musicSources.length) {
+          musicBtnText.innerText = '❌ lagu error';
+          toggleBtn.style.background = '#ffcccc';
+          return false;
+        }
+        
+        audio.src = musicSources[index];
+        audio.load();
+        return true;
       }
 
-      // toggle play/pause when button clicked
-      toggleBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        if (audio.paused) {
-          audio.play()
-            .then(() => {
-              musicBtnText.innerText = '🔊 musik nyala';
-            })
-            .catch(err => {
-              alert('yah, gak bisa muter musik. coba klik lagi?');
-              musicBtnText.innerText = '🎶 coba lagi';
-            });
-        } else {
-          audio.pause();
+      // Load sumber pertama
+      loadAudioSource(0);
+
+      // Event listener untuk error
+      audio.addEventListener('error', function(e) {
+        console.log('Audio error, coba sumber berikutnya...');
+        currentSourceIndex++;
+        if (!loadAudioSource(currentSourceIndex)) {
+          musicBtnText.innerText = '❌ musik unavailable';
+        }
+      });
+
+      // Audio berhasil dimuat
+      audio.addEventListener('canplaythrough', function() {
+        if (currentSourceIndex === 0) {
           musicBtnText.innerText = '🎶 putar musik';
         }
       });
 
-      // ---------- WHATSAPP BUTTON (emergency call) ----------
+      // Toggle play/pasue
+      toggleBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        if (audio.paused) {
+          // Coba play
+          let playPromise = audio.play();
+          
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              musicBtnText.innerText = '🔊 musik nyala';
+              toggleBtn.classList.add('playing');
+            }).catch(err => {
+              console.log('Playback error:', err);
+              
+              // Coba ganti sumber kalo gagal
+              if (currentSourceIndex < musicSources.length - 1) {
+                currentSourceIndex++;
+                loadAudioSource(currentSourceIndex);
+                setTimeout(() => {
+                  audio.play().then(() => {
+                    musicBtnText.innerText = '🔊 musik nyala';
+                    toggleBtn.classList.add('playing');
+                  }).catch(() => {
+                    musicBtnText.innerText = '❌ coba klik lagi';
+                  });
+                }, 500);
+              } else {
+                musicBtnText.innerText = '❌ musik error';
+                alert('Maaf lagu ga bisa diputar. Mungkin file mp3 nya ga ada. Coba download dulu file "i-wanna-be-yours.mp3"');
+              }
+            });
+          }
+        } else {
+          audio.pause();
+          musicBtnText.innerText = '🎶 putar musik';
+          toggleBtn.classList.remove('playing');
+        }
+      });
+
+      // Auto-play attempt (tapi bakal di-block browser biasanya)
+      document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+          audio.play().catch(() => {
+            // Biarin aja, user harus klik tombol
+            console.log('Autoplay blocked, user must click button');
+          });
+        }, 1000);
+      });
+
+      // ---------- WHATSAPP BUTTON ----------
       const waBtn = document.getElementById('waButton');
       waBtn.addEventListener('click', function() {
-        // ==========  IMPORTANT: REPLACE YOUR_PHONE_NUMBER ==========
-        // include country code, no '+' or '00', example '628123456789'
-        const phoneNumber = 'YOUR_PHONE_NUMBER';  // <-- GANTI NOMOR DISINI (pakai kode negara, contoh: 628123456789)
+        // GANTI NOMOR DISINI (pakai kode negara, contoh: 628123456789)
+        const phoneNumber = 'YOUR_PHONE_NUMBER';
         const message = 'Sayang, aku capek jadi orang dewasa hari ini. Tolong manjaain! 🥺';
         const waUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         
-        // small validation reminder for user (but still open)
         if (phoneNumber === 'YOUR_PHONE_NUMBER') {
           const shouldOpen = confirm('Hei! ☺️ jangan lupa ganti nomor WA di kode (YOUR_PHONE_NUMBER). Mau coba buka WA tetap?');
           if (!shouldOpen) return;
@@ -407,20 +464,16 @@
           window.open(waUrl, '_blank');
         }
       });
-
-      // EXTRA: tiny confetti burst on page load? (optional but low-key) – floating hearts already there. 
-      // But for a little extra pop: add one-time class or short burst? I'll do a mini fade of hearts container? 
-      // No need, but we can add a couple of hearts with bigger emojis on load? 
-      // I'll just let the floating hearts do the magic. But if you want extra, let's add a 'confetti-ish' with js? 
-      // Actually sticking to "floating hearts first" spec, so hearts are already there. perfect.
-
-      // optional quick extra: subtle change after 1 sec (no confetti, but we can add a one extra large heart that fades)
-      // but not necessary.
     })();
   </script>
 
-  <!-- small note: the placeholder images have texts inside via.placeholder, which is neat.
-       PLEASE REPLACE the phone number in JS above. Also make sure 'i-wanna-be-yours.mp3' exists in same folder.
+  <!-- Catatan Penting:
+    1. Ganti nomor WA di bagian script (YOUR_PHONE_NUMBER)
+    2. Untuk lagu: 
+       - Download lagu "I Wanna Be Yours" (Arctic Monkeys) atau lagu lain
+       - Rename jadi "i-wanna-be-yours.mp3"
+       - Taruh di folder yang sama dengan file HTML ini
+    3. Kalo masih ga bisa, bisa pake link YouTube atau Spotify aja
   -->
 </body>
 </html>
