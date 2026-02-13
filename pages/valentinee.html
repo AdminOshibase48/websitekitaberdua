@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>untuk kamu — bocil kecilku</title>
-  <!-- Google Fonts: Poppins (headers) & Inter (body) -->
+  <title>untuk bocil kesayangan — valentine</title>
+  <!-- Google Fonts: Poppins (clean & friendly) + Dancing Script (handwritten letter) + Inter backup -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    /* -------------------- RESET & VARIABLES -------------------- */
+    /* ----- RESET & SOFT VARIABLES ----- */
     * {
       margin: 0;
       padding: 0;
@@ -17,23 +17,17 @@
     }
 
     body {
-      background-color: #FAF9F6;  /* warm cream */
-      font-family: 'Inter', sans-serif;
-      color: #2e2e2e;
+      background-color: #fdf8f5;  /* warm cream base */
+      font-family: 'Poppins', 'Inter', sans-serif;
+      color: #4a3e3a;             /* soft dark brown, not harsh */
       line-height: 1.6;
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
     }
 
-    h1, h2, h3, .poppins {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-    }
-
-    /* -------------------- FLOATING HEARTS (subtle) -------------------- */
-    .hearts-bg {
+    /* ----- FLOATING HEARTS (subtle) ----- */
+    .hearts-field {
       position: fixed;
       top: 0;
       left: 0;
@@ -44,19 +38,19 @@
       overflow: hidden;
     }
 
-    .heart-float {
+    .heart {
       position: absolute;
-      bottom: -10%;
-      color: rgba(241, 156, 152, 0.2); /* soft coral, very transparent */
+      bottom: -5%;
+      color: rgba(240, 158, 150, 0.25);  /* soft coral, very transparent */
       font-size: 2rem;
-      animation: rise 16s linear infinite;
+      animation: floatHearts 14s linear infinite;
       user-select: none;
     }
 
-    @keyframes rise {
+    @keyframes floatHearts {
       0% {
         transform: translateY(0) rotate(0deg);
-        opacity: 0.3;
+        opacity: 0.2;
       }
       100% {
         transform: translateY(-110vh) rotate(20deg);
@@ -64,332 +58,338 @@
       }
     }
 
-    /* -------------------- MAIN LAYOUT -------------------- */
-    .wrapper {
+    /* ----- MAIN CONTENT (above hearts) ----- */
+    .content {
       position: relative;
       z-index: 10;
-      max-width: 1100px;
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 2rem 1.5rem 4rem;
+      padding: 2rem 1.5rem 3rem;
     }
 
-    /* ----- MUSIC TOGGLE (floating, top right) ----- */
-    .music-toggle {
+    /* ----- MUSIC TOGGLE (discreet, top right) ----- */
+    .music-tag {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(255, 250, 245, 0.8);
-      backdrop-filter: blur(6px);
-      border: 1px solid #F19C98;
-      border-radius: 60px;
-      padding: 0.5rem 1.2rem 0.5rem 1rem;
+      top: 22px;
+      right: 25px;
+      background: rgba(255, 245, 235, 0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid #f3cfc9;
+      border-radius: 40px;
+      padding: 0.4rem 1rem 0.4rem 0.8rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #9e6b68;
-      box-shadow: 0 8px 20px rgba(241, 156, 152, 0.15);
+      gap: 6px;
+      font-size: 0.95rem;
+      color: #966b64;
       cursor: pointer;
+      box-shadow: 0 6px 16px rgba(220, 150, 140, 0.15);
       z-index: 99;
-      transition: all 0.2s ease;
+      transition: all 0.2s;
     }
 
-    .music-toggle:hover {
-      background: #fff3ef;
-      transform: scale(1.02);
-      border-color: #e07e7a;
+    .music-tag:hover {
+      background: #ffece5;
+      border-color: #e7a89e;
     }
 
-    .music-toggle.playing {
-      background: #e1f0e1;
-      border-color: #9fc99f;
-      color: #2b6e2b;
+    .music-tag.playing {
+      background: #deedd9;
+      border-color: #aac6a2;
+      color: #3e7041;
     }
 
-    /* ----- LANDING SECTION ----- */
+    /* ----- LANDING SECTION (main text) ----- */
     .hero {
       text-align: center;
-      padding: 3rem 1rem 2rem;
-      margin: 2rem 0 1rem;
+      padding: 3.5rem 1rem 2.5rem;
+      margin: 1.5rem 0 2rem;
+      background: rgba(253, 245, 240, 0.5);
+      border-radius: 60px 60px 40px 40px;
     }
 
     .hero h1 {
-      font-size: clamp(2rem, 8vw, 4.2rem);
+      font-size: clamp(1.9rem, 7vw, 3.8rem);
       font-weight: 600;
       line-height: 1.2;
-      max-width: 950px;
-      margin: 0 auto 1.5rem;
-      color: #352b2b;
+      max-width: 900px;
+      margin: 0 auto 0.8rem;
+      color: #4a3e3a; /* soft brown */
     }
 
-    .hero-sub {
-      font-size: clamp(1.4rem, 5vw, 2.4rem);
+    .hero .sub-line {
+      font-size: clamp(1.3rem, 5vw, 2.3rem);
       font-weight: 400;
-      color: #9b6f6f;
-      background: rgba(241, 156, 152, 0.08);
+      color: #b0827a;
+      background: rgba(255, 225, 215, 0.4);
       display: inline-block;
       padding: 0.5rem 2rem;
       border-radius: 60px;
-      font-family: 'Poppins', sans-serif;
-      border: 1px dashed #F19C98;
+      border: 1px dashed #e6bcb2;
     }
 
-    /* ----- POLAROID GALLERY ----- */
-    .gallery-section {
-      margin: 5rem 0 4rem;
+    /* subtle divider */
+    .divider {
+      width: 120px;
+      height: 2px;
+      background: #f0d5cd;
+      margin: 2rem auto 3rem;
+      border-radius: 2px;
     }
 
-    .gallery-grid {
+    /* ----- GALLERY (little things) ----- */
+    .gallery {
+      margin: 1.5rem 0 3rem;
+    }
+
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2.5rem 1.8rem;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem 1.5rem;
       justify-items: center;
-      margin: 2rem 0 2rem;
     }
 
-    .polaroid {
-      background: white;
-      padding: 1rem 1rem 2rem 1rem;
-      box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.08), 0 4px 0 0 #fadcd9 inset, 0 -4px 0 0 #fadcd9 inset;
-      border-radius: 18px 18px 12px 12px;
-      transform: rotate(0.5deg);
-      transition: transform 0.2s ease;
-      width: 100%;
+    .grid-item {
       max-width: 300px;
-      border: 1px solid #ffe5e0;
-    }
-
-    .polaroid:nth-child(even) {
-      transform: rotate(-0.7deg);
-    }
-
-    .polaroid:hover {
-      transform: rotate(0deg) scale(1.02);
-      box-shadow: 0 20px 30px -8px #F19C98;
-    }
-
-    .polaroid img {
       width: 100%;
-      aspect-ratio: 1 / 1.1;
-      object-fit: cover;
-      background: #f8edea;
-      border-radius: 12px;
-      margin-bottom: 0.8rem;
-      border: 2px solid #fff1ed;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px -10px rgba(200, 140, 130, 0.3);
+      transition: transform 0.25s ease;
     }
 
-    /* caption below gallery */
+    .grid-item:hover {
+      transform: translateY(-6px);
+    }
+
+    .grid-item img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+      background: #efdbd5;
+      border-radius: 20px;        /* consistent rounding */
+    }
+
     .gallery-caption {
       text-align: center;
-      font-size: 1.35rem;
-      background: rgba(255, 241, 235, 0.6);
-      padding: 1.4rem 2rem;
-      border-radius: 90px;
-      max-width: 750px;
-      margin: 2rem auto 0;
-      color: #4c3a3a;
-      border: 2px dotted #F19C98;
-      font-weight: 400;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: #7c625b;
+      max-width: 650px;
+      margin: 2.5rem auto 0;
+      padding: 1rem 1.8rem;
+      background: rgba(249, 235, 225, 0.6);
+      border-radius: 100px;
+      border: 1px solid #ffded3;
     }
 
-    /* ----- DIGITAL LETTER (soft card) ----- */
-    .letter-card {
-      background: rgba(255, 250, 245, 0.8);
-      backdrop-filter: blur(4px);
-      border: 2px solid #f3cfcb;
-      border-radius: 48px 48px 48px 24px;
-      padding: 2.8rem 2.5rem;
-      max-width: 820px;
-      margin: 5rem auto;
-      box-shadow: 0 30px 40px -20px #F19C98;
-      font-size: 1.25rem;
-      color: #342626;
-      line-height: 1.8;
-      transition: box-shadow 0.3s;
-    }
-
-    .letter-card p {
-      margin-bottom: 1.2rem;
-    }
-
-    .letter-card p:last-child {
-      margin-bottom: 0;
-      font-weight: 500;
-      color: #b15757;
-    }
-
-    /* ----- EMERGENCY BUTTON (pulsing, playful) ----- */
-    .emergency-wrap {
-      display: flex;
-      justify-content: center;
+    /* ----- SURAT DIGITAL (letter card) ----- */
+    .letter-section {
       margin: 4rem 0 3rem;
     }
 
-    .wa-pulse {
-      background: #F19C98;
+    .letter-card {
+      background: #fcf5f0;
+      border: 2px solid #f3dad2;
+      border-radius: 48px 48px 48px 20px;
+      padding: 2.5rem 2.8rem;
+      box-shadow: 0 30px 40px -25px #dbb2a8;
+      transition: box-shadow 0.3s;
+    }
+
+    .letter-card h2 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: #b5655a;
+      margin-bottom: 1.2rem;
+      border-bottom: 2px dotted #f3c1b7;
+      padding-bottom: 0.5rem;
+    }
+
+    .letter-card p {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.5rem;
+      line-height: 1.7;
+      color: #4e3f3a;
+      margin-bottom: 1.2rem;
+    }
+
+    .letter-card .closing {
+      margin-top: 1.8rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #b5655a;
+      text-align: right;
+      font-family: 'Dancing Script', cursive;
+    }
+
+    /* ----- EMERGENCY BUTTON (playful, coral) ----- */
+    .emergency-zone {
+      display: flex;
+      justify-content: center;
+      margin: 3rem 0 3rem;
+    }
+
+    .wa-big {
+      background: #f5b3aa;  /* soft coral */
       border: none;
       padding: 1.6rem 2.8rem;
       border-radius: 80px 80px 40px 40px;
-      font-size: clamp(1.3rem, 4vw, 2rem);
+      font-size: clamp(1.2rem, 4vw, 2rem);
       font-weight: 600;
-      color: #2b1e1e;
-      box-shadow: 0 20px 0 #a86562, 0 0 0 4px #fff6f0;
+      color: #2b2421;
+      border: 3px solid #fff8f5;
+      box-shadow: 0 20px 0 #b67e76, 0 8px 25px rgba(220, 130, 120, 0.5);
       cursor: pointer;
       transition: all 0.1s ease;
       font-family: 'Poppins', sans-serif;
-      line-height: 1.3;
       display: inline-flex;
       align-items: center;
-      gap: 16px;
-      border: 2px solid white;
-      animation: gentlePulse 2s infinite;
+      gap: 15px;
+      transform: rotate(-0.5deg);
     }
 
-    @keyframes gentlePulse {
-      0% { transform: scale(1); box-shadow: 0 20px 0 #a86562, 0 0 0 4px #fff6f0; }
-      50% { transform: scale(1.02); box-shadow: 0 20px 0 #b55450, 0 0 0 6px #ffded9; }
-      100% { transform: scale(1); box-shadow: 0 20px 0 #a86562, 0 0 0 4px #fff6f0; }
+    .wa-big:hover {
+      transform: translateY(6px) rotate(0deg);
+      box-shadow: 0 12px 0 #b67e76, 0 8px 25px #e7a59b;
+      background: #fcc1b9;
     }
 
-    .wa-pulse:hover {
-      transform: translateY(5px);
-      animation: none;
-      box-shadow: 0 12px 0 #a86562, 0 0 0 4px #fff6f0;
-    }
-
-    .wa-pulse:active {
-      transform: translateY(16px);
-      box-shadow: 0 6px 0 #a86562, 0 0 0 4px #fff6f0;
+    .wa-big:active {
+      transform: translateY(16px) rotate(0deg);
+      box-shadow: 0 4px 0 #b67e76, 0 8px 25px #e7a59b;
     }
 
     /* reminder note */
-    .footnote {
+    .tiny-note {
       text-align: center;
       font-size: 0.8rem;
-      color: #b29b9b;
-      margin: 2rem 0 0;
+      color: #ab8f89;
+      background: rgba(250,235,225,0.7);
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      width: fit-content;
+      margin: 0 auto 2rem;
     }
 
     /* responsive */
-    @media (max-width: 600px) {
-      .wrapper { padding: 1.2rem 1rem 2rem; }
+    @media (max-width: 550px) {
+      .content { padding: 1rem 1rem 2rem; }
       .hero { padding: 2rem 0.5rem; }
-      .letter-card { padding: 2rem 1.5rem; font-size: 1.1rem; }
-      .music-toggle { top: 10px; right: 10px; padding: 0.3rem 1rem; }
+      .letter-card { padding: 1.8rem 1.2rem; }
+      .letter-card p { font-size: 1.3rem; }
+      .music-tag { top: 12px; right: 12px; }
     }
   </style>
 </head>
 <body>
-  <!-- floating hearts background (generated with JS) -->
-  <div class="hearts-bg" id="heartBackground"></div>
+  <!-- floating hearts injected by JS, but CSS handles animation -->
+  <div class="hearts-field" id="heartContainer"></div>
 
   <!-- music toggle (small, top right) -->
-  <div class="music-toggle" id="musicToggle">
+  <div class="music-tag" id="musicToggle">
     <span>🎵</span>
-    <span id="musicState">putar musik</span>
+    <span id="musicText">putar musik</span>
   </div>
 
-  <div class="wrapper">
-    <!-- LANDING PAGE (big text, sub) -->
+  <div class="content">
+    <!-- LANDING PAGE -->
     <section class="hero">
-      <h1>
-        I know you can do everything by yourself.<br>
-        But you don't have to.<br>
-        Here, you're allowed to be small.
-      </h1>
-      <div class="hero-sub">Happy Valentine, my favorite kiddo.</div>
+      <h1>I know you can do everything by yourself.<br>But you don't have to.<br>Here, you're allowed to be small.</h1>
+      <div class="sub-line">Happy Valentine, my favorite kiddo.</div>
     </section>
 
-    <!-- "THE LITTLE THINGS" GALLERY (polaroid style) -->
-    <section class="gallery-section">
-      <div class="gallery-grid">
-        <!-- messy eating -->
-        <div class="polaroid">
-          <img src="https://via.placeholder.com/400x500/FAE1DD/D67E7E?text=Foto+Makan+Berantakan" alt="makan berantakan">
+    <div class="divider"></div>
+
+    <!-- "THE LITTLE THINGS" GALLERY -->
+    <section class="gallery">
+      <div class="grid">
+        <div class="grid-item">
+          <img src="https://via.placeholder.com/300x400/FDE2DC/B28078?text=Foto+Makan+Berantakan" alt="makan berantakan">
         </div>
-        <!-- sleepy photo -->
-        <div class="polaroid">
-          <img src="https://via.placeholder.com/400x500/FDE2E4/AE6A6A?text=Foto+Ngantuk" alt="ngantuk">
+        <div class="grid-item">
+          <img src="https://via.placeholder.com/300x400/FDD9D2/A57B74?text=Foto+Ngantuk" alt="foto ngantuk">
         </div>
-        <!-- funny chat screenshot -->
-        <div class="polaroid">
-          <img src="https://via.placeholder.com/400x500/FFD9D9/9F6060?text=Screenshot+Chat+Lucu" alt="chat lucu">
+        <div class="grid-item">
+          <img src="https://via.placeholder.com/300x400/FFE3DA/B58279?text=Screenshot+Chat+Lucu" alt="screenshot chat">
         </div>
       </div>
-      <div class="gallery-caption">
-        ✦ Kangen versi kamu yang ini. Jangan cepet dewasa ya kalau sama aku. ✦
+      <div class="gallery-caption">Kangen versi kamu yang ini. Jangan cepet dewasa ya kalau sama aku.</div>
+    </section>
+
+    <!-- SURAT DIGITAL (valentine letter) -->
+    <section class="letter-section">
+      <div class="letter-card">
+        <h2>Untuk Bocil Kesayangan Aku,</h2>
+        <p>Malam ini sampai jam 00:00, aku cuma mau bilang... aku bangga banget liat kamu yang sekarang, hebat bisa handle semuanya sendiri. Tapi tau nggak? Sebenernya aku lebih kangen jadi tempat kamu rewel. Aku kangen kamu yang nggak peduli sama standar 'dewasa' orang lain, cuma peduli sama ketawa lepas kamu. Besok kan Valentine, khusus buat aku, boleh nggak kamu 'pensiun' dulu jadi orang dewasa? Sehari aja jadi bocil kesayangan aku lagi. Aku akan selalu ada buat dengerin semua keluh kesahmu, buat nemenin kamu ketawa sampai sakit perut, dan buat jadi 'tembok' kamu bersandar kalau lagi capek. Aku cinta semua versi kamu, terutama versi 'bocil' yang cuma aku yang tahu. Happy Valentine, my love.</p>
+        <p class="closing">Dari aku, yang selalu siap jadi pahlawan (walau kadang kesiangan) kamu.</p>
       </div>
     </section>
 
-    <!-- DIGITAL LETTER SECTION (soft card) -->
-    <section class="letter-card">
-      <p>Malam ini sampai jam 00:00, aku cuma mau bilang... aku bangga banget liat kamu yang sekarang, hebat bisa handle semuanya sendiri. Tapi tau nggak? Sebenernya aku lebih kangen jadi tempat kamu rewel. Aku kangen kamu yang nggak peduli sama standar 'dewasa' orang lain. Besok kan Valentine, khusus buat aku, boleh nggak kamu 'pensiun' dulu jadi orang dewasa? Sehari aja jadi bocil kesayangan aku lagi. I love you.</p>
-    </section>
-
-    <!-- EMERGENCY BUTTON (pulsing, opens WhatsApp) -->
-    <div class="emergency-wrap">
-      <button class="wa-pulse" id="emergencyBtn">
+    <!-- EMERGENCY BUTTON -->
+    <div class="emergency-zone">
+      <button class="wa-big" id="emergencyBtn">
         <span>🥺</span> Sayang, aku capek jadi orang dewasa hari ini. Tolong manjaain! <span>🥺</span>
       </button>
     </div>
 
-    <!-- tiny reminder to replace number -->
-    <div class="footnote">
-      ♡ jangan lupa ganti nomor WA di kode (lihat bagian script) ♡
+    <div class="tiny-note">
+      ⚡ jangan lupa ganti nomor WA &amp; pastikan file mp3 ada ⚡
     </div>
 
-    <!-- hidden audio (loop) -->
+    <!-- hidden audio element -->
     <audio id="bgMusic" loop preload="auto" style="display: none;"></audio>
   </div>
 
   <script>
     (function() {
-      // ========== FLOATING HEARTS BACKGROUND (subtle) ==========
-      const heartsContainer = document.getElementById('heartBackground');
-      const heartCount = 20; // soft density
+      // ---------- FLOATING HEARTS (subtle) ----------
+      const heartField = document.getElementById('heartContainer');
+      const heartCount = 22;
 
       for (let i = 0; i < heartCount; i++) {
         const heart = document.createElement('span');
-        heart.className = 'heart-float';
-        // random styles
-        const size = Math.random() * 2.2 + 1.2; // rem (1.2 - 3.4)
-        const left = Math.random() * 100; // %
-        const animDuration = Math.random() * 14 + 10; // 10-24s
-        const animDelay = Math.random() * -20; // negative delay
-        const opacity = Math.random() * 0.2 + 0.15; // 0.15-0.35 (very subtle)
+        heart.className = 'heart';
+        // random size, left, duration, delay
+        const size = Math.random() * 2.2 + 1;  // 1–3.2rem
+        const left = Math.random() * 100;      // %
+        const duration = Math.random() * 14 + 10; // 10–24s
+        const delay = Math.random() * -20;      // negative start
+        const opacity = Math.random() * 0.25 + 0.1; // 0.1–0.35
         heart.style.fontSize = size + 'rem';
         heart.style.left = left + '%';
-        heart.style.animationDuration = animDuration + 's';
-        heart.style.animationDelay = animDelay + 's';
+        heart.style.animationDuration = duration + 's';
+        heart.style.animationDelay = delay + 's';
         heart.style.opacity = opacity;
-        // random heart symbol
-        const hearts = ['❤️', '🧡', '💛', '💖', '💕', '💘', '❤️‍🔥'];
-        heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
-        heartsContainer.appendChild(heart);
+        // random heart emoji variation
+        const symbols = ['❤️', '🧡', '💛', '💖', '💕', '💗', '❤️‍🔥'];
+        heart.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+        heartField.appendChild(heart);
       }
 
-      // ========== AUDIO SETUP (robust, with fallbacks) ==========
+      // ---------- BACKGROUND MUSIC (robust, with fallback) ----------
       const audio = document.getElementById('bgMusic');
-      const toggleBtn = document.getElementById('musicToggle');
-      const musicStateSpan = document.getElementById('musicState');
+      const toggle = document.getElementById('musicToggle');
+      const musicText = document.getElementById('musicText');
 
-      // Set volume rendah (soft)
-      audio.volume = 0.25;
+      audio.volume = 0.25; // soft
 
-      // Daftar sumber: prioritaskan file lokal, lalu backup link (soundhelix / free music archive)
+      // multiple sources: local file first, then backup instrumental links
       const sources = [
-        '../assets/music/i-wanna-be-yours.mp3',
-        'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',  // instrumental, safe
-        'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_01_-_Algorithms.mp3'
+        '../asses/music/i-wanna-be-yours.mp3',
+        'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',   // instrumental safe track
+        'https://files.freemusicarchive.org/storage-freemusicarchive-org/music/ccCommunity/Chad_Crouch/Arps/Chad_Crouch_-_03_-_Shipping_Lanes.mp3'
       ];
 
-      let currentSrcIdx = 0;
+      let sourceIdx = 0;
 
-      function loadSource(index) {
+      function setAudioSource(index) {
         if (index >= sources.length) {
-          musicStateSpan.innerText = '❌ tidak ada lagu';
-          toggleBtn.style.background = '#ffe0e0';
+          musicText.innerText = '❌ no track';
+          toggle.style.background = '#f3d3d3';
           return false;
         }
         audio.src = sources[index];
@@ -397,92 +397,88 @@
         return true;
       }
 
-      // event: jika error, coba sumber berikutnya
-      audio.addEventListener('error', function(e) {
+      // error handler: switch to next source
+      audio.addEventListener('error', function() {
         console.log('audio error, switching source');
-        currentSrcIdx++;
-        if (!loadSource(currentSrcIdx)) {
-          musicStateSpan.innerText = 'lagu unavailable';
-        }
+        sourceIdx++;
+        setAudioSource(sourceIdx);
       });
 
       // initial load
-      loadSource(0);
+      setAudioSource(0);
 
-      // Play/pause toggle
-      toggleBtn.addEventListener('click', function() {
+      // play/pause toggle
+      toggle.addEventListener('click', function() {
         if (audio.paused) {
           let playPromise = audio.play();
           if (playPromise !== undefined) {
             playPromise
               .then(() => {
-                musicStateSpan.innerText = '🔊 musik nyala';
-                toggleBtn.classList.add('playing');
+                musicText.innerText = '🔊 musik nyala';
+                toggle.classList.add('playing');
               })
               .catch(err => {
-                console.warn('play error:', err);
-                // coba next source jika gagal
-                if (currentSrcIdx < sources.length - 1) {
-                  currentSrcIdx++;
-                  loadSource(currentSrcIdx);
+                console.warn('play failed:', err);
+                // if still error, try next source
+                if (sourceIdx < sources.length - 1) {
+                  sourceIdx++;
+                  setAudioSource(sourceIdx);
                   setTimeout(() => {
-                    audio.play()
-                      .then(() => {
-                        musicStateSpan.innerText = '🔊 musik nyala';
-                        toggleBtn.classList.add('playing');
-                      })
-                      .catch(() => {
-                        musicStateSpan.innerText = '❌ coba lagi';
-                      });
+                    audio.play().then(() => {
+                      musicText.innerText = '🔊 musik nyala';
+                      toggle.classList.add('playing');
+                    }).catch(() => {
+                      musicText.innerText = '❌ coba lagi';
+                    });
                   }, 300);
                 } else {
-                  musicStateSpan.innerText = '❌ tidak bisa play';
+                  musicText.innerText = '❌ error';
                 }
               });
           }
         } else {
           audio.pause();
-          musicStateSpan.innerText = '🎵 putar musik';
-          toggleBtn.classList.remove('playing');
+          musicText.innerText = '🎵 putar musik';
+          toggle.classList.remove('playing');
         }
       });
 
-      // slight autoplay attempt (but will likely be blocked, that's fine)
+      // attempt autoplay (will likely be blocked, that's fine)
       document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
-          audio.play().catch(() => {}); // silent fail
-        }, 1200);
+          audio.play().catch(() => { /* silent */ });
+        }, 1000);
       });
 
-      // ========== WHATSAPP BUTTON (emergency call) ==========
+      // ---------- WHATSAPP BUTTON (emergency) ----------
       const waBtn = document.getElementById('emergencyBtn');
       waBtn.addEventListener('click', function() {
-        // ========== REPLACE THIS WITH YOUR PHONE NUMBER ==========
-        // format: country code without '+' or '00', e.g., 628123456789
-        const phoneNumber = '0895401553089';  // <--- GANTI NOMOR DISINI
+        // ==========  REPLACE YOUR_PHONE_NUMBER WITH YOUR ACTUAL NUMBER ==========
+        // example: 628123456789 (Indonesia)
+        const phoneNumber = 'YOUR_PHONE_NUMBER';   // <--- GANTI NOMOR DISINI
 
         const message = 'Sayang, aku capek jadi orang dewasa hari ini. Tolong manjaain! 🥺';
         const waUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
         if (phoneNumber === 'YOUR_PHONE_NUMBER') {
-          // friendly reminder if still placeholder
-          const proceed = confirm('Hei! ☺️ sayanggkuuu akuu adaa kokk yaa princessskuu. akuu disinii yaa');
-          if (proceed) {
-            window.open('https://wa.me/62895401553089?text=Sayangggggggg%2C%20aku%20capek%20jadi%20orang%20dewasa%20hari%20ini.%20Tolong%20manjaain%21%20%F0%9F%A5%BA', '_blank');
+          const ok = confirm('Hei, ganti dulu nomor WA di kode (YOUR_PHONE_NUMBER). Mau nyoba buka WA dengan nomor contoh?');
+          if (ok) {
+            window.open('https://wa.me/628123456789?text=Sayang%2C%20aku%20capek%20jadi%20orang%20dewasa%20hari%20ini.%20Tolong%20manjaain%21%20%F0%9F%A5%BA', '_blank');
           }
         } else {
           window.open(waUrl, '_blank');
         }
       });
+
     })();
   </script>
 
-  <!-- ADDITIONAL NOTES (visible in source) -->
   <!-- 
-    ★ INSTRUKSI:
-    1. Ganti 'YOUR_PHONE_NUMBER' di bagian script dengan nomor WhatsApp asli (contoh: 628123456789)
+    === INSTRUKSI PENTING ===
+    1. Ganti 'YOUR_PHONE_NUMBER' di script (baris 250) dengan nomor WA asli, pakai kode negara (contoh 628123456789).
     2. Letakkan file lagu "i-wanna-be-yours.mp3" di folder yang sama, atau ganti dengan file mp3 lain.
-    3. Semua placeholder gambar sudah disiapkan dengan via.placeholder.com, bisa diganti nanti.
+    3. Semua gambar placeholder bisa diganti nanti dengan foto asli (src di tag <img>).
+    4. Tampilan sudah responsif & menggunakan font Poppins + Dancing Script untuk surat.
   -->
 </body>
 </html>
