@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>our story together | undangan deep talk</title>
+  <!-- Tailwind via CDN + base fonts -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Poppins & Inter fallback -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- sedikit extra soft pastel custom (tailwind sudah cukup, tapi kita tambah安全感) -->
+  <style>
+    * { font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif; }
+    body {
+      background: linear-gradient(145deg, #fbe9f0 0%, #e6eef9 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 1rem;
+    }
+    /* heart particle animation */
+    .heart-particle {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.8rem;
+      opacity: 0;
+      animation: floatHeart 2s ease-out forwards;
+      z-index: 50;
+      user-select: none;
+      will-change: transform, opacity;
+      filter: drop-shadow(0 4px 6px rgba(249, 168, 212, 0.3));
+    }
+    @keyframes floatHeart {
+      0% {
+        opacity: 0;
+        transform: translateY(0) scale(0.4) rotate(0deg);
+      }
+      20% {
+        opacity: 1;
+        transform: translateY(-10px) scale(1) rotate(5deg);
+      }
+      80% {
+        opacity: 0.8;
+        transform: translateY(-80px) scale(1.2) rotate(-8deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-140px) scale(0.6) rotate(10deg);
+      }
+    }
+    /* smooth card appearance */
+    .card {
+      transition: transform 0.2s ease, box-shadow 0.3s;
+    }
+    /* tombol outline tipis sesuai permintaan */
+    .btn-outline {
+      border: 1.5px solid #fda4af;  /* soft pink border */
+      background-color: transparent;
+      color: #b4536b;
+    }
+    .btn-outline:hover {
+      background-color: #fff1f2;
+    }
+    /* main container width */
+    .container-xs {
+      max-width: 32rem;
+      width: 100%;
+    }
+    /* untuk replacement text setelah klik "nanti" */
+    #main-message h1, #main-message p {
+      transition: all 0.2s;
+    }
+  </style>
+</head>
+<body class="antialiased text-[#4b4b5e]">
+
+  <!-- container utama – soft pastel card -->
+  <div class="container-xs mx-auto">
+    <div class="card bg-white/70 backdrop-blur-sm rounded-3xl p-7 md:p-9 shadow-xl border border-white/50"
+         style="background-color: rgba(255, 245, 245, 0.7); box-shadow: 0 20px 40px -10px rgba(190, 150, 170, 0.25);">
+
+      <!-- konten dinamis dengan id buat ganti jika perlu (tombol kedua) -->
+      <div id="main-message" class="text-center space-y-4">
+        <h1 class="text-2xl md:text-3xl font-light leading-relaxed text-[#5e5e7a]">
+          Hai Sayang, aku lagi kangen denger suara kamu. 
+          Kalau kamu ada waktu setelah Tarawih nanti, 
+          aku mau nemenin kamu santai sambil ngobrol apa aja 
+          yang bikin kamu nyaman.
+        </h1>
+        <p class="text-sm md:text-base font-light text-[#827b9b] italic tracking-wide">
+          No pressure, just me being here for you.
+        </p>
+      </div>
+
+      <!-- area tombol (flex rapi di mobile) -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center mt-10 mb-2">
+        <!-- Tombol utama I'm In! (menonjol tapi lembut) -->
+        <button id="btnImIn" 
+                class="px-8 py-4 rounded-2xl bg-[#fbc4d2] text-[#5e3e4e] font-medium text-lg shadow-md hover:shadow-lg active:scale-[0.97] transition-all duration-200 ring-1 ring-[#fda4b6] ring-offset-2 ring-offset-white/30">
+          💬 I'm In!
+        </button>
+
+        <!-- Tombol kedua 'Kabari Nanti Saja' outline tipis -->
+        <button id="btnLater"
+                class="px-6 py-4 rounded-2xl btn-outline font-medium text-base transition-all duration-200 hover:bg-[#fff0f3] active:bg-[#ffe4ea]">
+          Kabari Nanti Saja
+        </button>
+      </div>
+
+      <!-- teks kecil additional (opsional) tapi udah ada di atas -->
+      <p class="text-center text-[#9a8ca8] text-xs mt-6 opacity-70">— deep talk aja, santuy —</p>
+    </div>
+  </div>
+
+  <!-- container untuk animasi hati (particles) -->
+  <div id="heart-container" style="position: fixed; inset: 0; pointer-events: none; overflow: hidden;"></div>
+
+  <script>
+    (function() {
+      const btnImIn = document.getElementById('btnImIn');
+      const btnLater = document.getElementById('btnLater');
+      const mainMessageDiv = document.getElementById('main-message');
+      const heartContainer = document.getElementById('heart-container');
+
+      // fungsi membuat partikel hati
+      function spawnHearts(count = 24) {
+        for (let i = 0; i < count; i++) {
+          setTimeout(() => {
+            createHeart();
+          }, i * 45); // sedikit jeda agar tidak muncul bareng semua
+        }
+      }
+
+      function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart-particle');
+        // varian hati lucu + warna soft pastel
+        const hearts = ['🌸', '❤️', '🧡', '💖', '💗', '💓', '💞', '💕', '✨', '🌸', '🌷', '🍃']; 
+        const randomHeart = hearts[Math.floor(Math.random() * hearts.length)];
+        heart.textContent = randomHeart;
+
+        // warna tambahan lewat style? kita atur font-size random biar variatif
+        const size = 1.2 + Math.random() * 1.8; // rem
+        heart.style.fontSize = `${size}rem`;
+
+        // posisi horizontal (hampir full area)
+        const startX = Math.random() * window.innerWidth * 0.9 + window.innerWidth * 0.05; // 5% - 95%
+        heart.style.left = startX + 'px';
+        heart.style.top = (window.innerHeight * 0.7) + 'px'; // mulai dari 70% bawah biar naik ke atas
+
+        // sedikit variasi animasi via random duration + delay
+        const duration = 1.8 + Math.random() * 1.0; // 1.8 - 2.8s
+        heart.style.animationDuration = `${duration}s`;
+        heart.style.animationDelay = `${Math.random() * 0.2}s`;
+
+        // rotasi random
+        heart.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
+
+        // optional warna pink/lavender, pakai emoji sudah representatif
+        heartContainer.appendChild(heart);
+
+        // hapus setelah animasi selesai (biar nggak numpuk)
+        setTimeout(() => {
+          if (heart.parentNode) heart.remove();
+        }, duration * 1100);
+      }
+
+      // redirect ke WA setelah animasi + sedikit jeda
+      function handleImIn() {
+        // nonaktifkan button sementara (opsional)
+        btnImIn.disabled = true;
+        btnImIn.classList.add('opacity-70', 'cursor-default');
+        
+        // lempar hati sebanyak 28 partikel (2 detik penuh)
+        spawnHearts(28);  
+        
+        // setelah 2 detik (durasi animasi terakhir) redirect
+        setTimeout(() => {
+          window.location.href = 'https://wa.me/62895401553089?text=Aku+mau+cerita+nanti+malam';
+          // fallback jika ternyata tidak redirect (biarkan)
+        }, 2000); // 2000ms = 2 detik
+      }
+
+      // handle tombol "Kabari Nanti Saja"
+      function handleLater() {
+        // ganti teks sesuai permintaan
+        mainMessageDiv.innerHTML = `
+          <h1 class="text-2xl md:text-3xl font-light leading-relaxed text-[#5e5e7a]">
+            Oke Sayang, istirahat yang cukup ya. Kabari aku kapanpun kamu siap.
+          </h1>
+          <p class="text-sm md:text-base font-light text-[#827b9b] italic tracking-wide mt-4">
+            — aku nunggu dengan tenang —
+          </p>
+        `;
+        // disable tombol later supaya tidak diubah lagi (dan beri umpan balik)
+        btnLater.disabled = true;
+        btnLater.classList.add('opacity-50', 'cursor-not-allowed', 'pointer-events-none');
+        // biarkan tombol I'm In tetap aktif — kalau diklik tetap bisa.
+        // namun kalau mau bisa biarkan, tapi lebih baik tetap fungsional.
+        // karena tombol I'm In tetap berguna.
+      }
+
+      // attach events
+      btnImIn.addEventListener('click', handleImIn);
+      btnLater.addEventListener('click', handleLater);
+
+      // tambahan: jika pengguna resize, tidak masalah. 
+      // pastikan juga di mobile tidak ada overflow
+      window.addEventListener('resize', () => {}); // dummy
+
+      // bonus: sedikit mengurangi hati kalau terlalu banyak (gc otomatis dari removal)
+    })();
+  </script>
+
+  <!-- catatan: pada beberapa kasus ekstrim, animasi tetap smooth karena hanya 2 detik -->
+  <!-- tombol "I'm In!" akan redirect setelah hati2 muncul, hati muncul dari area bawah -->
+</body>
+</html>
