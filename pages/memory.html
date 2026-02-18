@@ -1,337 +1,327 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-  <title>our story together | The Memory Architect · our journey</title>
-  <!-- Tailwind + Fonts Quicksand / Nunito -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Memory Architect · bangun kenangan</title>
+  <!-- Tailwind + Google Fonts (Quicksand / Nunito) -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 (free) untuk icon fullscreen & musik -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * { font-family: 'Quicksand', 'Nunito', sans-serif; }
+    * { font-family: 'Nunito', 'Quicksand', system-ui, sans-serif; }
     body {
-      background: linear-gradient(135deg, #fde9e0 0%, #e2f0f5 100%);
+      background: linear-gradient(145deg, #fbe9f0 0%, #e6eef9 100%);
       min-height: 100vh;
+      transition: background 0.2s;
       margin: 0;
-      transition: background 0.3s;
     }
-    /* container utama biar lembut */
-    .glass-card {
-      background: rgba(255, 250, 245, 0.75);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 245, 235, 0.6);
-      box-shadow: 0 20px 40px -18px rgba(140, 130, 120, 0.3);
+    /* custom soft pastel card */
+    .memory-card {
+      background: rgba(255, 250, 245, 0.8);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 20px 40px -15px rgba(190, 160, 170, 0.3);
     }
-    /* floating hearts / stars di background */
-    .floating-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
+    /* fullscreen styles */
+    .fullscreen-btn, .music-controls {
+      transition: all 0.2s ease;
     }
-    .float-item {
-      position: absolute;
-      color: rgba(255, 200, 210, 0.4);
-      font-size: 2rem;
-      user-select: none;
-      animation: floatAround 16s infinite ease-in-out;
-    }
-    @keyframes floatAround {
-      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.3; }
-      33% { transform: translate(30px, -20px) rotate(8deg) scale(1.2); opacity: 0.6; }
-      66% { transform: translate(-20px, 30px) rotate(-6deg) scale(0.9); opacity: 0.4; }
-      100% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 0.3; }
-    }
-    /* transisi fade untuk pertanyaan */
-    .fade-question {
-      transition: opacity 0.25s ease-in-out;
-    }
-    .hidden-question {
-      opacity: 0;
-    }
-    .visible-question {
-      opacity: 1;
-    }
-    /* layout tombol fullscreen di pojok */
-    .fullscreen-btn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 50;
-      background: rgba(255, 245, 235, 0.8);
-      backdrop-filter: blur(4px);
-      border: 1px solid #ffcfb6;
-      border-radius: 60px;
-      padding: 10px 18px;
-      font-size: 0.95rem;
-      font-weight: 500;
-      color: #7c6a5e;
-      box-shadow: 0 5px 12px rgba(252, 182, 159, 0.3);
-      transition: 0.2s;
-      cursor: pointer;
-    }
-    .fullscreen-btn:hover {
-      background: #ffe7db;
-      transform: scale(1.02);
-    }
-    /* responsif ekstra */
+    /* untuk layar kecil, music controls bisa sedikit rapat */
     @media (max-width: 480px) {
-      .fullscreen-btn {
-        bottom: 16px;
-        right: 16px;
-        padding: 8px 14px;
-        font-size: 0.85rem;
+      .music-panel {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
       }
+    }
+    /* animasi transisi sederhana */
+    .fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
-<body class="antialiased flex items-center justify-center p-4 sm:p-6">
+<body class="antialiased flex items-center justify-center p-4 md:p-6 relative">
 
-  <!-- floating background (bintang / hati) -->
-  <div class="floating-bg" id="floatingBg"></div>
-
-  <!-- tombol fullscreen (pojok kanan bawah) -->
-  <button id="fullscreenToggle" class="fullscreen-btn" title="layar penuh / keluar">
-    <span id="fsIcon">⛶</span> <span class="hidden sm:inline">layar penuh</span>
+  <!-- ===== FULLSCREEN BUTTON (pojok kanan atas) ===== -->
+  <button id="fullscreen-toggle" class="fixed top-5 right-5 z-30 bg-white/40 backdrop-blur-sm p-3 rounded-full shadow-lg border border-white/50 text-[#5e5e7a] hover:bg-white/60 transition-all" title="layar penuh">
+    <i class="fas fa-expand text-xl md:text-2xl"></i>
   </button>
 
-  <!-- kontainer utama -->
-  <main class="w-full max-w-2xl relative z-10">
+  <!-- ===== MUSIC PLAYER (pojok kiri atas, kecil) ===== -->
+  <div class="fixed top-5 left-5 z-30 bg-white/40 backdrop-blur-sm rounded-full p-2 pl-5 pr-4 shadow-md border border-white/50 flex items-center gap-3 music-panel">
+    <i class="fa-solid fa-headphones text-[#b4869f]"></i>
+    <!-- audio element (disembunyikan, dikontrol via JS) -->
+    <audio id="bg-music" loop>
+      <!-- letakkan file i-wanna-be-yours.mp3 di folder yg sama dengan html -->
+      <source src="../assets/music/i-wanna-be-yours.mp3" type="audio/mpeg">
+      browser-mu tidak mendukung audio.
+    </audio>
+    <button id="play-pause-btn" class="text-[#4b4b5e] hover:text-[#b4536b] w-8">
+      <i class="fas fa-play" id="play-pause-icon"></i>
+    </button>
+    <div class="flex items-center gap-2 text-sm">
+      <i class="fa-solid fa-volume-low text-[#7a6e8c]"></i>
+      <input type="range" id="volume-slider" min="0" max="1" step="0.05" value="0.5" class="w-16 md:w-20 accent-[#e2a4b7]">
+    </div>
+  </div>
 
-    <!-- halaman pembuka (start screen) -->
-    <div id="startScreen" class="glass-card rounded-3xl p-8 md:p-12 text-center transition-all">
-      <h1 class="text-4xl md:text-5xl font-medium text-[#876b5a] tracking-wide">The Memory Architect</h1>
-      <p class="text-lg md:text-xl text-[#a78e7d] mt-3 font-light">Membangun Kembali Kenangan Manis Kita</p>
+  <!-- ===== KONTEN UTAMA ===== -->
+  <div class="w-full max-w-3xl mx-auto">
+
+    <!-- HALAMAN AWAL (start screen) -->
+    <div id="start-screen" class="memory-card rounded-3xl p-8 md:p-12 text-center backdrop-blur-sm">
+      <h1 class="text-4xl md:text-5xl font-light text-[#4b3b4f] leading-tight">The Memory Architect:<br><span class="font-medium text-[#ad6e8d]">Mari Bangun Kenangan Indah Lagi</span></h1>
+      <p class="text-lg md:text-xl text-[#5e5e7a] mt-6 max-w-2xl mx-auto font-light">Putar lagu favorit kita dan jawab pertanyaan ini berdua. Tidak ada jawaban salah, hanya tawa dan cerita kita.</p>
+      <button id="start-game" class="mt-10 px-10 py-4 bg-[#fcc5d1] text-[#523b47] rounded-full text-2xl shadow-lg hover:shadow-xl active:scale-[0.97] transition-all font-medium ring-2 ring-white/60">✨ Mulai Permainan</button>
+      <p class="text-xs text-[#8e7c96] mt-8 opacity-60">— siap? —</p>
+    </div>
+
+    <!-- HALAMAN PERMAINAN (game screen, awalnya disembunyikan) -->
+    <div id="game-screen" class="hidden memory-card rounded-3xl p-6 md:p-10 text-center backdrop-blur-sm">
+      <!-- judul kecil -->
+      <h2 class="text-2xl md:text-3xl font-light text-[#ad6e8d]">💭 kenangan kita</h2>
       
-      <div class="mt-10">
-        <button id="startBtn" class="bg-[#ffd9cc] hover:bg-[#ffcdbb] text-[#6d5344] text-xl md:text-2xl px-12 py-5 rounded-full shadow-md transition duration-200 active:scale-95 font-medium border border-white/50">
-          Mulai Petualangan! ✨
-        </button>
+      <!-- KARTU PERTANYAAN -->
+      <div id="question-card" class="bg-white/70 rounded-2xl p-8 md:p-12 my-8 shadow-inner border border-white/60 min-h-[220px] flex items-center justify-center">
+        <p id="question-text" class="text-2xl md:text-3xl text-[#43435c] font-medium">“...”</p>
       </div>
-      <p class="text-xs text-[#b9a392] mt-8 opacity-70">— siap nostalgia? —</p>
+
+      <!-- TOMBOL NEXT & KELUAR -->
+      <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+        <button id="next-question" class="px-8 py-4 bg-[#d6bbd8] text-[#3e3342] rounded-full text-xl shadow-md hover:bg-[#cfb0d1] transition-all w-full sm:w-auto font-medium">🎲 Pertanyaan Selanjutnya</button>
+        <button id="exit-game" class="px-6 py-4 border-2 border-[#dbb0b0] text-[#9e6d6d] rounded-full text-lg hover:bg-[#fae5e5] transition-all w-full sm:w-auto">Keluar Game</button>
+      </div>
+      <!-- pesan habis (akan muncul jika semua pertanyaan ditampilkan) -->
+      <p id="game-end-message" class="text-sm text-[#b4869f] mt-5 hidden italic">✨ semua pertanyaan sudah terjawab · mulai siklus baru ✨</p>
     </div>
+  </div>
 
-    <!-- halaman permainan (kuestioner) awalnya hidden -->
-    <div id="gameScreen" class="glass-card rounded-3xl p-7 md:p-10 hidden">
-      
-      <!-- progress indicator -->
-      <div class="flex justify-between items-center text-[#a18b7c] text-sm md:text-base mb-5 px-2">
-        <span id="progressText" class="font-medium">Pertanyaan 1 dari 15</span>
-        <span class="flex gap-1">
-          <span class="w-2 h-2 bg-[#fbc4b4] rounded-full"></span>
-          <span class="w-2 h-2 bg-[#fbd7cc] rounded-full"></span>
-          <span class="w-2 h-2 bg-[#fceae5] rounded-full"></span>
-        </span>
-      </div>
-
-      <!-- area pertanyaan dengan fade -->
-      <div id="questionWrapper" class="min-h-[180px] md:min-h-[200px] flex items-center justify-center fade-question visible-question">
-        <p id="questionText" class="text-2xl md:text-3xl text-center font-medium text-[#5f4e43] leading-relaxed">
-          <!-- akan diisi javascript -->
-        </p>
-      </div>
-
-      <!-- tombol navigasi -->
-      <div class="flex flex-col sm:flex-row gap-4 justify-between items-center mt-10">
-        <button id="prevBtn" class="w-full sm:w-auto px-7 py-4 rounded-full bg-white/60 border border-[#ffcfbb] text-[#7b6253] text-lg shadow-sm hover:bg-white/80 transition disabled:opacity-30 disabled:pointer-events-none">
-          ← Sebelumnya
-        </button>
-        
-        <button id="nextBtn" class="w-full sm:w-auto px-9 py-4 rounded-full bg-[#ffd3c0] text-[#5d4437] text-lg font-medium shadow-md hover:bg-[#ffc9b2] transition active:scale-95 disabled:opacity-40 disabled:pointer-events-none">
-          Selanjutnya →
-        </button>
-      </div>
-
-      <!-- catatan kecil (opsional) -->
-      <p class="text-center text-[#b29b8d] text-xs mt-8 italic">⋆｡°✩ satu kenangan, satu cerita</p>
-    </div>
-
-    <!-- halaman penutup (setelah selesai) awalnya hidden, muncul dari game -->
-    <div id="endScreen" class="glass-card rounded-3xl p-10 md:p-14 text-center hidden">
-      <p class="text-3xl md:text-4xl text-[#7b6253] font-light leading-relaxed">
-        💬 Terima kasih sudah membangun kenangan indah ini lagi bersamaku. Aku sayang kamu.
-      </p>
-      <div class="mt-10 text-5xl opacity-70">🌸</div>
-    </div>
-  </main>
-
+  <!-- JavaScript interaktif -->
   <script>
     (function() {
-      // ---------- DAFTAR PERTANYAAN (array) ----------
-      const questions = [
-        "Momen paling memalukan yang pernah kita alami bareng?",
-        "Kencan pertama kita yang paling kamu inget apa?",
-        "Chat paling cringe atau lucu yang pernah kita kirim satu sama lain?",
-        "Lagu yang kalau kamu denger, langsung inget muka atau momen sama aku?",
-        "Makanan atau minuman yang paling sering kita pesen bareng?",
-        "Hal kecil apa dari aku yang pertama kali bikin kamu tertarik?",
-        "Kejutan paling nggak terduga yang pernah aku kasih ke kamu?",
-        "Film atau serial yang paling berkesan kita tonton bareng?",
-        "Tempat nongkrong favorit kita berdua dan kenapa?",
-        "Hal paling receh yang pernah bikin kita ketawa ngakak sampai sakit perut?",
-        "Kebiasaan aneh aku yang bikin kamu geleng-geleng tapi juga gemes?",
-        "Apa impian konyol yang pengen banget kita wujudin bareng?",
-        "Pernah nggak kamu kepikiran 'wah kok bisa ya aku sama dia?' Tapi ujung-ujungnya malah bersyukur?",
-        "Kalau kita bisa rewind ke satu momen, momen apa yang pengen kamu ulang?",
-        "Apa satu hal yang selalu bikin kamu ngerasa nyaman banget kalau lagi sama aku?"
+      // ---------- DAFTAR PERTANYAAN (15 memory lane) ----------
+      const questionPool = [
+        "Momen paling memalukan pas kita pertama kali jalan?",
+        "Chat paling cringe yang pernah aku kirim ke kamu?",
+        "Lagu yang kalau kamu denger, langsung inget muka aku?",
+        "Film atau serial yang paling sering kita tonton bareng?",
+        "Makanan paling aneh yang pernah kita coba bersama?",
+        "Hadiah paling berkesan yang pernah kamu terima dari aku?",
+        "Tempat yang paling pengen kita kunjungi lagi?",
+        "Petualangan dadakan yang paling nggak terlupakan?",
+        "Kebiasaan aneh aku yang bikin kamu gemes?",
+        "Janji yang pernah kita buat berdua dan masih inget?",
+        "Momen pas aku paling berhasil bikin kamu ketawa terbahak-bahak?",
+        "Hal kecil dari aku yang paling kamu syukuri?",
+        "Apa yang paling aku suka dari senyum kamu?",
+        "Kalau bisa kembali ke satu hari, hari apa yang ingin kita ulang?",
+        "Hal pertama yang kamu pikirkan pas kita pertama kali ketemu?"
       ];
-      const totalQ = questions.length;
 
-      // ---------- ELEMEN DOM ----------
-      const startScreen = document.getElementById('startScreen');
-      const gameScreen = document.getElementById('gameScreen');
-      const endScreen = document.getElementById('endScreen');
-      const startBtn = document.getElementById('startBtn');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      const questionText = document.getElementById('questionText');
-      const progressText = document.getElementById('progressText');
-      const questionWrapper = document.getElementById('questionWrapper');
+      // ---------- VARIABEL GLOBAL ----------
+      let remainingQuestions = [];     // untuk menyimpan sisa pertanyaan yang belum muncul
+      let currentQuestionsCopy = [];   // saat reset / mulai baru
 
-      // state
-      let currentIndex = 0; // 0-based
-      let isFading = false;
+      // elemen DOM
+      const startScreen = document.getElementById('start-screen');
+      const gameScreen = document.getElementById('game-screen');
+      const startBtn = document.getElementById('start-game');
+      const nextBtn = document.getElementById('next-question');
+      const exitBtn = document.getElementById('exit-game');
+      const questionText = document.getElementById('question-text');
+      const gameEndMsg = document.getElementById('game-end-message');
 
-      // helper untuk menampilkan pertanyaan + progress
-      function displayQuestion(index) {
-        if (index < 0 || index >= totalQ) return;
-
-        // fade-out dulu
-        questionWrapper.classList.add('hidden-question');
-        questionWrapper.classList.remove('visible-question');
-
-        setTimeout(() => {
-          // ganti teks dan progress
-          questionText.innerText = questions[index];
-          progressText.innerText = `Pertanyaan ${index+1} dari ${totalQ}`;
-
-          // update status tombol prev/next (disable di ujung)
-          if (index === 0) {
-            prevBtn.disabled = true;
-          } else {
-            prevBtn.disabled = false;
-          }
-
-          // jika di index terakhir ubah tombol next jadi "Selesai Bermain"
-          if (index === totalQ - 1) {
-            nextBtn.innerText = 'Selesai Bermain 🎀';
-          } else {
-            nextBtn.innerText = 'Selanjutnya →';
-          }
-
-          // fade-in
-          questionWrapper.classList.remove('hidden-question');
-          questionWrapper.classList.add('visible-question');
-        }, 150); // sedikit delay sesuai transisi
+      // ---------- FUNGSI inisialisasi / acak array ----------
+      function initGameQuestions() {
+        // buat salinan semua pertanyaan
+        currentQuestionsCopy = [...questionPool];
+        // acak urutan (shuffle) untuk awal permainan, biar tidak berurutan
+        shuffleArray(currentQuestionsCopy);
+        // remainingQuestions adalah array yang akan kita ambil satu per satu
+        remainingQuestions = [...currentQuestionsCopy];
       }
 
-      // fungsi untuk beralih ke game screen (reset index jika perlu)
-      function startGame() {
+      // fungsi shuffle (Fisher-Yates)
+      function shuffleArray(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+      }
+
+      // mengambil pertanyaan acak tanpa pengulangan
+      function getRandomQuestion() {
+        // jika semua pertanyaan sudah pernah muncul (remainingQuestions habis)
+        if (remainingQuestions.length === 0) {
+          // reset: buat ulang dari currentQuestionsCopy (yang masih urutan acak awal)
+          // tapi kita shuffle lagi agar urutan baru berbeda
+          shuffleArray(currentQuestionsCopy);
+          remainingQuestions = [...currentQuestionsCopy];
+          // tampilkan pesan "semua pertanyaan ditampilkan" (opsional)
+          gameEndMsg.classList.remove('hidden');
+          // setelah 2 detik pesannya hilang (optional)
+          setTimeout(() => gameEndMsg.classList.add('hidden'), 2000);
+        }
+        // ambil satu pertanyaan dari array sisa (pop dari depan biar lebih acak, atau bisa pakai splice random)
+        // kita ambil index acak dari remainingQuestions untuk lebih random namun tetap tidak mengulang sampai habis
+        const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+        const selected = remainingQuestions[randomIndex];
+        // hapus pertanyaan itu dari array sisa
+        remainingQuestions.splice(randomIndex, 1);
+        return selected;
+      }
+
+      // tampilkan pertanyaan baru ke kartu
+      function displayNewQuestion() {
+        const q = getRandomQuestion();
+        questionText.textContent = `“${q}”`;
+        // tambahkan animasi kecil
+        questionText.classList.remove('fade-in');
+        void questionText.offsetWidth; // reflow
+        questionText.classList.add('fade-in');
+      }
+
+      // reset game (saat mulai atau keluar)
+      function showStartScreen() {
+        startScreen.classList.remove('hidden');
+        gameScreen.classList.add('hidden');
+        // reset audio tidak perlu direset, tetap berjalan
+      }
+
+      function showGameScreen() {
         startScreen.classList.add('hidden');
         gameScreen.classList.remove('hidden');
-        endScreen.classList.add('hidden');
-        currentIndex = 0;
-        displayQuestion(currentIndex);
+        // inisialisasi ulang pertanyaan (mulai baru)
+        initGameQuestions();
+        // langsung tampilkan pertanyaan pertama
+        displayNewQuestion();
+        // sembunyikan pesan habis jika kelihatan
+        gameEndMsg.classList.add('hidden');
       }
 
-      // fungsi penutup (selesai bermain)
-      function showEndScreen() {
-        gameScreen.classList.add('hidden');
-        endScreen.classList.remove('hidden');
-        startScreen.classList.add('hidden');
-      }
-
-      // event start
-      startBtn.addEventListener('click', startGame);
-
-      // tombol sebelumnya
-      prevBtn.addEventListener('click', () => {
-        if (isFading) return;
-        if (currentIndex > 0) {
-          currentIndex--;
-          displayQuestion(currentIndex);
-        }
+      // ---------- EVENT LISTENER ----------
+      startBtn.addEventListener('click', () => {
+        showGameScreen();
       });
 
-      // tombol next / selesai
       nextBtn.addEventListener('click', () => {
-        if (isFading) return;
-        // jika ini pertanyaan terakhir (index totalQ-1) → selesai
-        if (currentIndex === totalQ - 1) {
-          showEndScreen();
-          return;
-        }
-        // otherwise lanjut
-        if (currentIndex < totalQ - 1) {
-          currentIndex++;
-          displayQuestion(currentIndex);
+        // pastikan game screen sedang aktif (jika tidak, abaikan)
+        if (!gameScreen.classList.contains('hidden')) {
+          displayNewQuestion();
         }
       });
 
-      // supaya tombol disabled tidak bisa di klik (sudah pakai pointer-events + opacity)
-      // bonus: juga handle fade lock simpel
-      questionWrapper.addEventListener('transitionstart', () => {
-        isFading = true;
-      });
-      questionWrapper.addEventListener('transitionend', () => {
-        isFading = false;
+      exitBtn.addEventListener('click', () => {
+        showStartScreen();
       });
 
-      // ---------- FULLSCREEN MODE (pojok kanan bawah) ----------
-      const fullscreenToggle = document.getElementById('fullscreenToggle');
-      const fsIcon = document.getElementById('fsIcon');
-
-      function toggleFullscreen() {
+      // ---------- FULLSCREEN TOGGLE ----------
+      const fullscreenBtn = document.getElementById('fullscreen-toggle');
+      fullscreenBtn.addEventListener('click', () => {
         if (!document.fullscreenElement) {
-          document.documentElement.requestFullscreen().then(() => {
-            fsIcon.innerText = '✕'; // tanda keluar
-          }).catch(err => console.warn(err));
+          document.documentElement.requestFullscreen().catch(err => {
+            console.warn('fullscreen error:', err);
+          });
+          fullscreenBtn.innerHTML = '<i class="fas fa-compress text-xl md:text-2xl"></i>';
         } else {
           if (document.exitFullscreen) {
-            document.exitFullscreen().then(() => {
-              fsIcon.innerText = '⛶';
-            });
+            document.exitFullscreen();
+            fullscreenBtn.innerHTML = '<i class="fas fa-expand text-xl md:text-2xl"></i>';
           }
-        }
-      }
-
-      fullscreenToggle.addEventListener('click', toggleFullscreen);
-
-      // ubah icon saat fullscreen berubah via esc atau tombol
-      document.addEventListener('fullscreenchange', () => {
-        if (document.fullscreenElement) {
-          fsIcon.innerText = '✕';
-        } else {
-          fsIcon.innerText = '⛶';
         }
       });
 
-      // ---------- FLOATING BACKGROUND (bintang/hati) ----------
-      function createFloatingIcons() {
-        const bg = document.getElementById('floatingBg');
-        const icons = ['🌸', '✨', '🕊️', '💭', '🧁', '☁️', '🫧', '🌟', '🍃', '💫']; // soft
-        for (let i = 0; i < 18; i++) {
-          const item = document.createElement('div');
-          item.className = 'float-item';
-          item.textContent = icons[Math.floor(Math.random() * icons.length)];
-          item.style.left = Math.random() * 100 + '%';
-          item.style.top = Math.random() * 100 + '%';
-          item.style.fontSize = (1.6 + Math.random() * 2) + 'rem';
-          item.style.animationDelay = (Math.random() * 10) + 's';
-          item.style.animationDuration = (14 + Math.random() * 12) + 's';
-          bg.appendChild(item);
+      // Update icon fullscreen jika user tekan esc
+      document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement) {
+          fullscreenBtn.innerHTML = '<i class="fas fa-compress text-xl md:text-2xl"></i>';
+        } else {
+          fullscreenBtn.innerHTML = '<i class="fas fa-expand text-xl md:text-2xl"></i>';
         }
-      }
-      createFloatingIcons();
+      });
 
-      // jika di layar kecil, progress tetap ok
-      // bisa juga handle resize dll (no need)
+      // ---------- MUSIK LOKAL (dengan fallback autoplay mute) ----------
+      const audio = document.getElementById('bg-music');
+      const playPauseBtn = document.getElementById('play-pause-btn');
+      const playIcon = document.getElementById('play-pause-icon');
+      const volumeSlider = document.getElementById('volume-slider');
+
+      // set initial volume
+      audio.volume = 0.5;
+
+      // Autoplay biasanya diblokir browser, jadi kita coba play saat interaksi pertama.
+      // Agar lebih pasti, kita akan trigger lewat tombol start (atau klik start game)
+      // Tapi juga siapkan fallback: tombol play pause manual.
+      let userInteracted = false;
+
+      function attemptAutoPlay() {
+        audio.play().then(() => {
+          playIcon.className = 'fas fa-pause';
+        }).catch(() => {
+          // autoplay gagal, user harus klik tombol play
+          playIcon.className = 'fas fa-play';
+        });
+      }
+
+      // coba autoplay saat halaman dimuat (biasanya gagal, tapi kita coba)
+      window.addEventListener('load', () => {
+        // tidak usah autoplay langsung karena pasti kena block.
+        // lebih baik andalkan tombol play.
+        // tapi kita set muted dulu? tidak, kita biarkan user interaksi pertama via tombol.
+      });
+
+      // saat tombol play/pause diklik
+      playPauseBtn.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play().then(() => {
+            playIcon.className = 'fas fa-pause';
+          }).catch(e => console.warn('gagal play:', e));
+        } else {
+          audio.pause();
+          playIcon.className = 'fas fa-play';
+        }
+      });
+
+      // volume slider
+      volumeSlider.addEventListener('input', (e) => {
+        audio.volume = e.target.value;
+      });
+
+      // agar user pertama kali play lewat start game juga bisa, kita coba trigger play jika pause
+      startBtn.addEventListener('click', function musicTrigger() {
+        // coba play jika belum diputar
+        if (audio.paused) {
+          audio.play().then(() => {
+            playIcon.className = 'fas fa-pause';
+          }).catch(() => {});
+        }
+        // cukup sekali? kita lepas saja
+      });
+
+      // optional: saat game muncul, juga coba (tetap aman)
+      // tapi agar tidak dobel, kita biarkan.
+
+      // ---------- inisialisasi awal (siapkan pool) ----------
+      initGameQuestions();  // biar siap
+
+      // Tampilkan pertanyaan random jika game screen kebuka (tapi belum kebuka)
+
+      // handle jika tombol fullscreen di hp: font awesome jalan
+
+      // tambahan: reset pesan saat selesai
     })();
   </script>
+
+  <!-- pesan tambahan: petunjuk file musik -->
+  <div class="fixed bottom-2 left-2 text-[10px] text-[#9b8da5] bg-white/30 px-2 py-1 rounded-full backdrop-blur-sm">
+    ♫ tempatkan <span class="font-mono">i-wanna-be-yours.mp3</span> di folder yang sama
+  </div>
 </body>
 </html>
