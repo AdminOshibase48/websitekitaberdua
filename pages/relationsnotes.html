@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>Relationship Refactoring · v1.0.1</title>
+  <!-- Tailwind + Fira Code & Inter -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Supabase JS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+    .font-mono-custom { font-family: 'Fira Code', monospace; }
+    body { background: #0f172a; } /* slate-900 */
+    /* blur effect for auth overlay */
+    .blur-content {
+      filter: blur(5px) brightness(0.4);
+      pointer-events: none;
+      user-select: none;
+      transition: filter 0.3s ease;
+    }
+    /* glassmorphism card */
+    .glass-card {
+      background: rgba(30, 41, 59, 0.6); /* slate-800 with opacity */
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(219, 39, 119, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.36);
+    }
+    /* terminal textarea */
+    .terminal-input {
+      background-color: #0b1120;
+      border: 1px solid #334155;
+      color: #f1f5f9;
+      font-family: 'Fira Code', monospace;
+      caret-color: #db2777;
+    }
+    .terminal-input:focus {
+      border-color: #db2777;
+      box-shadow: 0 0 0 2px rgba(219, 39, 119, 0.3);
+      outline: none;
+    }
+    /* loading spinner */
+    .spinner {
+      border: 2px solid rgba(255,255,255,0.1);
+      border-top: 2px solid #db2777;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    /* modal backdrop */
+    .modal-bg {
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(6px);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-start justify-center p-3 relative">
+
+  <!-- MAIN CONTENT (blurred by default) -->
+  <div id="mainContent" class="max-w-xl w-full my-6 space-y-6 transition-all duration-300">
+
+    <!-- header with monospaced sub -->
+    <div class="text-left space-y-1">
+      <h1 class="text-3xl md:text-4xl font-bold text-white tracking-tight">
+        System Update <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-pink-300">v1.0.1</span>: Relationship Refactoring
+      </h1>
+      <p class="font-mono-custom text-sm md:text-base text-pink-200/70 border-l-3 border-pink-500 pl-3">
+        // Fixing bugs in our connection, optimizing the future.
+      </p>
+    </div>
+
+    <!-- THE LOVE PATCH NOTES (glassmorphism card) -->
+    <div class="glass-card rounded-2xl p-5 md:p-6">
+      <h2 class="text-xs uppercase tracking-wider text-pink-300/80 font-semibold mb-4 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-pink-400 animate-pulse"></span> 
+        changelog — relationship hotfix
+      </h2>
+      <ul class="space-y-3 text-sm md:text-base">
+        <li class="flex gap-3 items-start">
+          <span class="bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded text-xs font-mono border border-rose-500/30 shrink-0 mt-0.5">FIXED</span>
+          <span class="text-slate-200">Communication latency & inconsistency.</span>
+        </li>
+        <li class="flex gap-3 items-start">
+          <span class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded text-xs font-mono border border-amber-500/30 shrink-0 mt-0.5">IMPROVED</span>
+          <span class="text-slate-200">Active listening algorithm <span class="text-amber-300">(High Priority)</span>.</span>
+        </li>
+        <li class="flex gap-3 items-start">
+          <span class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded text-xs font-mono border border-emerald-500/30 shrink-0 mt-0.5">NEW</span>
+          <span class="text-slate-200">24/7 Unlimited Yapping Support.</span>
+        </li>
+        <li class="flex gap-3 items-start">
+          <span class="bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded text-xs font-mono border border-indigo-500/30 shrink-0 mt-0.5">SECURITY</span>
+          <span class="text-slate-200">Enhanced Trust & Transparency Protocols.</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- THE YAPPING SPACE (terminal style + supabase integration) -->
+    <div class="glass-card rounded-2xl p-5 md:p-6">
+      <label class="block mb-2 font-mono-custom text-xs text-pink-200/90 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-pink-400 shadow-glow"></span>
+        Yapping Input Console <span class="text-pink-300/50">--no-limit</span>
+      </label>
+
+      <textarea id="yappingInput" rows="4" placeholder="$ write your thoughts here..." 
+        class="terminal-input w-full rounded-xl p-4 text-sm resize-none transition"></textarea>
+
+      <!-- submit button with loading state -->
+      <div class="flex flex-col sm:flex-row gap-3 items-center justify-between mt-5">
+        <button id="deployBtn" class="w-full sm:w-auto bg-gradient-to-r from-pink-600 to-pink-500 hover:from-pink-500 hover:to-pink-400 text-white font-medium py-3 px-8 rounded-xl text-base shadow-lg shadow-pink-900/40 transition-all flex items-center justify-center gap-2 border border-pink-400/40 disabled:opacity-50 disabled:cursor-not-allowed">
+          <span>❤️</span> Deploy Heartbeat to Database
+        </button>
+        <!-- subtle status / loading indicator inline (optional) -->
+        <div id="inlineStatus" class="text-pink-300/50 text-xs font-mono"></div>
+      </div>
+    </div>
+
+    <!-- footer -->
+    <footer class="text-center text-xs text-slate-400/70 pt-4 border-t border-pink-500/10 mt-6">
+      Made with love and 0 bugs (hopefully) by your favorite developer.
+    </footer>
+  </div>
+
+  <!-- AUTHENTICATION OVERLAY (The Gatekeeper) -->
+  <div id="authOverlay" class="fixed inset-0 flex items-center justify-center z-50 modal-bg" style="backdrop-filter: blur(8px);">
+    <div class="glass-card rounded-3xl p-7 w-[90%] max-w-sm text-center border-pink-500/30">
+      <div class="w-16 h-16 mx-auto bg-gradient-to-br from-pink-500/20 to-pink-300/20 rounded-full flex items-center justify-center text-3xl mb-4 border border-pink-400/40">
+        🔐
+      </div>
+      <h3 class="text-white text-xl font-semibold mb-1">the gatekeeper</h3>
+      <p class="text-pink-200/70 text-sm mb-5">enter access token, my love</p>
+      
+      <input type="text" id="tokenInput" placeholder="• • • • • •" 
+        class="w-full bg-slate-900/80 text-center text-pink-100 text-2xl tracking-[0.3em] font-mono py-4 px-3 rounded-xl border border-pink-400/40 focus:border-pink-400 outline-none transition" 
+        maxlength="6" inputmode="numeric" pattern="\d*">
+
+      <div id="tokenError" class="text-pink-300/90 text-sm mt-3 h-5 font-light italic"> </div>
+
+      <button id="submitToken" class="mt-5 w-full bg-pink-600/80 hover:bg-pink-600 text-white font-medium py-3 rounded-xl border border-pink-400/50 transition-all shadow-lg shadow-pink-900/30">
+        unlock with love
+      </button>
+      <p class="text-slate-400/40 text-xs mt-4">(hint: 171225)</p>
+    </div>
+  </div>
+
+  <!-- SUCCESS MODAL (post-submission) -->
+  <div id="successModal" class="fixed inset-0 flex items-center justify-center z-50 modal-bg hidden" style="backdrop-filter: blur(6px);">
+    <div class="glass-card rounded-3xl p-7 w-[85%] max-w-sm text-center border-pink-400/40">
+      <div class="w-16 h-16 mx-auto bg-gradient-to-br from-pink-500 to-pink-400 rounded-full flex items-center justify-center text-3xl mb-4 shadow-lg">
+        💌
+      </div>
+      <p class="text-white text-base leading-relaxed font-medium">
+        Pesan berhasil di-deploy ke hati aku. Aku standby buat dengerin lanjutannya secara live. <span class="text-pink-300 font-semibold">Call me?</span>
+      </p>
+      <button id="closeModalBtn" class="mt-6 px-7 py-2 bg-pink-600/30 hover:bg-pink-600/60 text-white rounded-full text-sm border border-pink-400/40 transition-all">
+        tutup modal 💕
+      </button>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- SUPABASE CONFIG (REPLACE WITH YOUR CREDENTIALS) ----------
+      // TODO: Ganti dengan URL dan Anon Key dari proyek Supabase Anda
+      const SUPABASE_URL = 'https://rqzqojzpbzkjzvzahqhw.supabase.co';  // <-- GANTI
+      const SUPABASE_ANON_KEY = 'sb_publishable_yOh-YWb_VUEAishovvLwOA_mCw-sbie';               // <-- GANTI
+      
+      // Inisialisasi Supabase client
+      const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: { persistSession: false }
+      });
+
+      // ---------- ELEMENTS ----------
+      const overlay = document.getElementById('authOverlay');
+      const mainContent = document.getElementById('mainContent');
+      const tokenInput = document.getElementById('tokenInput');
+      const tokenError = document.getElementById('tokenError');
+      const submitTokenBtn = document.getElementById('submitToken');
+      const deployBtn = document.getElementById('deployBtn');
+      const yappingInput = document.getElementById('yappingInput');
+      const successModal = document.getElementById('successModal');
+      const closeModalBtn = document.getElementById('closeModalBtn');
+      const inlineStatus = document.getElementById('inlineStatus');
+
+      const CORRECT_TOKEN = '171225';
+
+      // ---------- AUTH: CHECK SESSIONSTORAGE ----------
+      const isAuthenticated = sessionStorage.getItem('relationship_auth') === 'true';
+      if (isAuthenticated) {
+        overlay.classList.add('hidden');
+        mainContent.classList.remove('blur-content');
+      } else {
+        mainContent.classList.add('blur-content');
+      }
+
+      // ---------- AUTH: TOKEN SUBMIT ----------
+      submitTokenBtn.addEventListener('click', function() {
+        const entered = tokenInput.value.trim();
+        if (entered === CORRECT_TOKEN) {
+          tokenError.innerText = '';
+          sessionStorage.setItem('relationship_auth', 'true');
+          overlay.classList.add('hidden');
+          mainContent.classList.remove('blur-content');
+        } else {
+          tokenError.innerText = "✘ Wrong key, try again, My Love";
+          tokenInput.classList.add('border-pink-500', 'border-2');
+          tokenInput.value = '';
+          tokenInput.focus();
+        }
+      });
+
+      tokenInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') submitTokenBtn.click();
+      });
+
+      tokenInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+      });
+
+      // ---------- DEPLOY HEARTBEAT (SUPABASE INSERT) ----------
+      deployBtn.addEventListener('click', async function() {
+        const thought = yappingInput.value.trim();
+        if (!thought) {
+          inlineStatus.innerText = '⚠️ field kosong, tapi tetap dikirim? (yapping allowed)';
+          // tetap lanjutkan dengan string kosong? biar tetap ada catatan, kita kirim saja sebagai "(empty love)"
+        }
+
+        // disable button & show loading state
+        deployBtn.disabled = true;
+        deployBtn.innerHTML = `<span class="spinner"></span> deploying...`;
+        inlineStatus.innerText = 'sending to database hati...';
+
+        try {
+          // Insert into 'yapping_logs' table (pastikan tabel ini ada di Supabase)
+          const { data, error } = await supabase
+            .from('yapping_logs')
+            .insert([
+              { 
+                content: thought || '(empty signal)', 
+                created_at: new Date().toISOString() 
+              }
+            ]);
+
+          if (error) {
+            console.error('Supabase error:', error);
+            inlineStatus.innerText = '❌ gagal: ' + error.message;
+            deployBtn.disabled = false;
+            deployBtn.innerHTML = `<span>❤️</span> Deploy Heartbeat to Database`;
+            return;
+          }
+
+          // success: show modal & clear input
+          successModal.classList.remove('hidden');
+          yappingInput.value = ''; // optional: clear after success
+          inlineStatus.innerText = '✅ deployed!';
+          
+        } catch (err) {
+          console.error(err);
+          inlineStatus.innerText = '❌ unexpected error';
+        } finally {
+          // re-enable button after a short delay (biar tidak langsung spam)
+          setTimeout(() => {
+            deployBtn.disabled = false;
+            deployBtn.innerHTML = `<span>❤️</span> Deploy Heartbeat to Database`;
+          }, 800);
+        }
+      });
+
+      // ---------- CLOSE MODAL ----------
+      closeModalBtn.addEventListener('click', function() {
+        successModal.classList.add('hidden');
+      });
+      window.addEventListener('click', (e) => {
+        if (e.target === successModal) successModal.classList.add('hidden');
+      });
+
+    })();
+  </script>
+
+  <!-- fallback note for supabase config -->
+  <div class="fixed bottom-1 left-1 right-1 text-center text-[0.6rem] text-pink-400/30 pointer-events-none select-none">
+    ⚡ jangan lupa ganti SUPABASE_URL & ANON_KEY di dalam tag script ⚡
+  </div>
+</body>
+</html>
