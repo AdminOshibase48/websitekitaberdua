@@ -1,0 +1,363 @@
+/* =============================================
+   RESET & ROOT VARIABLES
+   ============================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --pink-light:  #ffe6f2;
+  --pink-mid:    #ffb3d1;
+  --pink-main:   #ff80b3;
+  --pink-dark:   #e6006e;
+  --white:       #ffffff;
+  --text-dark:   #4a1535;
+  --shadow:      rgba(230, 0, 110, 0.25);
+  --glass:       rgba(255, 230, 242, 0.82);
+}
+
+/* =============================================
+   BODY & GAME CONTAINER
+   ============================================= */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--pink-light);
+}
+
+#game {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* =============================================
+   BACKGROUND IMAGE
+   ============================================= */
+#scene-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: opacity 0.8s ease, filter 0.8s ease;
+  opacity: 1;
+  z-index: 0;
+  /* Fallback gradient if image missing */
+  background: linear-gradient(160deg, #ffd6ec, #ffb3d1, #ff80b3);
+}
+
+#scene-bg.fade-out {
+  opacity: 0;
+}
+
+#bg-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to top,
+    rgba(255, 200, 228, 0.65) 0%,
+    rgba(255, 230, 242, 0.15) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+/* =============================================
+   FLOATING HEARTS
+   ============================================= */
+#hearts-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  bottom: -60px;
+  font-size: 1.4rem;
+  animation: floatUp linear infinite;
+  opacity: 0.7;
+  user-select: none;
+}
+
+@keyframes floatUp {
+  0%   { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.7; }
+  80%  { opacity: 0.5; }
+  100% { transform: translateY(-110vh) rotate(25deg) scale(0.6); opacity: 0; }
+}
+
+/* =============================================
+   DIALOGUE BOX
+   ============================================= */
+#dialogue-box {
+  position: relative;
+  z-index: 10;
+  width: min(740px, 96vw);
+  margin: 0 auto 24px;
+  padding: 22px 26px 20px;
+  background: var(--glass);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border: 1.5px solid rgba(255, 128, 179, 0.45);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px var(--shadow), 0 2px 8px rgba(255,128,179,0.15);
+  transition: transform 0.3s ease;
+}
+
+#speaker-name {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.35rem;
+  color: var(--pink-dark);
+  margin-bottom: 8px;
+  min-height: 1.5rem;
+  letter-spacing: 0.03em;
+}
+
+#dialogue-text {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: var(--text-dark);
+  line-height: 1.75;
+  min-height: 60px;
+  white-space: pre-line;
+}
+
+/* =============================================
+   EXTRA MESSAGE (branching)
+   ============================================= */
+#extra-msg {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: rgba(255, 128, 179, 0.18);
+  border-left: 3px solid var(--pink-main);
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+/* =============================================
+   BUTTONS
+   ============================================= */
+#choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.choice-btn, #btn-next, #popup-close {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 400;
+  cursor: pointer;
+  border: none;
+  border-radius: 50px;
+  padding: 10px 22px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+  outline-offset: 3px;
+}
+
+.choice-btn {
+  background: linear-gradient(135deg, var(--pink-main), #ff4da6);
+  color: var(--white);
+  box-shadow: 0 4px 14px var(--shadow);
+  flex: 1 1 auto;
+  min-width: 140px;
+  text-align: center;
+}
+
+.choice-btn:hover, .choice-btn:focus {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 7px 20px var(--shadow);
+}
+
+.choice-btn:active {
+  transform: scale(0.97);
+}
+
+#btn-next {
+  background: linear-gradient(135deg, var(--pink-mid), var(--pink-main));
+  color: var(--white);
+  box-shadow: 0 4px 14px var(--shadow);
+  margin-top: 16px;
+  align-self: flex-end;
+  float: right;
+}
+
+#btn-next:hover, #btn-next:focus {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 7px 20px var(--shadow);
+}
+
+/* =============================================
+   SCENE COUNTER
+   ============================================= */
+#scene-counter {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  font-family: 'Dancing Script', cursive;
+  font-size: 1rem;
+  color: var(--white);
+  background: rgba(255, 128, 179, 0.55);
+  backdrop-filter: blur(8px);
+  padding: 4px 16px;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  pointer-events: none;
+}
+
+/* =============================================
+   HIDDEN UTILITY
+   ============================================= */
+.hidden {
+  display: none !important;
+}
+
+/* =============================================
+   POPUP / MODAL
+   ============================================= */
+#popup {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 200, 228, 0.7);
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.4s ease;
+}
+
+#popup-inner {
+  background: var(--white);
+  border: 2px solid var(--pink-mid);
+  border-radius: 24px;
+  padding: 36px 32px;
+  max-width: 420px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 16px 48px var(--shadow);
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#popup-emoji {
+  font-size: 3.5rem;
+  margin-bottom: 12px;
+  animation: pulse 1.5s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.12); }
+}
+
+#popup-title {
+  font-family: 'Dancing Script', cursive;
+  font-size: 2rem;
+  color: var(--pink-dark);
+  margin-bottom: 12px;
+}
+
+#popup-msg {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 300;
+  color: var(--text-dark);
+  line-height: 1.8;
+  white-space: pre-line;
+  margin-bottom: 24px;
+}
+
+#popup-close {
+  background: linear-gradient(135deg, var(--pink-main), #ff4da6);
+  color: var(--white);
+  box-shadow: 0 4px 14px var(--shadow);
+  padding: 12px 32px;
+}
+
+#popup-close:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 7px 20px var(--shadow);
+}
+
+/* =============================================
+   ANIMATIONS
+   ============================================= */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.slide-in {
+  animation: slideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes slideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* =============================================
+   RESPONSIVE — MOBILE & LANDSCAPE
+   ============================================= */
+@media (max-width: 600px) {
+  #dialogue-box {
+    width: 98vw;
+    padding: 16px 16px 14px;
+    margin-bottom: 12px;
+    border-radius: 16px;
+  }
+
+  #speaker-name { font-size: 1.1rem; }
+  #dialogue-text { font-size: 0.82rem; }
+
+  .choice-btn { font-size: 0.8rem; padding: 9px 16px; }
+  #btn-next   { font-size: 0.8rem; padding: 9px 18px; }
+}
+
+/* Landscape mobile — tighter layout */
+@media (max-height: 500px) and (orientation: landscape) {
+  #dialogue-box {
+    width: min(680px, 98vw);
+    padding: 12px 18px 12px;
+    margin-bottom: 8px;
+    max-height: 72vh;
+    overflow-y: auto;
+    border-radius: 14px;
+  }
+
+  #dialogue-text {
+    font-size: 0.78rem;
+    line-height: 1.6;
+    max-height: 38vh;
+    overflow-y: auto;
+  }
+
+  #speaker-name { font-size: 0.95rem; margin-bottom: 4px; }
+  .heart { font-size: 1rem; }
+}
