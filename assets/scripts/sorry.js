@@ -11,7 +11,7 @@ const STORY = [
   /* ── SCENE 1: Pembuka — Situasi Call ── */
   {
     id: 1,
-    bg: "images/kenangan.jpg",
+    bg: "../assets/foryou/gambar/gambar2.jpg",
     speaker: "♡ Istriku, Princessku",
     text:
       "Jadi tadi kita lagi call.\n\n" +
@@ -30,7 +30,7 @@ const STORY = [
   /* ── SCENE 2: Konflik — Pengakuan Receh tapi Tulus ── */
   {
     id: 2,
-    bg: "images/konflik.jpg",
+    bg: "../assets/foryou/gambar/gambar3.jpg",
     speaker: "♡ Istriku, Princessku",
     text:
       "Oke, aku mau jujur.\n\n" +
@@ -64,7 +64,7 @@ const STORY = [
   /* ── SCENE 3: Surat — Puncak yang Tulus ── */
   {
     id: 3,
-    bg: "images/maaf.jpg",
+    bg: "https://res.cloudinary.com/deospx6aw/image/upload/v1768691347/IMG20251217134312_rjluot.jpg",
     speaker: "♡ Istriku, Princessku",
     text:
       "Istriku, princessku...\n\n" +
@@ -90,7 +90,7 @@ const STORY = [
   /* ── SCENE 4: Ending — Manis & Bikin Salting ── */
   {
     id: 4,
-    bg: "images/istana.jpg",
+    bg: "../assets/foryou/gambar/gambar1.jpg",
     speaker: "♡ Istriku, Princessku",
     text:
       "Aku tau kamu pura-pura marah.\n\n" +
