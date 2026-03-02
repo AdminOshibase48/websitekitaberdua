@@ -64,7 +64,7 @@ const STORY = [
   /* ── SCENE 3: Surat — Puncak yang Tulus ── */
   {
     id: 3,
-    bg: "https://res.cloudinary.com/deospx6aw/image/upload/v1768691347/IMG20251217134312_rjluot.jpg",
+    bg: "../assets/foryou/gambar/gambar1.jpg",
     speaker: "♡ Istriku, Princessku",
     text:
       "Istriku, princessku...\n\n" +
@@ -90,7 +90,7 @@ const STORY = [
   /* ── SCENE 4: Ending — Manis & Bikin Salting ── */
   {
     id: 4,
-    bg: "../assets/foryou/gambar/gambar1.jpg",
+    bg: "https://res.cloudinary.com/deospx6aw/image/upload/v1768691347/IMG20251217134312_rjluot.jpg",
     speaker: "♡ Istriku, Princessku",
     text:
       "Aku tau kamu pura-pura marah.\n\n" +
@@ -123,6 +123,8 @@ const STORY = [
    DOM REFERENCES
    ────────────────────────────────────────────── */
 const sceneBg      = document.getElementById("scene-bg");
+const scenePhoto   = document.getElementById("scene-photo");
+const photoFrame   = document.getElementById("photo-frame");
 const speakerEl    = document.getElementById("speaker-name");
 const textEl       = document.getElementById("dialogue-text");
 const extraMsgEl   = document.getElementById("extra-msg");
@@ -134,6 +136,14 @@ const popupEmoji   = document.getElementById("popup-emoji");
 const popupTitle   = document.getElementById("popup-title");
 const popupMsg     = document.getElementById("popup-msg");
 const popupClose   = document.getElementById("popup-close");
+
+/* Gradients per scene — bisa diganti warnanya */
+const SCENE_GRADIENTS = [
+  "linear-gradient(145deg, #ffd6ec 0%, #ffb3d1 45%, #ff80b3 100%)",
+  "linear-gradient(145deg, #ffe0ee 0%, #ffadd4 40%, #ff6eb0 100%)",
+  "linear-gradient(145deg, #fff0f7 0%, #ffc8e0 45%, #ff85bb 100%)",
+  "linear-gradient(145deg, #ffeaf5 0%, #ffbad6 40%, #ff70aa 100%)",
+];
 
 /* ──────────────────────────────────────────────
    STATE
@@ -148,13 +158,30 @@ function loadScene(index) {
   if (!scene) return;
   currentSceneIndex = index;
 
-  /* Fade background */
+  /* Ganti gradient background per scene */
+  const grad = SCENE_GRADIENTS[index % SCENE_GRADIENTS.length];
   sceneBg.classList.add("fade-out");
   setTimeout(() => {
-    sceneBg.src = scene.bg;
-    sceneBg.alt = `Scene ${scene.id}`;
+    sceneBg.style.background = grad;
     sceneBg.classList.remove("fade-out");
-  }, 400);
+  }, 300);
+
+  /* Foto dekoratif di pojok — muncul jika ada, sembunyi jika tidak */
+  if (scene.bg) {
+    photoFrame.classList.remove("hidden-frame", "visible");
+    scenePhoto.src = scene.bg;
+    scenePhoto.alt = `Scene ${scene.id}`;
+    // Munculkan dengan animasi kecil setelah gambar load
+    scenePhoto.onload = () => {
+      setTimeout(() => photoFrame.classList.add("visible"), 200);
+    };
+    // Fallback jika gambar gagal load — sembunyikan frame
+    scenePhoto.onerror = () => {
+      photoFrame.classList.add("hidden-frame");
+    };
+  } else {
+    photoFrame.classList.add("hidden-frame");
+  }
 
   /* Speaker & text */
   speakerEl.textContent = scene.speaker || "";
