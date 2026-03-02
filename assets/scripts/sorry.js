@@ -8,105 +8,113 @@
    🌸 STORY DATA — Ubah di sini saja!
    ────────────────────────────────────────────── */
 const STORY = [
-  /* ── SCENE 1: Pembuka — Kenangan ── */
+  /* ── SCENE 1: Pembuka — Situasi Call ── */
   {
     id: 1,
     bg: "images/kenangan.jpg",
     speaker: "♡ Istriku, Princessku",
     text:
-      "Eh, boleh aku cerita sesuatu nggak?\n\n" +
-      "Aku lagi mikirin momen-momen waktu kita saling ada buat satu sama lain. " +
-      "Kamu tau yang itu — waktu salah satu dari kita lagi nggak baik-baik aja, " +
-      "dan yang satunya langsung ada. Nggak nanya banyak. Nggak menghakimi. " +
-      "Cuma... ada.\n\n" +
-      "Aku selalu kagum sama itu. Kagum sama kamu.\n\n" +
-      "Dan sekarang, giliran aku yang mau ada buat kamu — " +
-      "dimulai dari ngomong jujur. 💕",
+      "Jadi tadi kita lagi call.\n\n" +
+      "Kamu keliatan cantik banget — " +
+      "dan aku, dengan segala kejeniusan yang aku punya, " +
+      "malah fokus ke bajunya. 😭\n\n" +
+      "\"Bajunya itu yang kemaren?\"\n\n" +
+      "Iya. Itu yang aku tanyain. Ke kamu. Yang lagi cantik-cantiknya di depan layar.\n\n" +
+      "Kamu bilang, \"ada 2\" — dengan nada yang... " +
+      "aku tau banget itu nada apa. " +
+      "Itu nada kamu pura-pura biasa tapi sebenernya kesel. " +
+      "Aku hapal. Kamu jangan pura-pura. 🙈",
     type: "next",
   },
 
-  /* ── SCENE 2: Konflik — Pengakuan ── */
+  /* ── SCENE 2: Konflik — Pengakuan Receh tapi Tulus ── */
   {
     id: 2,
     bg: "images/konflik.jpg",
     speaker: "♡ Istriku, Princessku",
     text:
-      "Tadi aku bikin kamu marah. Dan aku tau itu.\n\n" +
-      "Jujur, ada bagian kecil dari aku yang ngelakuin itu... " +
-      "ya karena aku pengen kamu salting. " +
-      "Pengen kamu dapet sesuatu yang bikin kamu kaget tapi terharu gitu. " +
-      "Tapi caranya salah, dan aku minta maaf buat itu.\n\n" +
-      "Niatnya mau bikin kamu senyum, malah bikin kamu kesel duluan. " +
-      "Classic aku banget, sih. 😅\n\n" +
-      "Gimana perasaan kamu sekarang?",
+      "Oke, aku mau jujur.\n\n" +
+      "Pertanyaan itu keluar gitu aja — dan begitu aku bilang, " +
+      "aku langsung tau itu salah. " +
+      "Bukan karena bajunya nggak penting, " +
+      "tapi karena... harusnya yang pertama aku bilang tuh bukan soal baju.\n\n" +
+      "Harusnya aku bilang kamu keliatan cantik. " +
+      "Atau sekedar senyum dulu. " +
+      "Bukan malah langsung detektif fashion dadakan. 🕵️‍♂️\n\n" +
+      "Gimana? Masih pura-pura marah atau udah mau dengerin aku dulu?",
     type: "choice",
     choices: [
       {
-        label: "Oke aku dengerin dulu... 👂",
+        label: "Oke, dengerin dulu deh... 🙄💕",
         next: 3,
       },
       {
-        label: "Masih agak kesel nih 😤",
+        label: "Masiiih kesel nih 😤",
         extraMsg:
-          "Iya, wajar banget.\n\n" +
-          "Aku nggak minta kamu langsung oke. " +
-          "Aku cuma minta satu hal — baca sampai selesai dulu, ya? " +
-          "Setelah itu, kalau kamu masih mau marah, aku siap dengerin juga. " +
-          "Kali ini beneran dengerin, bukan cuma diem. 🙏",
+          "Iya iya, aku tau. 😔\n\n" +
+          "Tapi kamu juga tau kan kalau aku sayang kamu? " +
+          "Makanya aku bikin ini — bukan pake ngomong doang, " +
+          "tapi beneran usaha. Baca dulu ya, sayang. " +
+          "Aku janji bagian selanjutnya lebih manis. 🌸",
         showChoiceAfterExtra: true,
       },
     ],
   },
 
-  /* ── SCENE 3: Surat — Puncak ── */
+  /* ── SCENE 3: Surat — Puncak yang Tulus ── */
   {
     id: 3,
     bg: "images/maaf.jpg",
     speaker: "♡ Istriku, Princessku",
     text:
-      "Sayang...\n\n" +
-      "Aku mau minta maaf. Bukan karena terpaksa atau karena takut kamu terus marah. " +
-      "Tapi karena aku beneran ngerasa salah — dan kamu layak denger itu langsung dari aku.\n\n" +
-      "Kamu itu selalu jadi orang pertama yang ada waktu aku lagi susah. " +
-      "Nggak pernah sekalipun kamu ninggalin aku sendirian pas aku butuh. " +
-      "Dan itu bukan hal kecil. Itu salah satu hal yang bikin aku sayang sama kamu makin hari makin dalam.\n\n" +
-      "Jadi waktu aku malah bikin kamu kesel — " +
-      "apalagi dengan cara yang harusnya bikin kamu senyum — " +
-      "rasanya nyesek banget di sini. 🫀\n\n" +
-      "Aku janji: lain kali aku mau lebih mikirin perasaan kamu duluan " +
-      "sebelum ngelakuin hal-hal 'spontan' yang cuma lucu di kepala aku doang. " +
-      "Kamu berhak dapet yang lebih baik dari itu.\n\n" +
-      "Maafin aku ya, istriku, princessku. 🌸",
+      "Istriku, princessku...\n\n" +
+      "Aku minta maaf soal pertanyaan baju tadi. " +
+      "Kedengarannya sepele — dan emang sepele — " +
+      "tapi aku nggak mau kamu nyimpen rasa keselnya, " +
+      "sekecil apapun itu.\n\n" +
+      "Karena kamu itu nggak pernah biarin aku nyimpen hal-hal kecil sendirian. " +
+      "Waktu aku lagi susah, kamu selalu ada. " +
+      "Nggak nunggu aku minta tolong dulu. " +
+      "Kamu tau aja — dan langsung ada.\n\n" +
+      "Aku mau jadi kayak gitu buat kamu juga. " +
+      "Lebih peka, lebih perhatian — " +
+      "mulai dari hal yang sekecil milih kata-kata pas kita lagi call.\n\n" +
+      "Yang harusnya aku bilang tadi:\n" +
+      "Kamu cantik banget. Bajunya dua atau dua ratus, " +
+      "tetep kamu yang bikin semuanya keliatan bagus. 💕\n\n" +
+      "Maafin aku ya, sayang. 🌸",
     type: "next",
-    nextLabel: "Terima Maafku? 🥺",
+    nextLabel: "Maafin aku? 🥺",
   },
 
-  /* ── SCENE 4: Ending ── */
+  /* ── SCENE 4: Ending — Manis & Bikin Salting ── */
   {
     id: 4,
     bg: "images/istana.jpg",
     speaker: "♡ Istriku, Princessku",
     text:
-      "Kamu tau yang aku suka dari kita?\n\n" +
-      "Kita bisa ketawa bareng soal hal paling random sekalipun. " +
-      "Kita bisa deep talk jam 2 malem tentang hal-hal yang bahkan nggak ada hubungannya sama kehidupan kita. " +
-      "Kita bisa berantem, terus baikan, " +
-      "terus ketawa lagi seolah nggak ada yang terjadi — " +
-      "tapi sebenernya kita sama-sama tumbuh dari situ.\n\n" +
-      "Aku nggak sempurna. Kamu juga nggak (walaupun kamu deket banget). " +
-      "Tapi kita bagus banget kalau lagi bareng.\n\n" +
-      "Aku sayang kamu — kemarin, hari ini, dan semua hari yang belum datang. 💕",
+      "Aku tau kamu pura-pura marah.\n\n" +
+      "Dan aku tau juga — di balik muka kesel itu — " +
+      "ada senyum kecil yang kamu tahan-tahan. " +
+      "Aku hapal. Jangan disangkal. 😏💕\n\n" +
+      "Makanya aku bikin ini.\n\n" +
+      "Bukan karena masalahnya gede — " +
+      "tapi karena kamu berhak tau seberapa aku mikirin kamu. " +
+      "Bahkan untuk hal sekecil pertanyaan baju yang harusnya nggak aku tanyain.\n\n" +
+      "Kamu itu istriku, princessku.\n" +
+      "Dan aku nggak mau kamu kesel — " +
+      "bahkan satu detik pun. 🏡💕",
     type: "end",
     endLabel: "Selesai 🌷",
     popup: {
       emoji: "🥹",
-      title: "Makasih udah mau baca sampai sini...",
+      title: "Udah nggak kesel kan? 🌸",
       msg:
-        "Ini bukan cuma permintaan maaf.\n" +
-        "Ini juga pengingat buat aku sendiri — " +
-        "bahwa kamu itu berharga, dan aku nggak mau lupa itu.\n\n" +
-        "Kalau kamu udah nggak marah, boleh aku minta senyumnya? 🌸\n\n" +
-        "— Yang sayangnya nggak ada habisnya, aku 💌",
+        "Kalau masih kesel — aku terima.\n" +
+        "Tapi kalau udah senyum dari tadi tapi ditahan-tahan...\n\n" +
+        "Boleh senyumnya dikeluarin sekarang. Aku tau kok. 😏\n\n" +
+        "Aku sayang kamu, istriku, princessku.\n" +
+        "Maafin aku ya — dari aku yang selalu mau jadi yang terbaik buat kamu. 💌",
     },
   },
 ];
