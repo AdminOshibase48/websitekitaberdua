@@ -47,11 +47,13 @@ html, body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center top;
   transition: opacity 0.8s ease, filter 0.8s ease;
   opacity: 1;
   z-index: 0;
-  /* Fallback gradient if image missing */
+  /* Soft blur to hide pixelation on low-res photos */
+  filter: blur(2px) brightness(0.92) saturate(1.1);
+  transform: scale(1.04); /* hide blur edges */
   background: linear-gradient(160deg, #ffd6ec, #ffb3d1, #ff80b3);
 }
 
@@ -63,12 +65,14 @@ html, body {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(
-    to top,
-    rgba(255, 200, 228, 0.65) 0%,
-    rgba(255, 230, 242, 0.15) 50%,
-    transparent 100%
-  );
+  /* Stronger overlay so text area is always readable */
+  background:
+    linear-gradient(
+      to top,
+      rgba(255, 180, 215, 0.82) 0%,
+      rgba(255, 220, 240, 0.45) 45%,
+      rgba(255, 200, 230, 0.25) 100%
+    );
   pointer-events: none;
 }
 
@@ -114,6 +118,21 @@ html, body {
   border-radius: 22px;
   box-shadow: 0 8px 32px var(--shadow), 0 2px 8px rgba(255,128,179,0.15);
   transition: transform 0.3s ease;
+  max-height: 80vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--pink-main) transparent;
+}
+
+#dialogue-box::-webkit-scrollbar {
+  width: 4px;
+}
+#dialogue-box::-webkit-scrollbar-track {
+  background: transparent;
+}
+#dialogue-box::-webkit-scrollbar-thumb {
+  background: var(--pink-main);
+  border-radius: 4px;
 }
 
 #speaker-name {
