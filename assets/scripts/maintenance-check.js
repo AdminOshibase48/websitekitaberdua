@@ -12,6 +12,6 @@ const today = new Date().toISOString().split('T')[0];
 if (maintenanceDates.includes(today)) {
     // Jika hari ini tanggal maintenance, redirect!
     if (!window.location.pathname.includes('maintenance')) {
-        window.location.href = '../pages/maintenance';
+        window.location.href = '/maintenance';
     }
 }
