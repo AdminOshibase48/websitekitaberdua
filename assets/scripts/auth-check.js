@@ -194,7 +194,6 @@ function showWelcomeMessage(user) {
 }
 
 // Setup mobile menu handler
-// Tambahkan ini di dalam fungsi setupMobileMenu()
 function setupMobileMenu() {
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.querySelector('.nav-menu');
