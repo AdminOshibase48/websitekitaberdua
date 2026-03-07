@@ -194,21 +194,38 @@ function showWelcomeMessage(user) {
 }
 
 // Setup mobile menu handler
+// Tambahkan ini di dalam fungsi setupMobileMenu()
 function setupMobileMenu() {
     const navToggle = document.querySelector('.nav-toggle');
     const navMenu = document.querySelector('.nav-menu');
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
     
-    if (!navToggle || !navMenu) return;
+    // ... existing code ...
     
-    // Hapus event listener lama
-    const newToggle = navToggle.cloneNode(true);
-    navToggle.parentNode.replaceChild(newToggle, navToggle);
-    
-    // Tambahkan event listener baru
-    newToggle.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevent event bubbling
-        toggleMobileMenu();
-    });
+    // Handle dropdown di mobile
+    if (window.innerWidth <= 768) {
+        const dropdown = document.querySelector('.nav-dropdown');
+        const toggle = dropdown?.querySelector('.dropdown-toggle');
+        
+        if (toggle) {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Toggle active class di dropdown
+                dropdown.classList.toggle('active');
+                
+                // Rotate icon
+                const icon = this.querySelector('.dropdown-icon');
+                if (dropdown.classList.contains('active')) {
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+            });
+        }
+    }
+}
     
     // Close menu ketika klik di luar
     document.addEventListener('click', function(e) {
