@@ -5,12 +5,12 @@
     // Konfigurasi Maintenance
     const MAINTENANCE_CONFIG = {
         // Mode: 'manual' atau 'auto'
-        mode: 'manual', // 'manual' untuk atur manual, 'auto' untuk otomatis dari file
+        mode: 'auto', // 'manual' untuk atur manual, 'auto' untuk otomatis dari file
             
         // Untuk mode manual: daftar tanggal maintenance (format YYYY-MM-DD)
         manualDates: [
-            '2026-03-07', // Ganti dengan tanggal hari ini untuk testing
-            '2026-03-08',
+            '2026-03-15', // Ganti dengan tanggal hari ini untuk testing
+            '2026-03-16',
             '2026-03-09'
         ],
         
