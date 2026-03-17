@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Eternal Garden - Janji Setia Kita</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-rose: #fda4af;
+            --soft-sage: #f0fdf4;
+            --golden-hour: #fef3c7;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #fffaf0 0%, #fdf2f8 100%);
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Animasi Kelopak Bunga */
+        .petal {
+            position: fixed;
+            top: -10%;
+            pointer-events: none;
+            z-index: 99;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        /* Anniversary Tree Styling */
+        .tree-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            transition: all 0.5s ease;
+        }
+
+        .tree-glow {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(253, 164, 175, 0.2) 0%, transparent 70%);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fda4af;
+            border-radius: 10px;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Mobile Bottom Nav Shadow */
+        .bottom-nav {
+            box-shadow: 0 -4px 20px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .promise-card {
+            animation: slideIn 0.5s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Desktop Sidebar (Hidden on Mobile) -->
+    <aside class="hidden lg:flex fixed left-0 top-0 h-screen w-64 flex-col p-8 glass z-50">
+        <div class="mb-12">
+            <h2 class="text-2xl font-bold text-rose-500">Eternal Garden</h2>
+            <p class="text-xs text-slate-400 mt-1 uppercase tracking-tighter">Janji Seumur Hidup</p>
+        </div>
+        
+        <nav class="space-y-4 flex-1">
+            <a href="#" class="flex items-center gap-3 text-rose-600 font-semibold p-2 bg-rose-50 rounded-lg">
+                <span>🏠</span> Home
+            </a>
+            <a href="#" class="flex items-center gap-3 text-slate-500 hover:text-rose-400 p-2 transition-colors">
+                <span>📜</span> The Manifesto
+            </a>
+            <a href="#" class="flex items-center gap-3 text-slate-500 hover:text-rose-400 p-2 transition-colors">
+                <span>🖼️</span> Gallery of Us
+            </a>
+            <a href="#" class="flex items-center gap-3 text-slate-500 hover:text-rose-400 p-2 transition-colors">
+                <span>📁</span> The Archive
+            </a>
+        </nav>
+
+        <button onclick="openModal()" class="mt-auto bg-rose-500 text-white py-3 px-4 rounded-xl shadow-lg hover:bg-rose-600 transition-all flex items-center justify-center gap-2">
+            <span>+</span> Plant a Promise
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="lg:ml-64 p-4 md:p-12 pb-24 lg:pb-12">
+        <header class="max-w-4xl mx-auto text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-bold text-slate-800 mb-4">The Anniversary Tree</h1>
+            <p class="text-slate-500 italic">"Setiap janji yang kita tepati, membuat taman ini semakin abadi."</p>
+        </header>
+
+        <!-- Garden Visual Section -->
+        <section class="flex flex-col items-center justify-center py-12">
+            <div class="tree-container flex items-center justify-center">
+                <div class="tree-glow"></div>
+                <!-- Simbol Pohon SVG Whimsical -->
+                <svg viewBox="0 0 200 200" class="w-full h-full text-emerald-600 relative z-10 drop-shadow-xl">
+                    <path fill="currentColor" d="M100,160 Q100,100 100,40 M100,100 Q130,70 160,80 M100,80 Q70,50 40,60 M100,120 Q140,110 150,140 M100,130 Q60,120 50,150" stroke="currentColor" stroke-width="4" fill="none" />
+                    <circle cx="100" cy="40" r="15" fill="#fda4af" />
+                    <circle cx="160" cy="80" r="10" fill="#fecaca" />
+                    <circle cx="40" cy="60" r="12" fill="#fda4af" />
+                </svg>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <div class="inline-flex gap-8 glass p-6 rounded-3xl shadow-sm border-rose-100">
+                    <div>
+                        <span class="block text-2xl font-bold text-rose-500" id="promise-count">0</span>
+                        <span class="text-[10px] uppercase tracking-widest text-slate-400">Janji</span>
+                    </div>
+                    <div class="w-px h-10 bg-slate-100"></div>
+                    <div>
+                        <span class="block text-2xl font-bold text-emerald-500">1.240</span>
+                        <span class="text-[10px] uppercase tracking-widest text-slate-400">Hari Bersama</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feed Janji -->
+        <section class="max-w-2xl mx-auto mt-12 space-y-6" id="vow-feed">
+            <h3 class="serif text-2xl text-slate-700 border-b border-rose-100 pb-2">Linimasa Janji Kita</h3>
+            <!-- Janji akan muncul di sini via JS -->
+        </section>
+    </main>
+
+    <!-- Mobile Bottom Navigation (Visible only on Mobile) -->
+    <nav class="lg:hidden fixed bottom-0 left-0 w-full glass bottom-nav flex justify-around items-center h-20 px-4 z-50">
+        <button class="text-rose-500 flex flex-col items-center">
+            <span class="text-xl">🏠</span>
+            <span class="text-[10px] mt-1">Home</span>
+        </button>
+        <button onclick="openModal()" class="bg-rose-500 text-white w-14 h-14 rounded-full flex items-center justify-center -mt-10 shadow-xl border-4 border-white transition-transform active:scale-90">
+            <span class="text-2xl">+</span>
+        </button>
+        <button class="text-slate-400 flex flex-col items-center" onclick="alert('Rainy Day Mode: Ceritakan apa yang mengganjal hatimu...')">
+            <span class="text-xl">☁️</span>
+            <span class="text-[10px] mt-1">Rainy Day</span>
+        </button>
+    </nav>
+
+    <!-- Modal Input Janji -->
+    <div id="promise-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm">
+        <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl transition-all scale-95" id="modal-content">
+            <h2 class="serif text-2xl mb-4 text-slate-800">Tanam Janji Baru</h2>
+            <textarea id="vow-input" class="w-full h-32 p-4 rounded-2xl bg-slate-50 border-none focus:ring-2 focus:ring-rose-200 resize-none mb-4 italic" placeholder="Contoh: Aku janji akan selalu memberimu pelukan saat kamu lelah..."></textarea>
+            
+            <div class="flex gap-3">
+                <button onclick="closeModal()" class="flex-1 py-3 text-slate-400 font-semibold">Batal</button>
+                <button onclick="saveVow()" class="flex-1 py-3 bg-rose-500 text-white rounded-xl font-semibold shadow-lg shadow-rose-100">Tanam Janji</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Janji Sederhana (Local Storage bisa ditambahkan nanti)
+        let vows = [
+            { text: "Selalu jujur tentang perasaanku padamu.", date: "15 Jan 2024" },
+            { text: "Menemanimu di setiap senang dan susah.", date: "01 Jan 2024" }
+        ];
+
+        // Inisialisasi
+        window.onload = () => {
+            renderVows();
+            startPetalRain();
+        };
+
+        function renderVows() {
+            const feed = document.getElementById('vow-feed');
+            const countDisplay = document.getElementById('promise-count');
+            
+            // Hapus isi kecuali judul
+            const title = feed.querySelector('h3');
+            feed.innerHTML = '';
+            feed.appendChild(title);
+
+            vows.forEach(vow => {
+                const card = document.createElement('div');
+                card.className = 'promise-card glass p-6 rounded-2xl shadow-sm border-l-4 border-rose-300';
+                card.innerHTML = `
+                    <p class="text-slate-600 italic">"${vow.text}"</p>
+                    <div class="mt-4 flex justify-between items-center">
+                        <span class="text-[10px] font-bold text-rose-300 uppercase tracking-widest">Abadi</span>
+                        <span class="text-[10px] text-slate-300">${vow.date}</span>
+                    </div>
+                `;
+                feed.appendChild(card);
+            });
+
+            countDisplay.innerText = vows.length;
+        }
+
+        function openModal() {
+            const modal = document.getElementById('promise-modal');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('modal-content').classList.remove('scale-95');
+                document.getElementById('modal-content').classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            document.getElementById('modal-content').classList.add('scale-95');
+            setTimeout(() => {
+                document.getElementById('promise-modal').classList.add('hidden');
+            }, 200);
+        }
+
+        function saveVow() {
+            const input = document.getElementById('vow-input');
+            if (input.value.trim() === "") return;
+
+            const newVow = {
+                text: input.value,
+                date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })
+            };
+
+            vows.unshift(newVow);
+            input.value = "";
+            closeModal();
+            renderVows();
+        }
+
+        // Animasi Kelopak Bunga
+        function startPetalRain() {
+            setInterval(() => {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.innerHTML = '🌸';
+                petal.style.left = Math.random() * 100 + 'vw';
+                petal.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                petal.style.opacity = Math.random();
+                
+                const duration = Math.random() * 3 + 5;
+                petal.style.animationDuration = duration + 's';
+                
+                document.body.appendChild(petal);
+
+                setTimeout(() => {
+                    petal.remove();
+                }, duration * 1000);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
+
