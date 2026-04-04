@@ -9,9 +9,9 @@
             
         // Untuk mode manual: daftar tanggal maintenance (format YYYY-MM-DD)
         manualDates: [
-            '2026-03-15', // Ganti dengan tanggal hari ini untuk testing
-            '2026-03-16',
-            '2026-03-09'
+            '2026-04-04', // Ganti dengan tanggal hari ini untuk testing
+            '2026-04-05',
+            '2026-04-06'
         ],
         
         // Untuk mode auto: ambil dari file eksternal
