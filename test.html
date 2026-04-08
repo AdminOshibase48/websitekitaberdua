@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mini PPDB</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+<div class="container">
+<h2>Form Pendaftaran Siswa</h2>
+
+<form id="formPPDB">
+    <input type="text" id="nama" placeholder="Masukkan nama lengkap" required>
+    <input type="text" id="asal" placeholder="Masukkan asal sekolah" required>
+
+    <select id="jurusan" required>
+    <option value="">--- Pilih Jurusan ---</option>
+    <option>RPL</option>
+    <option>TKJ</option>
+    <option>MM</option>
+    <option>TM</option>
+    <option>TBSM</option>
+    </select>
+
+    <button type="submit">Daftar</button>
+</form>
+
+<h3>Data Pendaftar</h3>
+<table>
+    <thead>
+    <tr>
+    <th>No</th>
+    <th>Nama</th>
+    <th>Asal</th>
+    <th>Jurusan</th>
+    </tr>
+    </thead>
+    <tbody id="tabelData"></tbody>
+</table>
+</div>
+
+<script>
+let no = 1;
+document.getElementById("formPPDB").addEventListener("submit", function(e){
+    e.preventDefault();
+    let nama = document.getElementById("nama").value;
+    let asal = document.getElementById("asal").value;
+    let jurusan = document.getElementById("jurusan").value;
+
+    let tabel = document.getElementById("tabelData");
+
+    let row = `
+    <tr>
+    <td>${no++}</td>
+    <td>${nama}</td>
+    <td>${asal}</td>
+    <td>${jurusan}</td>
+    </tr>
+    `;
+    tabel.innerHTML += row;
+});
+
+document.getElementById("formPPDB").reset();
+</script>
+</body>
+</html>
