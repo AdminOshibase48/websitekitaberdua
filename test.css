@@ -1,0 +1,59 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  font-family: Arial;
+  background: linear-gradient(to right, #ffecd2, #fcb69f);
+}
+.container {
+  width: 400px;
+  margin: 40px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+input, select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+input:focus, select:focus {
+  outline: none;
+  border-color: #ff7e5f;
+}
+button {
+  width: 100%;
+  padding: 12px;
+  background: #ff7e5f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+button:hover {
+  background: #feb47b;
+}
+table {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+table, th, td {
+  border: 1px solid #ccc;
+}
+th {
+  background: #ff7e5f;
+  color: white;
+}
+th, td {
+  padding: 8px;
+}
