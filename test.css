@@ -3,7 +3,7 @@
 }
 body {
   font-family: Arial;
-  background: #F9B2D7;
+  background: #FFCCE1;
 }
 .container {
   width: 400px;
@@ -27,20 +27,20 @@ input, select {
 }
 input:focus, select:focus {
   outline: none;
-  border-color: #CFECF3;
+  border-color: #ff7e5f;
 }
 button {
   width: 100%;
   padding: 12px;
-  background: #CFECF3;
-  color: white;
+  background: #F2F9FF;
+  color: #333;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
 }
 button:hover {
-  background: #b8d9e3;
+  background: #e0eef9;
 }
 table {
   width: 100%;
@@ -51,8 +51,8 @@ table, th, td {
   border: 1px solid #ccc;
 }
 th {
-  background: #CFECF3;
-  color: white;
+  background: #F2F9FF;
+  color: #333;
 }
 th, td {
   padding: 8px;
